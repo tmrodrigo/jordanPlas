@@ -29,9 +29,9 @@
 								<th>Teléfono</th>
 								<th>Email</th>
 								<th>Mensaje</th>
+								<th>Presupuesto</th>
 								<th>Fecha de contacto</th>
-								{{-- <th>Start date</th>
-								<th>Salary</th>
+								{{-- <th>Salary</th>
 								<th>Extn.</th>
 								<th>E-mail</th> --}}
 							</tr>
@@ -44,6 +44,11 @@
 									<td>{{ $client->phone }}</td>
 									<td>{{ $client->email }}</td>
 									<td>{{ $client->message }}</td>
+									<td>
+										@if ($client->budget)
+											<a href="{{ url('backend/budget/'. $client->id)}}">ver</a>
+										@endif
+									</td>
 									<td>{{ date('d-m-Y | g:i a', strtotime($client->created_at)) }}</td>
 									{{-- <td>2011/04/25</td>
 									<td>$320,800</td>

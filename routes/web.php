@@ -76,4 +76,6 @@ Route::middleware(['auth'])->group(function () {
 
   Route::delete('service/destroy', 'ServiceController@destroy')->name('service.destroy');
 
+  Route::get('/backend/budget/{id}', 'BudgetController@show');
+
 });

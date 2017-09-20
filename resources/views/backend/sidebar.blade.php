@@ -39,12 +39,12 @@
             <li><a href="calendar.html">Calendar</a></li>
           </ul> --}}
         </li>
-        <li><a href=""><i class="fa fa-table"></i> Solicitud de presupuesto </a>
+        {{-- <li><a href="{{ url('backend/budget')}}"><i class="fa fa-table"></i> Solicitud de presupuesto </a>
           {{-- <ul class="nav child_menu">
             <li><a href="tables.html">Tables</a></li>
             <li><a href="tables_dynamic.html">Table Dynamic</a></li>
-          </ul> --}}
-        </li>
+          </ul> 
+        </li> --}}
         {{-- <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
             <li><a href="chartjs.html">Chart JS</a></li>

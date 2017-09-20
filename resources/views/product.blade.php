@@ -37,13 +37,26 @@
                   </div>
                   <p>{{ $product->description }}</p>
                   <p><span>Kit de instalación:</span><br>Todos nuestros productos incluyen el material necesario para su instalación, en este caso tornillo, tarugo y arandela</p>
-                  <div class="certificados">
-                    <p><span>Certificado por:</span></p>
-                    <ul>
-                      <li><a href="https://www.inti.gob.ar/" target="_blank"><img src="images/assets/certf/inti-blanco.png" alt=""></a></li>
-                      <li><a href="http://www.iram.org.ar/" target="_blank"><img src="images/assets/certf/iram-blanco.png" alt=""></a></li>
-                      <li><a href="https://www.astm.org/" target="_blank"><img src="images/assets/certf/astm-blanco.png" alt=""></a></li>
-                    </ul>
+                  @if ($product->atributes[0]->atribute == "certificate")
+                    <div class="certificados">
+                      <ul>
+                        @foreach ($product->atributes as $certificate)
+                          @if ($certificate->atribute == "certificate")
+                            <li>
+                              <img src="{{ $certificate->name }}" alt="">
+                              <p>
+                                <span>Certificado: </span>INTI <br>
+                                <span>Iso: </span>XXXXXXX <br>
+                                <span>Norma de fabricación: </span>ASTM-IRAN <br>
+                              </p>
+                            </li>
+                          @endif
+                        @endforeach
+                      </ul>
+                    </div>
+                  @endif
+                  <div class="consulta">
+                    <button type="button" onClick="window.location='{{ url('/contacto')}}'">Consultar</button>
                   </div>
                 </div>
               </div>

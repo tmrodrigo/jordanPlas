@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Budget;
+use App\Client;
+use App\Product;
 
 class BudgetController extends Controller
 {
@@ -38,5 +40,17 @@ class BudgetController extends Controller
 
       $product->save();
       return redirect('products');
+  }
+
+  public function show($id)
+  {
+    $bProducts = Budget::where('client_id', '=', $id)->get();
+    $products = Product::all();
+    $client = Client::find($id);
+    return view('backend.messages.budget', [
+      'bProducts' => $bProducts,
+      'client' => $client,
+      'products' => $products
+    ]);
   }
 }

@@ -8,13 +8,21 @@
   align-items: center;
   justify-content: center;
   @media only screen and (min-width : 768px) {
-    height: 100vh;
+    min-height: 100vh;
   }
   .contacto {
     background-color: $jordanGray03;
     color: $jordanGray01;
+    margin: 72px 0;
+    @media only screen and (min-width : 768px) {
+      margin: 120px 0;
+    }
     @media only screen and (min-width : 768px) {
       border: 1px solid $jordanGray01;
+    }
+    @media only screen and (min-width : 1600px) {
+      width: 70% !important;
+      margin-left: 15% !important;
     }
     border-radius: 12px;
     overflow: auto;
@@ -85,7 +93,7 @@
         text-align: left !important;
       }
       select {
-        width: 100%;
+        width: 80%;
         border: 0px;
         background-color: transparent;
         border-bottom: 1px solid $jordanGray01;
@@ -97,7 +105,7 @@
         }
       }
       .cantidad {
-        width: 100%;
+        width: 80%;
         border: 0;
         background-color: transparent;
         border-bottom: 1px solid $jordanGray01;

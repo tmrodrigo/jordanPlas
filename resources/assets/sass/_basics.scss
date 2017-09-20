@@ -34,7 +34,7 @@ a {
   }
 }
 
-img {
+img, video {
   max-width: 100%;
 }
 
@@ -79,7 +79,9 @@ ul {
 }
 
 .fullW {
-  width: 100% !important;
+  @media only screen and (min-width : 768px) {
+    width: 100% !important;
+  }
 }
 
 input:-webkit-autofill {

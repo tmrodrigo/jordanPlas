@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Client;
+use App\Budget;
 
 class ContactShipped extends Mailable
 {
@@ -14,14 +15,18 @@ class ContactShipped extends Mailable
 
 
     public $client;
+
+    public $budget;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Client $client)
+    public function __construct(Client $client, Budget $budget)
     {
         $this->client = $client;
+
+        $this->budget = $budget;
     }
 
     /**

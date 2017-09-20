@@ -76,7 +76,7 @@ module.exports = __webpack_require__(2);
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  $('#2, #3').addClass('articuloOculto');
+  $('#2, #3, #4').addClass('articuloOculto');
 
   $('#e').addClass('selected');
 
@@ -138,14 +138,17 @@ $(document).ready(function () {
   });
 
   $('.bxslider').bxSlider({
-    minSlides: 3,
-    maxSlides: 10,
+    // minSlides: 3,
+    maxSlides: 186,
     slideWidth: 150,
     slideMargin: 8,
     auto: true,
     controls: false,
     pager: false,
-    autoHover: true
+    autoHover: true,
+    speed: 1500,
+    // autoDelay: 3500,
+    randomStart: true
   });
 
   var item = $('.itemCategoria');
@@ -209,7 +212,7 @@ $(document).ready(function () {
       error.empty();
       error.append("Teléfono requerido");
       $(this).css('border-bottom', '2px solid #ED0E3D');
-    } else if (phone.length < 7) {
+    } else if (phone.length < 7 || isNaN(phone)) {
       error.empty();
       error.append("Número inválido");
       $(this).css('border-bottom', '2px solid #ED0E3D');
@@ -266,7 +269,7 @@ $(document).ready(function () {
   }
 
   function inputError() {
-    var input = $('.form-group input');
+    var input = $('.required');
     $('#contactError').empty();
     $('#contactError').append('Los campos deben estar llenos');
     input.css('border-bottom', '2px solid #ED0E3D');
@@ -285,14 +288,14 @@ $(document).ready(function () {
     }
   });
 
-  $('#nextForm').hide();
+  // $('#nextForm').hide();
 
   // $('#form').fadeOut();
 
 
   var producto = $('.producto');
   var cantidad = $('.cantidad');
-  var campo = '<div class="form-group"><select class="producto" name=""><option value="uno">uno</option><option value="dos">dos</option><option value="tres">tres</option></select><input type="text" class="cantidad" name="cantidad" value="" placeholder="cantidad"></div>';
+  var campo = '<select class="producto" name="product_id"><option value="">seleccione un producto</option>@foreach ($products as $product)<option value="{{ $product->id}}">{{ $product->name }}</option>@endforeach</select>';
 
   producto.each(function () {
     $(this).blur(function () {
@@ -308,17 +311,20 @@ $(document).ready(function () {
   cantidad.each(function () {
     $(this).blur(function () {
       var message = $(this).val();
-      if (message === "" && message !== " ") {
-        $(this).css('border-bottom', '2px solid #ED0E3D');
-      } else if (isNaN(cantidad.val())) {
-        $('#nfError').empty();
-        $(this).css('border-bottom', '2px solid #ED0E3D');
-        $('#nfError').append('La cantidad debe ser un número');
-      } else {
-        $(this).css('border-bottom', '1px solid #5BAC29');
-        if (producto.val() != "" && cantidad.val() != "") {
-          $('#agregarMas').append(campo);
+      if (cantidad.is(':empty')) {
+        $(this).css('border-bottom', '1px solid #505050');
+      }
+      if ($(this).val()) {
+        if (isNaN($(this).val())) {
           $('#nfError').empty();
+          $(this).css('border-bottom', '2px solid #ED0E3D');
+          $('#nfError').append('La cantidad debe ser un número');
+        } else {
+          $(this).css('border-bottom', '1px solid #5BAC29');
+          if (producto.val() != "" && cantidad.val() != "") {
+            $('#agregarMas').append(campo);
+            $('#nfError').empty();
+          }
         }
       }
     });

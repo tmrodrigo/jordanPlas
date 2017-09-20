@@ -107,6 +107,7 @@
               padding: 16px;
               width: 100%;
               display: inline-block;
+              font-weight: normal !important;
               &:hover {
                 background-color: $jordanGray02;
                 color: white;
@@ -224,15 +225,6 @@
     }
   }
 }
-
-#subMenu {
-  li {
-    a {
-      font-weight: lighter !important;
-    }
-  }
-}
-
 .mostrarNav {
   display: block !important;
 }

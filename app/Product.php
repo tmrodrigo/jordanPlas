@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Image;
 use App\Color;
+use App\Budget;
 use App\ProductAtribute;
 use App\Certificate;
 
@@ -35,6 +36,11 @@ class Product extends Model
   public function certificates()
   {
     return $this->hasMany(Certificate::class);
+  }
+
+  public function budgets()
+  {
+    return $this->belongsToMany(Budget::class);
   }
 
 }

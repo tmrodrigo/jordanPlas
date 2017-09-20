@@ -51,6 +51,7 @@
   }
 
   .textoSeccion {
+
     h4 {
       margin-top: 48px;
       text-transform: uppercase;
@@ -60,6 +61,19 @@
         text-transform: uppercase;
         font-weight: bold;
         font-size: 12px;
+      }
+    }
+    h2 {
+      text-align: center;
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+  #4 {
+    .textoSeccion {
+      h2 {
+        margin-bottom: 36px !important;
       }
     }
   }
@@ -97,4 +111,26 @@
   p {
     color: white !important;
   }
+}
+
+#empresa {
+  .jordanPlas {
+    display: flex;
+    flex-flow: row;
+    margin-bottom: 36px !important;
+    margin-top: 48px !important;
+    @media only screen and (min-width : 768px) {
+      margin-top: 0;
+    }
+    h2 {
+      display: inline-block;
+      margin: 0 !important;
+    }
+    h3 {
+      display: inline-block;
+      margin: 0;
+      margin-left: 8px;
+      color: $jordanPpal
+    }
+}
 }

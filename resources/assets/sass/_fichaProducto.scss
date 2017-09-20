@@ -53,7 +53,7 @@
         min-height: 270px;
       }
       @media only screen and (min-width : 1024px) {
-        min-height: 400px;
+        min-height: 520px;
         margin: 0;
         justify-content: space-between;
       }
@@ -90,15 +90,30 @@
     .certificados {
       ul {
         justify-content: flex-start;
+        flex-flow: column !important;
         li {
+          width: 100%;
+          margin: 16px 0;
+          margin-bottom: 16px;
           &:first-child {
             margin-left: 0;
+          }
+          p {
+            width: 80%;
+            display: inline-block;
+            font-size: 12px;
+            margin-top: 16px;
+            @media only screen and (min-width : 768px) {
+              margin-top: 0;
+            }
           }
         }
       }
     }
     img {
-      width: 40px;
+      width: 60px;
+      vertical-align: top;
+      margin-right: 16px;
     }
   }
   .imgFicha {
@@ -152,10 +167,8 @@
           .yellow {
             background-color: yellow;
           }
-          .redWhite {
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+          .red {
+            background-color: red;
           }
         }
         img {
