@@ -1,0 +1,16 @@
+.certificados {
+  width: 100%;
+  // border-top: 1px solid $jordanGray01;
+  // padding-top: 8px;
+  ul {
+    display: flex;
+    flex-flow: row !important;
+    justify-content: space-between;
+    margin: 16px 0;
+    li {
+      width: 60px;
+      list-style: none;
+      margin-left: 8px;
+    }
+  }
+}

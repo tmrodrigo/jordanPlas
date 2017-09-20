@@ -1,0 +1,19 @@
+.itemCategoria {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  h3 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  a {
+    position: relative;
+    &:hover {
+      color: $jordanPpal;
+    }
+  }
+}

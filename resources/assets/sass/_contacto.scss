@@ -1,0 +1,120 @@
+#contacto {
+  background-color: $jordanGray01;
+  color: $jordanGray03;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media only screen and (min-width : 768px) {
+    height: 100vh;
+  }
+  .contacto {
+    background-color: $jordanGray03;
+    color: $jordanGray01;
+    @media only screen and (min-width : 768px) {
+      border: 1px solid $jordanGray01;
+    }
+    border-radius: 12px;
+    overflow: auto;
+    input {
+      border-color: $jordanGray01;
+      color: $jordanGray01;
+      &::placeholder {
+        color: transparentize($jordanGray01, 0.2);
+      }
+    }
+  }
+  .telMail {
+    margin-top: 32px;
+    p {
+      span {
+        font-weight: bold;
+      }
+      a {
+        color: $jordanGray03;
+      }
+    }
+    .direccion {
+      p {
+        font-size: 12px;
+        line-height: 14px;
+      }
+    }
+  }
+  .check {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 50%;
+    margin-left: 25%;
+    span {
+      font-size: 16px;
+    }
+    input[type="checkbox"]{
+      width: 24px;
+      height: 24px;
+    }
+  }
+  .botonera {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    @media only screen and (min-width : 1024px) {
+      flex-flow: row;
+    }
+    button {
+      width: 60%;
+      margin-left: 20%;
+    }
+    .btnBudget {
+      background-color: $jordanGray03;
+      border: 1px solid $jordanPpal;
+      color: $jordanPpal;
+      &:hover {
+        background-color: $jordanPpal;
+        color: $jordanGray03;
+      }
+    }
+  }
+  .productsSelect {
+    margin: 48px 0;
+    .form-group {
+      label {
+        text-align: left !important;
+      }
+      select {
+        width: 100%;
+        border: 0px;
+        background-color: transparent;
+        border-bottom: 1px solid $jordanGray01;
+        color: $jordanGray01;
+        margin-bottom: 20px;
+        option {
+          background-color: $jordanGray03;
+          border: 0;
+        }
+      }
+      .cantidad {
+        width: 100%;
+        border: 0;
+        background-color: transparent;
+        border-bottom: 1px solid $jordanGray01;
+        text-align: center;
+        color: $jordanGray01;
+        margin-bottom: 20px;
+      }
+    }
+    p {
+      margin: 24px;
+    }
+  }
+
+  #nextForm {
+    min-height: 50vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+  }
+}

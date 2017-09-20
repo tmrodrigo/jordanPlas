@@ -1,0 +1,130 @@
+// Fonts
+$fontPpal : 'Oswald', sans-serif;
+$fontSec : 'Raleway', sans-serif;
+
+// Colors
+$jordanPpal : #99121d;
+$jordanGray01 : #505050;
+$jordanGray02 : #969696;
+$jordanGray03 : #C8C8C8;
+$jordanSuccess : #5BAC29;
+$jordanError : #ED0E3D;
+
+
+body {
+  font-family: $fontSec;
+  color: $jordanGray01;
+  text-align: center;
+  background-repeat: repeat;
+  background-color: $jordanGray03;
+  background-attachment: fixed;
+  @media screen and (min-width: 768px) {
+    text-align: left;
+  }
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: $fontPpal;
+}
+
+a {
+  color: $jordanGray01;
+  &:hover {
+    color: $jordanPpal;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+$sombra : -2px 2px 2px $jordanGray01;
+
+h1 {
+  text-transform: uppercase;
+  font-size: 40px;
+  @media screen and (min-width: 768px) {
+    font-size: 60px;
+  }
+}
+
+h2 {
+  font-size: 32px;
+  line-height: 40px;
+  text-transform: uppercase;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+p {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 1px;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+.fa-facebook, .fa-instagram {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  background-color: $jordanGray01;
+  border-radius: 50%;
+  color: $jordanGray02;
+}
+
+.fullW {
+  width: 100% !important;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px transparent inset;
+    background-color: white !important;
+}
+
+.form-group {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  .form-control {
+    border: 0;
+    color: $jordanGray03;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    border-bottom: 1px solid $jordanGray03;
+    text-align: center;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    &::placeholder {
+      color: $jordanGray03;
+      opacity: 0.8;
+    }
+  }
+  .help-block {
+    color: $jordanError;
+  }
+  button {
+    background-color: $jordanPpal;
+    border-radius: 6px;
+    color: $jordanGray03;
+    border: 0;
+    padding: 10px 40px;
+    margin: 20px auto;
+  }
+}
+
+.mostrarSub {
+  height: auto !important;
+  overflow: visible !important;
+  background-color: red
+}

@@ -1,0 +1,26 @@
+#carrousel-generic {
+  .carousel-indicators {
+    bottom: 60px;
+  }
+
+}
+
+.carousel-caption {
+  bottom: 30% !important;
+}
+
+.carousel-inner {
+  .fondoImg {
+    height: 100vh !important;
+    background-position: center;
+    background-size: cover;
+  }
+}
+
+.carousel-indicators {
+  bottom: 15%;
+}
+
+.carousel-control.left, .carousel-control.right {
+  background: none;
+}

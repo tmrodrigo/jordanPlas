@@ -1,0 +1,170 @@
+.fichaProducto {
+  background-color: $jordanGray01;
+  border-radius: 6px;
+  box-shadow: $sombra;
+  position: relative;
+  padding: 16px;
+  color: $jordanGray03;
+  text-align: left;
+  .col-sm-5 {
+    img {
+      background-color: white;
+    }
+  }
+  h1 {
+    color: $jordanGray03 !important;
+    font-size: 60px;
+    margin: 0;
+    margin-bottom: 24px;
+  }
+  h4, h3, h5 {
+    font-family: $fontSec;
+    text-transform: uppercase;
+    font-weight: 400 !important;
+    span {
+      font-weight: bold;
+    }
+  }
+  button {
+    background-color: $jordanPpal;
+    border: 0;
+    border-radius: 6px;
+    padding: 8px 16px;
+    height: 48px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-size: 12px;
+    @media only screen and (min-width : 1025px) {
+      height: 60px;
+      font-size: 14px;
+    }
+  }
+  .textFicha {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    min-height: 200px;
+    margin: 16px 0;
+      @media only screen and (min-width : 768px) {
+        min-height: auto;
+        // justify-content: space-between;
+      }
+      @media only screen and (min-width : 992px) {
+        min-height: 270px;
+      }
+      @media only screen and (min-width : 1024px) {
+        min-height: 400px;
+        margin: 0;
+        justify-content: space-between;
+      }
+    h4, h1, p {
+      span {
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      @media only screen and (min-width : 768px) {
+        margin: 0;
+      }
+    }
+    .fichaTecnica {
+      display: flex;
+      justify-content: space-between;
+      flex-flow: column;
+      margin-left: 60px;
+      @media only screen and (min-width : 768px) {
+        flex-flow: row;
+        align-items: center;
+        h3, h5 {
+          margin: 0;
+          letter-spacing: 1px;
+        }
+      }
+      @media only screen and (min-width : 992px) {
+        // flex-direction: column;
+        align-items: flex-start;
+        h3, h5 {
+          margin: 4px;
+        }
+      }
+    }
+    .certificados {
+      ul {
+        justify-content: flex-start;
+        li {
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    img {
+      width: 40px;
+    }
+  }
+  .imgFicha {
+    margin-top: 60px;
+  }
+  .datos {
+
+    .datosList {
+      // display: flex;
+      // flex-flow: row;
+      // flex-wrap: wrap;
+      // justify-content: flex-start;
+      // // align-items: center;
+      // @media only screen and (min-width : 768px) {
+      //   justify-content: space-between;
+      // }
+      // @media only screen and (min-width : 1024px) {
+      //   justify-content: flex-start;
+      // }
+      .col-sm-6 {
+        display: flex;
+        flex-flow: row;
+        align-items: flex-start;
+        margin-top: 32px;
+        @media only screen and (min-width : 768px) {
+          margin-right: 0;
+        }
+        @media only screen and (min-width : 1024px) {
+          // margin-right: 24px;
+        }
+        ul {
+          margin-left: 16px;
+          list-style: none;
+          display: flex;
+          flex-flow: row;
+          align-items: flex-start;
+          li {
+            margin-right: 16px;
+            margin-top: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            // border: 3px solid $jordanGray02;
+          }
+          .black {
+            background-color: black;
+          }
+          .white {
+            background-color: white;
+          }
+          .yellow {
+            background-color: yellow;
+          }
+          .redWhite {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+        }
+        img {
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+  #botonesMobile {
+    margin-top: 24px;
+  }
+}
