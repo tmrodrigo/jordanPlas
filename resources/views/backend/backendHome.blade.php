@@ -13,6 +13,22 @@
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
+          @if ($errors->any())
+            @foreach ($errors->all() as $error)
+              <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <strong>{{ $error }}</strong>
+              </div>
+            @endforeach
+          @endif
+          @if (session('message'))
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+              </button>
+              <strong>{{ session('message') }}</strong>
+            </div>
+          @endif
+        </div>
+        <div class="x_content">
 
           <div class="row">
             <div class="col-sm-12">
@@ -103,23 +119,6 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <div class="x_content">
-                @if ($errors->any())
-                  @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                      <strong>{{ $error }}</strong>
-                    </div>
-                  @endforeach
-                @endif
-                @if (session('message'))
-                  <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-                    </button>
-                    <strong>{{ session('message') }}</strong>
-                  </div>
-                @endif
-              </div>
-              <br />
               <div class="row">
                 <form class="form-horizontal form-label-left" action="{{ route('category.store') }}" method="post">
                   {{ csrf_field() }}
@@ -137,7 +136,7 @@
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-10 col-sm-2">
-                      <button type="submit" class="btn btn-success">Guardar</button>
+                      <button type="submit" class="btn btn-success pull-right">Guardar</button>
                     </div>
                   </div>
                   <div class="clearfix"></div>
@@ -167,7 +166,7 @@
                           <div class="clearfix"></div>
                           <div class="form-group">
                             <div class="col-sm-offset-10">
-                              <input type="submit" name="" value="Editar" class="btn btn-success">
+                              <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
                             </div>
                           </div>
                       </form>
@@ -194,4 +193,91 @@
       </div>
     <div class="clearfix"></div>
   @endif
+  <div class="row">
+    <div class="col-md-6 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Ingresar / Editar nuevo certificado</h2><br><br>
+          <p>Al ingresar un certificado estará disponible en el panel de carga de producto</p>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <br />
+          <div class="row">
+            <form class="form-horizontal form-label-left" action="{{ route('certificate.store') }}" method="post" enctype="multipart/form-data">
+              {{ csrf_field() }}
+              <div class="form-group">
+                <label class="control-label col-md-2">Nuevo certificado</label>
+                <div class="col-md-10">
+                  <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-2">Descripción</label>
+                <div class="col-md-10">
+                  <input type="file" class="form-control" name="image" value="{{ old('description') }}" placeholder="Logo certificado">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-10 col-sm-2">
+                  <button type="submit" class="btn btn-success pull-right">Guardar</button>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="ln_solid"></div>
+            </form>
+          </div>
+            @foreach ($certificates as $certificate)
+              <div class="row">
+                <div class="col-sm-12">
+                  <form class="" action="{{ route('certificate.update', $certificate ) }}" method="post">
+                      {{ csrf_field() }}
+                      {{ method_field('PUT')}}
+                      <div class="form-group">
+                        <label class="control-label col-md-2">Reemplazar el nombre acá:</label>
+                        <div class="col-md-10">
+                          <input type="text" name="id" value="{{ $certificate->id }}" style="display:none;">
+                          <input type="text" class="form-control" value="{{ $certificate->name }}" name="name">
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="">
+                        <img src="{{ Storage::url($certificate->img) }}" alt="">
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-2">Reemplazar el logo acá:</label>
+                        <div class="col-md-10">
+                          <input type="file" class="form-control" value="" name="image">
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="form-group">
+                        <div class="col-sm-offset-10">
+                          <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
+                        </div>
+                      </div>
+                  </form>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                  <div class="col-sm-offset-10 col-sm-2">
+                    <form class="" action="{{ route('certificate.destroy', $certificate) }}" method="post">
+                      {{ method_field('DELETE')}}
+                      {{ csrf_field() }}
+                      <input type="text" name="id" value="{{ $certificate->id }}" style="display:none;">
+                      <input type="submit" name="" value="Eliminar" class="btn btn-danger pull-right separador">
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="separador"></div>
+            @endforeach
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection

@@ -338,6 +338,20 @@ $(document).ready(function () {
       $('#budget').submit();
     }
   });
+
+  var product = $('.productsSelect');
+  var cantidad = $('.cantidad');
+  cantidad.each(function () {
+    $(this).on('blur', function () {
+      if ($(this).val() > 0) {
+        product.each(function () {
+          if ($(this).hasClass('showProduct')) {
+            $(this).next().addClass('showProduct');
+          }
+        });
+      }
+    });
+  });
 });
 
 /***/ }),

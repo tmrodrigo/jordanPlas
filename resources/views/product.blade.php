@@ -37,7 +37,7 @@
                   </div>
                   <p>{{ $product->description }}</p>
                   <p><span>Kit de instalación:</span><br>Todos nuestros productos incluyen el material necesario para su instalación, en este caso tornillo, tarugo y arandela</p>
-                  @if ($product->atributes[0]->atribute == "certificate")
+
                     <div class="certificados">
                       <ul>
                         @foreach ($product->atributes as $certificate)
@@ -46,7 +46,7 @@
                               <img src="{{ $certificate->name }}" alt="">
                               <p>
                                 <span>Certificado: </span>INTI <br>
-                                <span>Iso: </span>XXXXXXX <br>
+                                <span>Iso: </span>{{ $certificate->value }} <br>
                                 <span>Norma de fabricación: </span>ASTM-IRAN <br>
                               </p>
                             </li>
@@ -54,7 +54,6 @@
                         @endforeach
                       </ul>
                     </div>
-                  @endif
                   <div class="consulta">
                     <button type="button" onClick="window.location='{{ url('/contacto')}}'">Consultar</button>
                   </div>

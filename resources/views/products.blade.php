@@ -27,17 +27,34 @@
           <div class="slider-inner">
             <ul>
               @foreach ($products as $product)
-                <li>
-                  <div class="col-xs-6 col-sm-3">
-                    <a href="{{ url('product', $product->id)}}">
-                      <div class="itemCategoria">
-                        <img src="{{ Storage::url($product->avatar)}}" alt="">
-                        <h3>{{ $product->name }}</h3>
-                        <a href="{{ url('product', $product->id)}}">Ver más</a>
+                @if ($product->available)
+                  <li>
+                    <div class="col-xs-6 col-sm-3">
+                      <a href="" onclick="event.preventDefault()">
+                        <div class="prox">
+                          <p>próximamente</p>
+                        </div>
+                        <div class="itemCategoria soon">
+                          <img src="{{ Storage::url($product->avatar)}}" alt="">
+                          <h3>{{ $product->name }}</h3>
+                          <a href="" onclick="event.preventDefault()">proximamente</a>
+                        </div>
+                      </a>
+                    </div>
+                  </li>
+                  @else
+                    <li>
+                      <div class="col-xs-6 col-sm-3">
+                        <a href="{{ url('product', $product)}}">
+                          <div class="itemCategoria">
+                            <img src="{{ Storage::url($product->avatar)}}" alt="">
+                            <h3>{{ $product->name }}</h3>
+                            <a href="{{ url('product', $product)}}">Ver más</a>
+                          </div>
+                        </a>
                       </div>
-                    </a>
-                  </div>
-                </li>
+                    </li>
+                @endif
               @endforeach
             </ul>
           </div>

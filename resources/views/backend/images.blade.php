@@ -5,7 +5,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-          <h2>Dropzone multiple file uploader</h2>
+          <h2>Carga masiva de imágenes relacionadas a productos</h2>
           <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
@@ -23,22 +23,47 @@
           </ul>
           <div class="clearfix"></div>
         </div>
+        <div class="x_title">
+          <div class="row">
+            <div class="col-sm-12">
+              <div id="exito" class="alert alert-success alert-dismissible fade in" role="alert" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+                <p>Carga realizada con éxito</p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="x_content">
-          <p>Drag multiple files to the box below for multi upload or click to select files. This is for demonstration purposes only, the files are not uploaded to any server.</p>
+          <p>Suelte acá las imágenes a cargar en el servidor <strong>Asegúrese de seleccionar la categoría y producto correspondiente</strong></p>
+          <br>
+          <p><strong>Seleccione "logo de cliente" si la carga será de logos de clientes</strong></p>
           <form action="{{ route('storeImages') }}" class="dropzone" method="post" enctype="multipart/form-data" id="my-dropzone">
             {{ csrf_field() }}
-            <select class="" name="category_id">
-              @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
-              @endforeach
-            </select>
-            <select class="" name="product_id">
-              <option value="">Varios</option>
-              @foreach ($products as $product)
-                <option value="{{ $product->id }}">{{ $product->name }}</option>
-              @endforeach
-            </select>
-            <button class="btn btn-success" type="submit" name="button" id="submit">Subir</button>
+            <div class="row">
+              <div class="col-sm-1">
+                <input type="checkbox" name="client" value="1"> Logo de cliente
+              </div>
+              <div class="col-sm-3">
+                <select class="select2_group form-control" name="category_id">
+                  <option value="">Categoría</option>
+                  @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <select class="select2_group form-control" name="product_id">
+                  <option value="">Varios</option>
+                  @foreach ($products as $product)
+                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <button class="btn btn-success" type="submit" name="button" id="submit">Subir</button>
+              </div>
+            </div>
           </form>
           <br />
           <br />
@@ -65,9 +90,9 @@
                   e.stopPropagation();
                   myDropzone.processQueue();
               });
-              // this.on("addedfile", function(file) {
-              //     alert("file uploaded");
-              // });
+              this.on("addedfile", function(file) {
+                  $('#exito').css('display', 'block')
+              });
 
               this.on("complete", function(file) {
                   myDropzone.removeFile(file);

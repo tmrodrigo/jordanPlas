@@ -8,8 +8,10 @@ use App\Post;
 use App\Category;
 use App\Project;
 use App\Client;
+use App\ClientLogo;
 use App\Certificate;
 use App\Company;
+use App\Service;
 
 class HomeController extends Controller
 {
@@ -25,11 +27,12 @@ class HomeController extends Controller
         $categories = Category::all();
         $clients = Client::orderBy('created_at', 'desc')->limit('5')->get();
         $certificates = Certificate::all();
+
         return view('backend/backendHome', [
             'products' => $products,
             'categories' => $categories,
             'clients' => $clients,
-            'certificates' => $certificates,
+            'certificates' => $certificates
         ]);
     }
 
@@ -39,15 +42,20 @@ class HomeController extends Controller
         $categories = Category::all();
         $projects = Project::all();
         $products = Product::where('rating', '>', '3')->get();
-        $clientId = Client::orderby('updated_at', 'desc')->first();
         $data = Company::orderBy('created_at', 'desc')->first();
+        $logos = ClientLogo::all();
+        $certificates = Certificate::all();
+        $services = Service::all();
         return view('home', [
             'posts' => $posts,
             'categories' => $categories,
             'projects' => $projects,
             'products' => $products,
-            'clientId' => $clientId,
-            'data' => $data
+            'data' => $data,
+            'logos' => $logos,
+            'certificates' => $certificates,
+            'services' => $services
+
         ]);
     }
 

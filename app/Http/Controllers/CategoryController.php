@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Category;
+use App\Certificate;
 use App\Product;
 
 class CategoryController extends Controller
@@ -14,10 +15,12 @@ class CategoryController extends Controller
     $categories = Category::all();
     $category = Category::find($id);
     $products = Product::where('category_id', '=', $id)->get();
+    $certificates = Certificate::all();
     return view('products', [
         'categories' => $categories,
         'category' => $category,
-        'products' => $products
+        'products' => $products,
+        'certificates' => $certificates
     ]);
   }
 

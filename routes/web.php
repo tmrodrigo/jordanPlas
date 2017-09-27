@@ -78,4 +78,11 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/backend/budget/{id}', 'BudgetController@show');
 
+  Route::post('certificate/store', 'CertificateController@store')->name('certificate.store');
+
+  Route::put('certificate/update', 'CertificateController@update')->name('certificate.update');
+
+  Route::delete('certificate/destroy', 'CertificateController@destroy')->name('certificate.destroy');
+
+
 });

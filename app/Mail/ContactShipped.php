@@ -16,17 +16,14 @@ class ContactShipped extends Mailable
 
     public $client;
 
-    public $budget;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Client $client, Budget $budget)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-
-        $this->budget = $budget;
     }
 
     /**

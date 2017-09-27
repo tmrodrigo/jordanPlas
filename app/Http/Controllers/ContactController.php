@@ -7,6 +7,7 @@ use App\Client;
 use App\Mail\ContactShipped;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
+use App\Certificate;
 use App\Product;
 use App\Category;
 use App\Budget;
@@ -41,9 +42,15 @@ class ContactController extends Controller
                 $contact->budget()->save($clientBudget);
             }
         }
+        $clientId = Client::orderby('updated_at', 'desc')->first();
+        $bProducts = Budget::where('client_id', '=', $clientId->id)->get();
 
-        Mail::to('tm.rodrigo@gmail.com')->send(new ContactShipped($contact));
-        return redirect('/')->with('message', 'Gracias por contactarnos será atendido bajo el número de solicitud: ');
+        Mail::send('emails.welcome', ['client' => $request, 'bProducts' => $bProducts], function ($m) use ($request, $bProducts) {
+            $m->from('info@jordanplas.com.ar', 'Jordan Plas');
+            $m->to('tm.rodrigo@gmail.com')->subject('Contacto desde el sitio web');
+        });
+
+        return redirect()->back()->with('message', 'Gracias por contactarnos será atendido bajo el número de solicitud: ');
 
     }
 
@@ -51,9 +58,13 @@ class ContactController extends Controller
     {
         $products = Product::all();
         $categories = Category::all();
+        $certificates = Certificate::all();
+        $clientId = Client::orderby('updated_at', 'desc')->first();
         return view('contact' , [
             'products' => $products,
-            'categories' => $categories
+            'categories' => $categories,
+            'certificates' => $certificates,
+            'clientId' => $clientId
         ]);
     }
 

@@ -38,6 +38,7 @@
             <li id="e" onclick="showEmpresas()">Empresa</li>
             <li id="p" onclick="showProductos()">Productos</li>
             <li id="pr" onclick="showProyectos()">Proyectos</li>
+            <li id="se" onclick="showServicios()">Servicios</li>
           </ul>
         </div>
       </div>
@@ -47,7 +48,7 @@
 <div class="container">
   <div class="row">
     <section id="secciones">
-      <article  id="1" class="" data-target="1">
+      <article  id="1" class="">
         <div class="row">
           <div class="col-sm-4">
             <div class="textoSeccion">
@@ -68,9 +69,9 @@
             <!-- <h3>Certificado por:</h3> -->
             <div class="certificados">
               <ul>
-                <li><img src="storage/assets/certf/inti.png" alt=""></li>
-                <li><img src="storage/assets/certf/iram.png" alt=""></li>
-                <li><img src="storage/assets/certf/astm.png" alt=""></li>
+                @foreach ($certificates as $certificate)
+                    <li><img src="{{ Storage::url($certificate->image) }}" alt=""></li>
+                @endforeach
               </ul>
             </div>
           </div>
@@ -99,7 +100,7 @@
           </div>
         </div>
       </article>
-      <article id="2" class="productos" data-target="2">
+      <article id="2" class="productos">
         <div class="row">
           <div class="col-sm-offset-2 col-sm-8">
             <div class="textoSeccion">
@@ -122,7 +123,7 @@
           @endforeach
         </div>
       </article>
-      <article id="3" class="productos" data-target="2">
+      <article id="3" class="productos">
         <div class="row">
           <div class="col-sm-offset-2 col-sm-8">
             <div class="textoSeccion">
@@ -139,8 +140,45 @@
           @endforeach
         </div>
       </article>
+      <article  id="4" class="">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="textoSeccion">
+              <h2>Servicios</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            @foreach ($services as $service)
+              <div class="itemServicio">
+                <h4>{{ $service->name }}</h4>
+                <p>{{ $service->description }}</p>
+              </div>
+            @endforeach
+          </div>
+        </div>
+      </article>
     </section>
   </div>
 </div>
 
+@endsection
+
+@section('logo_client')
+  @if (count($logos) > 0)
+    <section id="clientes">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <ul class="bxslider">
+              @foreach ($logos as $logo)
+                <li><img src={{ Storage::url($logo->url) }} alt=""></li>
+              @endforeach
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  @endif
 @endsection

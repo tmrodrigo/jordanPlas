@@ -10,7 +10,16 @@
     <p>
       <strong>Teléfono: </strong> {{ $client->phone}}<br>
       <strong>Email: </strong> {{ $client->email }}<br>
-      <strong>Mensaje: </strong>{{ $client->email }}
+      <strong>Mensaje: </strong>{{ $client->message }}
     </p>
+    @if (isset($bProducts))
+      <h3>Solicita presupuesto para los siguientes productos:</h3>
+      @foreach ($bProducts as $product)
+        <p>
+          <strong>Producto: </strong> {{ $product->product->name }}<br>
+          <strong>Cantidad: </strong> {{ $product->amount }}
+        </p>
+      @endforeach
+    @endif
   </body>
 </html>

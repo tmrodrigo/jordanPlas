@@ -22,29 +22,36 @@
     <script type="text/javascript">
     function showEmpresas(){
       $('#e').addClass('selected');
-      $('#p, #pr').removeClass('selected');
+      $('#p, #pr, #se').removeClass('selected');
       $('#1').removeClass('articuloOculto');
-      $('#2, #3').addClass('articuloOculto');
+      $('#2, #3, #4').addClass('articuloOculto');
       $('#home').css('height', '50vh');
       $('.carousel-inner').css('height', '50vh');
     }
 
     function showProductos(){
       $('#p').addClass('selected');
-      $('#e, #pr').removeClass('selected');
+      $('#e, #pr, #se').removeClass('selected');
       $('#2').removeClass('articuloOculto');
-      $('#1').addClass('articuloOculto');
-      $('#3').addClass('articuloOculto');
+      $('#1, #3').addClass('articuloOculto');
       $('#home').css('height', '50vh');
       $('.carousel-inner').css('height', '50vh');
     }
 
     function showProyectos(){
       $('#pr').addClass('selected');
-      $('#p, #e').removeClass('selected');
+      $('#p, #e, #se').removeClass('selected');
       $('#3').removeClass('articuloOculto');
-      $('#1').addClass('articuloOculto');
-      $('#2').addClass('articuloOculto');
+      $('#1, #2, #4').addClass('articuloOculto');
+      $('#home').css('height', '50vh');
+      $('.carousel-inner').css('height', '50vh');
+    }
+
+    function showServicios(){
+      $('#se').addClass('selected');
+      $('#p, #e, #pr').removeClass('selected');
+      $('#4').removeClass('articuloOculto');
+      $('#1, #2, #3').addClass('articuloOculto');
       $('#home').css('height', '50vh');
       $('.carousel-inner').css('height', '50vh');
     }
@@ -66,7 +73,7 @@
             <li id="subMenuItem"><a href="{{ url('productsList')}}">Productos</a>
               <ul id="subMenu">
                 @foreach ($categories as $category)
-                  <li><a href="{{ url('category', $category->id) }}">{{ $category->name }}</a></li>
+                  <li><a href="{{ url('category/'. $category->id) }}">{{ $category->name }}</a></li>
                 @endforeach
               </ul>
             </li>
@@ -84,9 +91,9 @@
             </form>
             <div class="certificados">
               <ul>
-                <li><img src="{{ Storage::url('assets/certf/inti.png') }}" alt=""></li>
-                <li><img src="{{ Storage::url('assets/certf/iram.png') }}" alt=""></li>
-                <li><img src="{{ Storage::url('assets/certf/astm.png') }}" alt=""></li>
+                @foreach ($certificates as $certificate)
+                    <li><img src="{{ Storage::url($certificate->image) }}" alt=""></li>
+                @endforeach
               </ul>
             </div>
           </div>
@@ -103,24 +110,7 @@
       @yield('content')
       <div class="container-fluid">
         <div class="row">
-          <section id="clientes">
-            <div class="container">
-              <div class="row">
-                <div class="col-sm-12">
-                  <ul class="bxslider">
-                    <li><img src={{ Storage::url('clientes/clientes-01.jpg') }} alt=""></li>
-                    <li><img src={{ Storage::url('clientes/clientes-02.png') }} alt=""></li>
-                    <li><img src="images/clientes/clientes-03.jpg" alt=""></li>
-                    <li><img src="images/clientes/clientes-04.png" alt=""></li>
-                    <li><img src="images/clientes/clientes-05.png" alt=""></li>
-                    <li><img src="images/clientes/clientes-06.png" alt=""></li>
-                    <li><img src="images/clientes/clientes-07.png" alt=""></li>
-                    <li><img src="images/clientes/clientes-08.png" alt=""></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
+          @yield('logo_client')
           <footer>
             <section id="mapaSitio">
               <div class="container">

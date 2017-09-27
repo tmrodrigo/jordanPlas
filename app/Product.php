@@ -35,7 +35,7 @@ class Product extends Model
 
   public function certificates()
   {
-    return $this->hasMany(Certificate::class);
+    return $this->belongsToMany(Certificate::class);
   }
 
   public function budgets()

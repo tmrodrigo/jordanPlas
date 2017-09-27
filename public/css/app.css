@@ -9302,6 +9302,7 @@ input:-webkit-autofill {
 
 #contacto .productsSelect {
   margin: 48px 0;
+  display: none;
 }
 
 #contacto .productsSelect .form-group label {
@@ -9348,6 +9349,10 @@ input:-webkit-autofill {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+}
+
+#contacto .showProduct {
+  display: block !important;
 }
 
 #clientes {
@@ -9853,10 +9858,8 @@ footer {
   background-color: yellow;
 }
 
-.fichaProducto .datos .datosList .col-sm-6 ul .whiRed {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.fichaProducto .datos .datosList .col-sm-6 ul .red {
+  background-color: red;
 }
 
 .fichaProducto .datos .datosList .col-sm-6 img {

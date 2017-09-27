@@ -34,6 +34,7 @@
     <form id="demo-form2" class="form-horizontal form-label-left" role="form" method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
       {{ csrf_field() }}
       {{ method_field('PUT') }}
+      <input type="text" name="id" value="{{ $product->id }}" style="display:none">
       <div class="row">
         <div class="col-sm-6">
           <div class="x_panel">
@@ -159,7 +160,8 @@
                 <label>Disponibilidad<small> activar si no está en stock</small></label>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" class="flat" name="available" value="1"> No disponible
+                    <input type="radio" class="flat" name="available" value="1"> No disponible
+                    <input type="radio" class="flat" name="available" value=""> Disponible
                   </label>
                 </div>
               </div>

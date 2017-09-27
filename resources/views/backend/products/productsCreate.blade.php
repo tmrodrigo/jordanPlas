@@ -177,12 +177,12 @@
                       <div class="col-sm-3">
                         <label>Nombre</label>
                         <label>
-                          <input type="checkbox" class="flat" name="certificate[]" value="{{ $certificate->name }}"> {{ $certificate->name }}
+                          <input type="checkbox" class="flat" name="certificate_id[]" value="{{ $certificate->id }}"> {{ $certificate->name }}
                         </label>
                       </div>
                       <div class="col-sm-9">
                         <label>ISO</label>
-                        <input type="text" name="certificate_description" value="{{ old('certificate_description') }} " class="form-control">
+                        <input type="text" name="certificate_iso[]" value="{{ old('certificate_description') }} " class="form-control">
                       </div>
                     @endforeach
                   </div>
