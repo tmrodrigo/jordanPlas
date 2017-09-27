@@ -3,6 +3,20 @@
 @section('title', 'Bienvenido')
 
 @section('content')
+	@if (session('message'))
+		<section id="contact">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-offset-3 col-sm-6">
+						<div class="formulario-contacto">
+							<button type="button" class="cerrar" id="close_login">x</button>
+							<h2>{{ session('message')}} <strong>{{ $clientId->id }}</strong></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	@endif
 	<div class="">
 		<div class="row">
 			<section id="contacto">
@@ -14,13 +28,6 @@
 								<div id="form">
 									<h2>Contactanos</h2>
 									<h4>Solicitud de presupuesto</h4>
-									<div class="exito">
-										<div class="col-sm-offset-2 col-sm-8">
-											@if (session('message'))
-		                    <h3>{{ session('message') . $clientId->id}}</h3>
-		                  @endif
-										</div>
-	                </div>
 	                @if ($errors->any())
 	                  @foreach ($errors->all() as $error)
 	                    <div class="alert alert-danger alert-dismissible fade in" role="alert">

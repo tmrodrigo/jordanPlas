@@ -161,34 +161,51 @@ class ProductController extends Controller
 
         $reflexColor = $request['ligth_color_id'];
 
-        $certificate = $request['certificate'];
+        $certificates = $request['certificate'];
 
-        if ($bodyColor || $reflexColor || $certificate) {
+        if ($bodyColor || $reflexColor || $certificates) {
+
+          if (is_array($bodyColor)){
             foreach ($bodyColor as $key => $value) {
                 $atribute = new ProductAtribute();
                 $atribute->atribute = "body_color";
                 $atribute->value = $value;
                 $product->atributes()->save($atribute);
             }
+          } else {
+            $atribute = new ProductAtribute();
+            $atribute->atribute = "body_color";
+            $atribute->value = $value;
+            $product->atributes()->save($atribute);
+          }
 
-            if (is_array($reflexColor)) {
-                $atribute = new ProductAtribute();
-                $atribute->atribute = "reflex_color";
-                $atribute->value = $value;
-                $product->atributes()->save($atribute);
-            } else {
-                $atribute = new ProductAtribute();
-                $atribute->atribute = "reflex_color";
-                $atribute->value = $value;
-                $product->atributes()->save($atribute);
+          if (is_array($reflexColor)) {
+            foreach ($reflexColor as $key => $value) {
+              $atribute = new ProductAtribute();
+              $atribute->atribute = "reflex_color";
+              $atribute->value = $value;
+              $product->atributes()->save($atribute);
             }
+          } else {
+              $atribute = new ProductAtribute();
+              $atribute->atribute = "reflex_color";
+              $atribute->value = $value;
+              $product->atributes()->save($atribute);
+          }
 
-            foreach ($certificate as $key => $value) {
-                $atribute = new ProductAtribute();
-                $atribute->atribute = "certificate";
-                $atribute->value = $value;
-                $product->atributes()->save($atribute);
+          if (is_array($certificates)) {
+            foreach ($certificates as $key => $value) {
+              $atribute = new ProductAtribute();
+              $atribute->atribute = "certificate";
+              $atribute->value = $value;
+              $product->atributes()->save($atribute);
             }
+          } else {
+              $atribute = new ProductAtribute();
+              $atribute->atribute = "certificate";
+              $atribute->value = $value;
+              $product->atributes()->save($atribute);
+          }
 
         }
 

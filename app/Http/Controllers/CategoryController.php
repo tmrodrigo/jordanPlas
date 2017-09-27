@@ -27,8 +27,10 @@ class CategoryController extends Controller
   public function index()
   {
     $categories = Category::all();
+    $certificates = Certificate::all();
     return view('productsList', [
-        'categories' => $categories
+        'categories' => $categories,
+        'certificates' => $certificates
     ]);
   }
 

@@ -339,19 +339,35 @@ $(document).ready(function () {
     }
   });
 
+  function addShow(e){
+    if (e.attr('class') == 'productsSelect'){
+      e.addClass('showProduct')
+    }
+  }
+
   var product = $('.productsSelect');
   var cantidad = $('.cantidad');
   cantidad.each(function () {
     $(this).on('blur', function () {
       if ($(this).val() > 0) {
-        product.each(function () {
-          if ($(this).hasClass('showProduct')) {
-            $(this).next().addClass('showProduct');
-          }
-        });
+        $(this).parent().parent().parent().next().addClass('showProduct')
       }
     });
   });
+
+  function closeLogin(){
+    $('#contact').fadeOut('slow')
+  }
+
+  $('#close_login').on('click', function(){
+    closeLogin()
+  })
+
+  $(document).on('keyup', function(e){
+    if (e.keyCode == 27) {
+      closeLogin()
+    }
+  })
 });
 
 /***/ }),
