@@ -7,7 +7,7 @@
   <div class="x_content">
     <div class="x_title">
       <div class="avatar">
-        <img src="http://lorempixel.com/400/400/sports/" alt="">
+        <img src="{{ Storage::url($product->avatar) }}" alt="">
       </div>
       <h1>{{ $product->name }}</h1>
       <h2>{{ $product->category->name }}</h2>
@@ -166,6 +166,18 @@
                 </div>
               </div>
             </div>
+            <div class="separador"></div>
+            <div class="row">
+              <div class="col-sm-6">
+                <label>Unidad disponible</label>
+                <div class="ratiobutton">
+                  <label>
+                    <input type="radio" class="flat" name="units" value="mt"> Metros
+                    <input type="radio" class="flat" name="units" value="un"> Unidad
+                  </label>
+              </div>
+            </div>
+          </div>
           </div>
         </div>
         <div class="col-sm-6">
@@ -179,7 +191,7 @@
                 <div class="col-sm-3">
                   <label>Nombre</label>
                   <label>
-                    <input type="checkbox" class="flat" name="certificate[]" value="{{ $certificate->name }}"> {{ $certificate->name }}
+                    <input type="checkbox" class="flat" name="certificate_id[]" value="{{ $certificate->id }}"> {{ $certificate->name }}
                   </label>
                 </div>
                 <div class="col-sm-9">

@@ -40,17 +40,13 @@
 
                     <div class="certificados">
                       <ul>
-                        @foreach ($product->atributes as $certificate)
-                          @if ($certificate->atribute == "certificate")
-                            <li>
-                              <img src="{{ $certificate->name }}" alt="">
-                              <p>
-                                <span>Certificado: </span>INTI <br>
-                                <span>Iso: </span>{{ $certificate->value }} <br>
-                                <span>Norma de fabricación: </span>ASTM-IRAN <br>
-                              </p>
-                            </li>
-                          @endif
+                        @foreach ($product->certificates as $certificate)
+                          <li>
+                            <img src="{{ $certificate->name }}" alt="">
+                            <p>
+                              <span>Certificado: </span>{{ $certificate->name }} <br>
+                            </p>
+                          </li>
                         @endforeach
                       </ul>
                     </div>
@@ -189,21 +185,9 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="imgProductos">
-                <div class="col-sm-6">
-                  <img src="images/productos/tachas-04.jpg" alt="">
-                </div>
-                <div class="col-sm-6">
-                  <img src="images/productos/tachas-04.jpg" alt="">
-                </div>
-                <div class="col-sm-4">
-                  <img src="images/productos/tachas-01.jpg" alt="">
-                </div>
-                <div class="col-sm-4">
-                  <img src="images/productos/tachas-02.jpg" alt="">
-                </div>
-                <div class="col-sm-4">
-                  <img src="images/productos/tachas-03.jpg" alt="">
-                </div>
+                @foreach ($product->images as $image)
+                  <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
+                @endforeach
               </div>
             </div>
           </div>

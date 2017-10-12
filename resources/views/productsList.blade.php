@@ -36,7 +36,7 @@
                   <div class="col-xs-6 col-sm-3">
                     <a href="{{ url('category', $product->id) }}">
                       <div class="itemCategoria">
-                        <img src="storage/productos/tachas-redon.png" alt="">
+                        <img src="{{ Storage::url($product->avatar) }}" alt="">
                         <h3>{{ $product->name }}</h3>
                         <a href="productos.php">Ver más</a>
                       </div>
@@ -54,7 +54,7 @@
                   <div class="col-xs-6 col-sm-3">
                     <a href="{{ url('category', $topProduct->id) }}">
                       <div class="itemCategoria">
-                        <img src="storage/productos/tachas-redon.png" alt="">
+                        <img src="{{ Storage::url($product->avatar) }}" alt="">
                         <h3>{{ $topProduct->name }}</h3>
                         <a href="productos.php">Ver más</a>
                       </div>

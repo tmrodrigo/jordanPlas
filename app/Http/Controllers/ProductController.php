@@ -161,7 +161,7 @@ class ProductController extends Controller
 
         $reflexColor = $request['ligth_color_id'];
 
-        $certificates = $request['certificate'];
+        $certificates = $request['certificate_id'];
 
         if ($bodyColor || $reflexColor || $certificates) {
 
@@ -192,19 +192,8 @@ class ProductController extends Controller
               $atribute->value = $value;
               $product->atributes()->save($atribute);
           }
-
-          if (is_array($certificates)) {
-            foreach ($certificates as $key => $value) {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "certificate";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-            }
-          } else {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "certificate";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
+          foreach ($certificates as $key => $value) {
+            $product->certificates()->attach($value);
           }
 
         }
@@ -258,7 +247,8 @@ class ProductController extends Controller
             'manual_file' => 'nullable|mimes:pdf|max:5000',
             'avatar' => 'mimes:png|max:250',
             'left_img' => 'mimes:png|max:250',
-            'right_img' => 'mimes:png|max:250'
+            'right_img' => 'mimes:png|max:250',
+            'units' => 'required'
         ],
         [
             'name.required' => 'Nombre requerido',
@@ -278,6 +268,7 @@ class ProductController extends Controller
             'left_img.size' => 'La imagen de producto no debe pesar más de 250kb',
             'right_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
             'right_img.size' => 'La imagen de producto no debe pesar más de 250kb',
+            'units.required' => 'Unidad de venta requerida'
         ]);
 
         $product = Product::find($request['id']);
@@ -296,35 +287,48 @@ class ProductController extends Controller
 
             if ($request['info_file'] || $request["manual_file"] || $request['left_img'] || $request['right_img'] || $request['avatar'] || $request['rating'] || $request['units'])
             {
-                $infoFile = $request->file("info_file");
-                $infoName = $product->name . "." . $infoFile->extension();
-                $infoFolder = "info_files";
-                $infoPath = $infoFile->storePubliclyAs($infoFolder, $infoName);
-                $product->info_file = $infoPath;
+                if (isset($request['info_file'])) {
+                    $infoFile = $request->file("info_file");
+                    $infoName = $product->name . "." . $infoFile->extension();
+                    $infoFolder = "info_files";
+                    $infoPath = $infoFile->storePubliclyAs($infoFolder, $infoName);
+                    $product->info_file = $infoPath;
+                }
 
-                $manualFile = $request->file("manual_file");
-                $manualName = $product->name . "." . $manualFile->extension();
-                $manualFolder = "manual_files";
-                $manualPath = $manualFile->storePubliclyAs($manualFolder, $manualName);
-                $product->manual_file = $manualPath;
+                if (isset($request["manual_file"])) {
+                    $manualFile = $request->file("manual_file");
+                    $manualName = $product->name . "." . $manualFile->extension();
+                    $manualFolder = "manual_files";
+                    $manualPath = $manualFile->storePubliclyAs($manualFolder, $manualName);
+                    $product->manual_file = $manualPath;
+                }
 
                 $leftImg = $request->file("left_img");
-                $leftName = $product->name . "-left" . "." . $leftImg->extension();
-                $leftFolder = "products";
-                $leftPath = $leftImg->storePubliclyAs($leftFolder, $leftName);
-                $product->left_img = $leftPath;
+
+                if (isset($leftImg)) {
+                    $leftName = $product->name . "-left" . "." . $leftImg->extension();
+                    $leftFolder = "products";
+                    $leftPath = $leftImg->storePubliclyAs($leftFolder, $leftName);
+                    $product->left_img = $leftPath;
+                }
 
                 $rightImg = $request->file("right_img");
-                $rightName = $product->name . "-right" . "." . $rightImg->extension();
-                $rightFolder = "products";
-                $rightPath = $rightImg->storePubliclyAs($rightFolder, $rightName);
-                $product->right_img = $rightPath;
+
+                if (isset($rightImg)) {
+                    $rightName = $product->name . "-right" . "." . $rightImg->extension();
+                    $rightFolder = "products";
+                    $rightPath = $rightImg->storePubliclyAs($rightFolder, $rightName);
+                    $product->right_img = $rightPath;
+                }
 
                 $avatar = $request->file("avatar");
-                $name = $product->name . "." . $avatar->extension();
-                $folder = "products";
-                $path = $avatar->storePubliclyAs($folder, $name);
-                $product->avatar = $path;
+
+                if (isset($avatar)) {
+                    $name = $product->name . "." . $avatar->extension();
+                    $folder = "products";
+                    $path = $avatar->storePubliclyAs($folder, $name);
+                    $product->avatar = $path;
+                }
 
                 $product->rating = $request['rating'];
 
@@ -339,38 +343,35 @@ class ProductController extends Controller
 
         $reflexColor = $request['ligth_color_id'];
 
-        $certificate = $request['certificate'];
+        // toDO -> update en el atributo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // if (isset($bodyColor)) {
+        //   foreach ($bodyColor as $key => $value) {
+        //       $atribute = new ProductAtribute();
+        //       $atribute->atribute = "body_color";
+        //       $atribute->value = $value;
+        //       $product->atributes()->save($atribute);
+        //   }
+        // }
+        //
+        // if ($reflexColor) {
+        //   if (is_array($reflexColor)) {
+        //       $atribute = new ProductAtribute();
+        //       $atribute->atribute = "reflex_color";
+        //       $atribute->value = $value;
+        //       $product->atributes()->save($atribute);
+        //   } else {
+        //       $atribute = new ProductAtribute();
+        //       $atribute->atribute = "reflex_color";
+        //       $atribute->value = $value;
+        //       $product->atributes()->save($atribute);
+        //   }
+        // }
 
-        if ($bodyColor) {
-          foreach ($bodyColor as $key => $value) {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "body_color";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-          }
-        }
-
-        if ($reflexColor) {
-          if (is_array($reflexColor)) {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "reflex_color";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-          } else {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "reflex_color";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-          }
-        }
-
-        if ($certificate) {
-          foreach ($certificate as $key => $value) {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "certificate";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-          }
+        $certificates = $request['certificate_id'];
+        if (isset($certificates)) {
+            foreach ($certificates as $key => $value) {
+                $product->certificates()->sync($value);
+            }
         }
 
         return redirect('/backend/products')->with('message', 'Producto actualizado correctamente');
@@ -410,24 +411,36 @@ class ProductController extends Controller
 
     public function storeImages(Request $request, Image $image)
     {
-        if ($request['client']) {
-            $path = public_path().'/storage/clients/';
+        if ($request['client'] == true) {
+            // $path = public_path().'/storage/clients/';
                 $files = $request->file('file');
                 foreach($files as $file){
-                    $image = new ClientLogo();
-                    $fileName = $file->getClientOriginalName();
-                    $file->move($path, $fileName);
-                    $image->url = "images/client/" . $fileName;
-                    $image->save();
+                  $image = new ClientLogo();
+                  $fileName = $file->getClientOriginalName();
+                  $folder = "clients";
+                  $path = $file->storePubliclyAs($folder, $fileName);
+                  $image->url = $path;
+                  $image->save();
+
+                    //
+                    // $fileName = $file->getClientOriginalName();
+                    // $file->move($path, $fileName);
+                    // $image->url = "images/client/" . $fileName;
+                    // $image->save();
                 }
         } else {
-            $path = public_path().'/storage/images/';
+            // $path = public_path().'/storage/images/';a
                 $files = $request->file('file');
                 foreach($files as $file){
                     $image = new Image();
                     $fileName = $file->getClientOriginalName();
-                    $file->move($path, $fileName);
-                    $image->url = "images/products/" . $fileName;
+                    $folder = "products";
+                    $path = $file->storePubliclyAs($folder, $fileName);
+                    $image->url = $path;
+
+                    // $fileName = $file->getClientOriginalName();
+                    // $file->move($path, $fileName);
+                    // $image->url = "images/products/" . $fileName;
                     $image->category_id = $request['category_id'];
                     $image->product_id = $request['product_id'];
                     $image->save();

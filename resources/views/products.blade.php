@@ -69,8 +69,7 @@
           <div class="col-sm-12">
             <div class="imgProductos">
               @foreach ($category->images as $image)
-                <img src="{{ Storage::url($image->url) }}" alt="">
-                {{ Storage::url($image->url) }}
+                <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
               @endforeach
             </div>
           </div>
