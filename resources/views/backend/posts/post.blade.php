@@ -54,26 +54,13 @@
         </div>
       </div>
     </form>
-    <form class="" action={{ route('posts.destroy', $post->id)}} method="post">
-      {{ csrf_field() }}
-      {{ method_field('DELETE') }}
-      <input type="submit" name="" value="Eliminar novedad" class="btn btn-danger">
-    </form>
+    @if (count($posts) > 1)
+      <form class="" action={{ route('posts.destroy', $post->id)}} method="post">
+        {{ csrf_field() }}
+        {{ method_field('DELETE') }}
+        <input type="submit" name="" value="Eliminar novedad" class="btn btn-danger">
+      </form>
+    @endif
   </div>
-
-
-  {{-- <form class="form-horizontal" role="form" method="POST" action="{{ route('posts.update', $post->id) }}">
-    {{ csrf_field() }}
-    {{ method_field('PATCH') }}
-    <input type="text" name="name" value="{{$post->name}}" placeholder="nombre">
-    <input type="text" name="description" value="{{$post->description}}" placeholder="descripción">
-    <select class="" name="category_id">
-      <option value="01">categoría 01</option>
-      <option value="01">categoría 02</option>
-      <option value="01">categoría 03</option>
-    </select>
-    <input type="text" name="avatar" value="{{$post->avatar}}">
-    <input type="submit" name="" value="enviar">
-  </form> --}}
 </div>
 @endsection

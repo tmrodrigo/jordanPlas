@@ -58,12 +58,20 @@
             </div>
             <div class="col-sm-12 col-md-6 textFicha">
               <div class="row" id="botonesDesktop">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
-                </div>
-                <div class="col-sm-4 col-md-8 col-lg-5">
-                  <button type="button" name="button" onclick="window.open('{{ Storage::url($product->manual_file) }}')">Descargar manual de aplicación</button>
-                </div>
+                @if (is_null($product->manual_file) == true)
+                  <div class="col-sm-4 col-md-4 col-lg-4 pull-right">
+                    <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
+                  </div>
+                  @else
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
+                    </div>
+                @endif
+                @if (is_null($product->manual_file) == false)
+                  <div class="col-sm-4 col-md-8 col-lg-5">
+                    <button type="button" name="button" onclick="window.open('{{ Storage::url($product->manual_file) }}')">Descargar manual de aplicación</button>
+                  </div>
+                @endif
               </div>
               <div class="row">
                 <div class="col-sm-12 col-lg-12">
@@ -135,14 +143,28 @@
             </div>
           </div>
           <div class="row" id="botonesMobile">
-            <div class="col-xs-5 col-sm-6 col-md-12 col-lg-4">
+            @if (is_null($product->manual_file) == true)
+              <div class="col-xs-5 col-sm-6 col-md-12 col-lg-4 pull-right">
+                <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
+              </div>
+              @else
+                <div class="col-xs-5 col-sm-6 col-md-12 col-lg-4">
+                  <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
+                </div>
+            @endif
+            @if (is_null($product->manual_file) == false)
+              <div class="col-xs-7 col-sm-6 col-md-12 col-lg-8">
+                <button type="button" name="button" onclick="window.open('{{ Storage::url($product->manual_file) }}')">Descargar manual de aplicación</button>
+              </div>
+            @endif
+            {{-- <div class="col-xs-5 col-sm-6 col-md-12 col-lg-4">
               <button type="button" name="button">Descargar ficha</button>
             </div>
             <div class="col-xs-7 col-sm-6 col-md-12 col-lg-8">
               <button type="button" name="button">Descargar manual de aplicación</button>
-            </div>
+            </div> --}}
           </div>
-          <div class="row">
+          {{-- <div class="row">
             <div class="col-sm-12">
               <div class="imgProductos">
                 <div class="row">
@@ -154,7 +176,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> --}}
         </div>
         <div class="boxProductos">
           <div class="slider row">

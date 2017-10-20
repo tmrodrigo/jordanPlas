@@ -46,8 +46,9 @@ class ContactController extends Controller
         $bProducts = Budget::where('client_id', '=', $clientId->id)->get();
 
         Mail::send('emails.welcome', ['client' => $request, 'bProducts' => $bProducts], function ($m) use ($request, $bProducts) {
+            $clientId = Client::orderby('updated_at', 'desc')->first();
             $m->from('info@jordanplas.com.ar', 'Jordan Plas');
-            $m->to('tm.rodrigo@gmail.com')->subject('Contacto desde el sitio web');
+            $m->to('tm.rodrigo@gmail.com')->subject('Contacto desde el sitio web #' . $clientId->id);
         });
 
         return redirect()->back()->with('message', 'Gracias por contactarnos será atendido bajo el número de solicitud: ');

@@ -29,9 +29,9 @@ Route::get('services', 'ServiceController@index');
 
 Route::get('/contacto', 'ContactController@show');
 
-Route::get('/mail', function () {
-  Mail::to('rodrigo@example.com')->send(new App\Mail\ContactShipped);
-});
+// Route::get('/mail', function () {
+//   return view('emails/welcome');
+// });
 
 // Backend
 

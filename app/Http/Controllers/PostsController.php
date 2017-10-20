@@ -45,7 +45,7 @@ class PostsController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'description' => 'required|max:255',
-            'image' => 'required|mimes:jpg,JPG,JPEG,jpeg|max:2500',
+            'image' => 'required|mimes:jpg,JPG,JPEG,jpeg|max:2500|dimensions:min_width=1919',
         ], [
             'name.required' => 'Título requerido',
             'name.max' => 'El título no debe poseer más de 250 caracteres',
@@ -53,7 +53,8 @@ class PostsController extends Controller
             'descripci.max' => 'La descripción no debe tener más de 250 caracteres',
             'image.required' => 'La imagen es requerida',
             'image.mimes' => 'La imagen debe ser formato jpg',
-            'images.max' => 'La imagen no debe pesar más de 2.5 mb'
+            'image.max' => 'La imagen no debe pesar más de 2.5 mb',
+            'image.dimensions' => 'La imagen debe tener un ancho mínimo de 1920px'
         ]);
 
         $post = new Post();
@@ -79,8 +80,10 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
+        $posts = Post::all();
         return view('backend.posts.post', [
             'post' => $post,
+            'posts' => $posts
         ]);
     }
 
