@@ -74,9 +74,9 @@ class ProductController extends Controller
             'certificate_description' => 'nullable',
             'info_file' => 'required|mimes:pdf|max:3000',
             'manual_file' => 'nullable|mimes:pdf|max:5000',
-            'avatar' => 'required|mimes:png|max:250',
-            'left_img' => 'required|mimes:png|max:250',
-            'right_img' => 'required|mimes:png|max:250',
+            'avatar' => 'required|mimes:png|max:500',
+            'left_img' => 'required|mimes:png|max:500',
+            'right_img' => 'required|mimes:png|max:500',
             'units' => 'required'
         ],
         [
@@ -159,43 +159,42 @@ class ProductController extends Controller
 
         $bodyColor = $request['body_color_id'];
 
-        $reflexColor = $request['ligth_color_id'];
+        $reflexColor = $request['light_color_id'];
+
 
         $certificates = $request['certificate_id'];
 
-        if ($bodyColor || $reflexColor || $certificates) {
+        if (is_array($bodyColor)){
+          foreach ($bodyColor as $key => $value) {
+              $atribute = new ProductAtribute();
+              $atribute->atribute = "body_color";
+              $atribute->value = $value;
+              $product->atributes()->save($atribute);
+          }
+        } else {
+          $atribute = new ProductAtribute();
+          $atribute->atribute = "body_color";
+          $atribute->value = $value;
+          $product->atributes()->save($atribute);
+        }
 
-          if (is_array($bodyColor)){
-            foreach ($bodyColor as $key => $value) {
-                $atribute = new ProductAtribute();
-                $atribute->atribute = "body_color";
-                $atribute->value = $value;
-                $product->atributes()->save($atribute);
-            }
-          } else {
+        if (is_array($reflexColor)) {
+          foreach ($reflexColor as $key => $value) {
             $atribute = new ProductAtribute();
-            $atribute->atribute = "body_color";
+            $atribute->atribute = "reflex_color";
             $atribute->value = $value;
             $product->atributes()->save($atribute);
           }
-
-          if (is_array($reflexColor)) {
-            foreach ($reflexColor as $key => $value) {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "reflex_color";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-            }
-          } else {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "reflex_color";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-          }
+        } else {
+            $atribute = new ProductAtribute();
+            $atribute->atribute = "reflex_color";
+            $atribute->value = $value;
+            $product->atributes()->save($atribute);
+        }
+        if (is_array($certificates)) {
           foreach ($certificates as $key => $value) {
             $product->certificates()->attach($value);
           }
-
         }
 
         return redirect('backend/products')->with('message', 'Producto cargado correctamente');
@@ -247,8 +246,7 @@ class ProductController extends Controller
             'manual_file' => 'nullable|mimes:pdf|max:5000',
             'avatar' => 'mimes:png|max:250',
             'left_img' => 'mimes:png|max:250',
-            'right_img' => 'mimes:png|max:250',
-            'units' => 'required'
+            'right_img' => 'mimes:png|max:250'
         ],
         [
             'name.required' => 'Nombre requerido',
@@ -267,8 +265,7 @@ class ProductController extends Controller
             'left_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
             'left_img.size' => 'La imagen de producto no debe pesar más de 250kb',
             'right_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'right_img.size' => 'La imagen de producto no debe pesar más de 250kb',
-            'units.required' => 'Unidad de venta requerida'
+            'right_img.size' => 'La imagen de producto no debe pesar más de 250kb'
         ]);
 
         $product = Product::find($request['id']);
@@ -339,33 +336,59 @@ class ProductController extends Controller
 
         $product->save();
 
-        $bodyColor = $request['body_color_id'];
+        $bodyColors = $request['body_color_id'];
 
-        $reflexColor = $request['ligth_color_id'];
+
+        $reflexColor = $request['light_color_id'];
+
+
+        // dd($reflexColor);
+        // if (is_array($bodyColors)) {
+        //     foreach($bodyColors as $color) {
+        //         $bodyColor = $product->atributes()->where('product_id', $request['id'])->where('value', $color)->firstOrFail();
+        //
+        //         $bodyColor->value = $color;
+        //         $bodyColor->update();
+        //     }
+        // } else {
+        //     $bodyColor = $product->atributes()->where('product_id', $request['id'])->where('value', $color)->firstOrFail();
+        //     $bodyColor->value = $color;
+        //     $bodyColor->update();
+        // }
 
         // toDO -> update en el atributo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // if (isset($bodyColor)) {
-        //   foreach ($bodyColor as $key => $value) {
-        //       $atribute = new ProductAtribute();
-        //       $atribute->atribute = "body_color";
-        //       $atribute->value = $value;
-        //       $product->atributes()->save($atribute);
-        //   }
-        // }
-        //
-        // if ($reflexColor) {
-        //   if (is_array($reflexColor)) {
-        //       $atribute = new ProductAtribute();
-        //       $atribute->atribute = "reflex_color";
-        //       $atribute->value = $value;
-        //       $product->atributes()->save($atribute);
-        //   } else {
-        //       $atribute = new ProductAtribute();
-        //       $atribute->atribute = "reflex_color";
-        //       $atribute->value = $value;
-        //       $product->atributes()->save($atribute);
-        //   }
-        // }
+        if (isset($bodyColors)) {
+            if (is_array($bodyColors)) {
+                foreach ($bodyColors as $key => $value) {
+                    $atribute = new ProductAtribute();
+                    $atribute->atribute = "body_color";
+                    $atribute->value = $value;
+                    $product->atributes()->save($atribute);
+                }
+            }
+            else {
+                $atribute = new ProductAtribute();
+                $atribute->atribute = "body_color";
+                $atribute->value = $value;
+                $product->atributes()->save($atribute);
+            }
+        }
+
+        if (isset($reflexColor)) {
+          if (is_array($reflexColor)) {
+              foreach ($reflexColor as $key => $value) {
+                  $atribute = new ProductAtribute();
+                  $atribute->atribute = "reflex_color";
+                  $atribute->value = $value;
+                  $product->atributes()->save($atribute);
+            }
+          } else {
+              $atribute = new ProductAtribute();
+              $atribute->atribute = "reflex_color";
+              $atribute->value = $value;
+              $product->atributes()->save($atribute);
+          }
+        }
 
         $certificates = $request['certificate_id'];
         if (isset($certificates)) {
@@ -381,17 +404,16 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        return redirect()->back()->with('message', 'Producto eliminado correctamente');
+        return redirect('/backend/products')->with('message', 'Producto eliminado correctamente');
+
     }
 
-    // metodos
-
-    public function showProduct($id)
+    public function showProduct($category, $id)
     {
         $categories = Category::all();
         $product = Product::find($id);
         $products = Product::all();
-        $certificates = Certificate::all();
+        $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
         return view('product', [
             'product' => $product,
             'categories' => $categories,
@@ -455,7 +477,7 @@ class ProductController extends Controller
     $keyword = Input::get('s');
     $products = Product::all();
     $categories = Category::all();
-    $certificates = Certificate::all();
+    $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
     $topProducts = Product::where('rating', '>', '3')->get();
     $productList = Product::where('name', 'like', '%' . $keyword . '%')
                             ->orWhere('description', 'like', '%' . $keyword . '%')

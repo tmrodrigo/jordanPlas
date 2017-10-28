@@ -8,7 +8,7 @@
 
     <title>Jordan Plas | Backend</title>
 
-    @include('layouts.links')
+    @include('backend.links')
   </head>
   <body class="login">
     <div class="login_wrapper">
@@ -76,7 +76,7 @@
               <br />
 
               <div>
-                <h1><i class="fa fa-paw"></i> Jordan Plas</h1>
+                <h1>Jordan Plas</h1>
                 <p>Jordan Plas backend - diseño y desarrollo <a href="https://www.loveinbrands.com">Loveinbrands</a></p>
               </div>
             </div>

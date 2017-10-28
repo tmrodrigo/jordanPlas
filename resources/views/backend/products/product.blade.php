@@ -97,46 +97,88 @@
               <div class="clearfix"></div>
             </div>
             <div class="row">
-              <div class="col-sm-3">
+              <div class="col-sm-6">
                 <label>Superficie Reflectiva</label>
-                <input type="text" name="reflex_s" value="{{ $product->reflex_s }} " class="form-control">
+                <input type="text" name="reflex_s" value="{{ old('reflex_s') }} " class="form-control">
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-6">
                 <label>Resistencia</label>
-                <input type="text" name="resistence" value="{{ $product->resistence }} " class="form-control">
+                <input type="text" name="resistence" value="{{ old('resistence') }} " class="form-control">
               </div>
-              <div class="col-sm-3">
+            </div>
+            <div class="separador"></div>
+            <div class="row">
+              <div class="col-sm-6">
                 <label>Color cuerpo</label>
                 <div class="row">
-                  <div class="col-sm-4 checkbox">
+                  {{-- @foreach ($product->atributes as $bodyColor)
+                    @if ($bodyColor->atribute === "body_color")
+                      <div class="col-sm-3 checkbox">
+                        <label>
+                          <input type="checkbox" class="flat" name="body_color_id[]" value="{{ $bodyColor->value }}" checked> {{ $bodyColor->value }}
+                        </label>
+                      </div>
+                    @endif
+                  @endforeach --}}
+                  <div class="col-sm-3 checkbox">
                     <label>
                       <input type="checkbox" class="flat" name="body_color_id[]" value="black"> Negro
                     </label>
                   </div>
-                  <div class="col-sm-4 checkbox">
+                  <div class="col-sm-3 checkbox">
                     <label>
                       <input type="checkbox" class="flat" name="body_color_id[]" value="white"> Blanco
                     </label>
                   </div>
-                  <div class="col-sm-4 checkbox">
+                  <div class="col-sm-3 checkbox">
                     <label>
                       <input type="checkbox" class="flat" name="body_color_id[]" value="yellow"> Amarillo
                     </label>
                   </div>
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <label>Color reflectivo</label>
-                <div class="row">
-                  <div class="col-sm-6 checkbox">
+                  <div class="col-sm-3 checkbox">
                     <label>
-                      <input type="checkbox" class="flat" name="light_color_id[]" value="yellow"> Amarillo
+                      <input type="checkbox" class="flat" name="body_color_id[]" value="orange"> Naranja
                     </label>
                   </div>
-                  <div class="col-sm-6 checkbox">
-                    <label>
-                      <input type="checkbox" class="flat" name="light_color_id[]" value="redWhite"> Rojo y Blanco
-                    </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label>Color reflectivo</label>
+                <div class="row">
+                  <div class="row">
+                    <div class="col-sm-4 checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="light_color_id[]" value="yellow"> Amarillo
+                      </label>
+                    </div>
+                    <div class="col-sm-4 checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="light_color_id[]" value="white"> Blanco
+                      </label>
+                    </div>
+                    <div class="col-sm-4 checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="light_color_id[]" value="red"> Rojo
+                      </label>
+                    </div>
+                  </div>
+                  <div class="separador"></div>
+                  <div class="row">
+                    <div class="col-sm-4 checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="light_color_id[]" value="redWhite"> Rojo y Blanco
+                      </label>
+                    </div>
+                    <div class="col-sm-4 checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="light_color_id[]" value="redYellow"> Rojo y Amarillo
+                      </label>
+                    </div>
+                    <div class="col-sm-4 checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="light_color_id[]" value="yellowWhite"> Amarillo y Blanco
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>

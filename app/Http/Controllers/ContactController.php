@@ -11,6 +11,7 @@ use App\Certificate;
 use App\Product;
 use App\Category;
 use App\Budget;
+use Carbon\Carbon;
 
 
 class ContactController extends Controller
@@ -21,12 +22,14 @@ class ContactController extends Controller
         $contact = new Client();
         $contact->name = $request['name'];
         $contact->email = $request['email'];
-        $contact->phone = $request['phone'];
+        $contact->phone = $request['codigo'] . $request['phone'];
         $contact->message = $request['message'];
         $contact->newsletter = $request['newsletter'];
         if ($request['budget_id']) {
             $contact->budget_id = $request['budget_id'];
         };
+
+        dd($contact);
 
         $contact->save();
 
@@ -45,7 +48,7 @@ class ContactController extends Controller
         $clientId = Client::orderby('updated_at', 'desc')->first();
         $bProducts = Budget::where('client_id', '=', $clientId->id)->get();
 
-        Mail::send('emails.welcome', ['client' => $request, 'bProducts' => $bProducts], function ($m) use ($request, $bProducts) {
+        Mail::send('emails.welcome', ['client' => $request, 'bProducts' => $bProducts, 'id' => $clientId->id], function ($m) use ($request, $bProducts) {
             $clientId = Client::orderby('updated_at', 'desc')->first();
             $m->from('info@jordanplas.com.ar', 'Jordan Plas');
             $m->to('tm.rodrigo@gmail.com')->subject('Contacto desde el sitio web #' . $clientId->id);
@@ -61,11 +64,13 @@ class ContactController extends Controller
         $categories = Category::all();
         $certificates = Certificate::all();
         $clientId = Client::orderby('updated_at', 'desc')->first();
+        $time = Carbon::now();
         return view('contact' , [
             'products' => $products,
             'categories' => $categories,
             'certificates' => $certificates,
-            'clientId' => $clientId
+            'clientId' => $clientId,
+            'time' => $time
         ]);
     }
 

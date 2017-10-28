@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Service;
 use App\Product;
 use App\Category;
+use App\Certificate;
 
 class ServiceController extends Controller
 {
@@ -14,10 +15,12 @@ class ServiceController extends Controller
     $categories = Category::all();
     $products = Product::all();
 		$services = Service::all();
+    $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
     return view('services', [
       'categories' => $categories,
       'products' => $products,
-			'services' => $services
+			'services' => $services,
+      'certificates' => $certificates
   ]);
   }
 

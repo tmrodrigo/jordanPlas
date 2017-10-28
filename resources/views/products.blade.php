@@ -45,11 +45,11 @@
                   @else
                     <li>
                       <div class="col-xs-6 col-sm-3">
-                        <a href="{{ url('product', $product)}}">
+                        <a href="{{ url($product->category->name, $product)}}">
                           <div class="itemCategoria">
                             <img src="{{ Storage::url($product->avatar)}}" alt="">
                             <h3>{{ $product->name }}</h3>
-                            <a href="{{ url('product', $product)}}">Ver más</a>
+                            <a href="{{ url($product->category->name, $product)}}">Ver más</a>
                           </div>
                         </a>
                       </div>

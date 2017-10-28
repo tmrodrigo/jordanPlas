@@ -86,46 +86,79 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-6">
                       <label>Superficie Reflectiva</label>
                       <input type="text" name="reflex_s" value="{{ old('reflex_s') }} " class="form-control">
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-6">
                       <label>Resistencia</label>
                       <input type="text" name="resistence" value="{{ old('resistence') }} " class="form-control">
                     </div>
-                    <div class="col-sm-3">
+                  </div>
+                  <div class="separador"></div>
+                  <div class="row">
+                    <div class="col-sm-6">
                       <label>Color cuerpo</label>
                       <div class="row">
-                        <div class="col-sm-4 checkbox">
+                        <div class="col-sm-3 checkbox">
                           <label>
                             <input type="checkbox" class="flat" name="body_color_id[]" value="black"> Negro
                           </label>
                         </div>
-                        <div class="col-sm-4 checkbox">
+                        <div class="col-sm-3 checkbox">
                           <label>
                             <input type="checkbox" class="flat" name="body_color_id[]" value="white"> Blanco
                           </label>
                         </div>
-                        <div class="col-sm-4 checkbox">
+                        <div class="col-sm-3 checkbox">
                           <label>
                             <input type="checkbox" class="flat" name="body_color_id[]" value="yellow"> Amarillo
                           </label>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-3">
-                      <label>Color reflectivo</label>
-                      <div class="row">
-                        <div class="col-sm-6 checkbox">
+                        <div class="col-sm-3 checkbox">
                           <label>
-                            <input type="checkbox" class="flat" name="light_color_id[]" value="yellow"> Amarillo
+                            <input type="checkbox" class="flat" name="body_color_id[]" value="orange"> Naranja
                           </label>
                         </div>
-                        <div class="col-sm-6 checkbox">
-                          <label>
-                            <input type="checkbox" class="flat" name="light_color_id[]" value="redWhite"> Rojo y Blanco
-                          </label>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label>Color reflectivo</label>
+                      <div class="row">
+                        <div class="row">
+                          <div class="col-sm-4 checkbox">
+                            <label>
+                              <input type="checkbox" class="flat" name="light_color_id[]" value="yellow"> Amarillo
+                            </label>
+                          </div>
+                          <div class="col-sm-4 checkbox">
+                            <label>
+                              <input type="checkbox" class="flat" name="light_color_id[]" value="white"> Blanco
+                            </label>
+                          </div>
+                          <div class="col-sm-4 checkbox">
+                            <label>
+                              <input type="checkbox" class="flat" name="light_color_id[]" value="red"> Rojo
+                            </label>
+                          </div>
+                        </div>
+                        <div class="separador"></div>
+                        <div class="row">
+                          <div class="col-sm-4 checkbox">
+                            <label>
+                              <input type="checkbox" class="flat" name="light_color_id[]" value="redWhite"> Rojo y Blanco
+                            </label>
+                          </div>
+                          <div class="col-sm-4 checkbox">
+                            <label>
+                              <input type="checkbox" class="flat" name="light_color_id[]" value="redYellow"> Rojo y Amarillo
+                            </label>
+                          </div>
+                          <div class="col-sm-4 checkbox">
+                            <label>
+                              <input type="checkbox" class="flat" name="light_color_id[]" value="yellowWhite"> Amarillo y Blanco
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -166,7 +199,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h3>Certificados</h3>
@@ -176,13 +209,10 @@
                     @foreach ($certificates as $certificate)
                       <div class="col-sm-3">
                         <label>Nombre</label>
+                        <br>
                         <label>
                           <input type="checkbox" class="flat" name="certificate_id[]" value="{{ $certificate->id }}"> {{ $certificate->name }}
                         </label>
-                      </div>
-                      <div class="col-sm-9">
-                        <label>ISO</label>
-                        <input type="text" name="certificate_iso[]" value="{{ old('certificate_description') }} " class="form-control">
                       </div>
                     @endforeach
                   </div>

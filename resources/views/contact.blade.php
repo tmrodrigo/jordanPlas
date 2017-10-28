@@ -43,8 +43,44 @@
 	                  <input type="text" class="form-control required" name="email" value="{{ old('email') }}" id="email" placeholder="tu email">
 	                  <p class="help-block" id="emailError"></p>
 	                </div>
+									<div class="form-group">
+										<label for="">Seleccione código de área, si su número no está en la lista, eliga "otro" y escríbalo</label>
+										<div class="codigo">
+											<select class="" name="codigo" id="code">
+												<option value="11">Capital Federal - 11</option>
+												<option value="221">La Plata (Bs.As) - 221</option>
+												<option value="261">Mendoza - 261</option>
+												<option value="264">San Juan - 264</option>
+												<option value="266">San Luis - 266</option>
+												<option value="299">Neuquén - 299</option>
+												<option value="342">Santa Fe - 342</option>
+												<option value="343">Paraná - 343</option>
+												<option value="351">Córdoba - 351</option>
+												<option value="362">Resistencia - 362</option>
+												<option value="370">Formosa - 370</option>
+												<option value="376">Posadas - 376</option>
+												<option value="379">Corrientes - 379</option>
+												<option value="380">La Rioja - 380</option>
+												<option value="381">S. M. de Tucumán - 381</option>
+												<option value="383">S. F del Valle de Catamarca - 383</option>
+												<option value="385">Stgo. del Estero - 385</option>
+												<option value="388">San Salvador de Jujuy - 388</option>
+												<option value="2804">Rawson (Chubut) - 2804</option>
+												<option value="2901">Ushuaia - 2901</option>
+												<option value="2920">Viedma - 2920</option>
+												<option value="2954">Sta Rosa (La Pampa) - 2954</option>
+												<option value="2966">Río Gallegos - 2966</option>
+												<option value="">OTRO</option>
+												<option value="">Celular</option>
+											</select>
+											<div class="codeInput">
+												<input type="text" name="codigo" value="" class="form-control required" id="otro" placeholder="Otro código / Código celular" disabled>
+												<p class="help-block" id="errorCode"></p>
+											</div>
+										</div>
+									</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control required" name="phone" value="{{ old('phone') }}" id="phone" placeholder="teléfono de contacto">
+	                  <input type="text" class="form-control required" name="phone" value="{{ old('phone') }}" id="phone" placeholder="teléfono de contacto (sin código de área)">
 	                  <p class="help-block" id="phoneError"></p>
 	                </div>
 								</div>
@@ -90,6 +126,7 @@
 								<div class="form-group">
 									<p class="help-block" id="nfError"></p>
 								</div>
+								<input type="text" name="date" value="{{$time->format('d-m-Y')}}" style="display:none">
 
 							</form>
 						</div>

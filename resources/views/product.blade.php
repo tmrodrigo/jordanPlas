@@ -32,7 +32,6 @@
                 </div> -->
                 <div class="textFicha col-sm-8 col-md-11">
                   <div>
-                    <h4>Tacha redonda reflectiva</h4>
                     <h1>{{ $product->name }}</h1>
                   </div>
                   <p>{{ $product->description }}</p>
@@ -42,7 +41,7 @@
                       <ul>
                         @foreach ($product->certificates as $certificate)
                           <li>
-                            <img src="{{ $certificate->name }}" alt="">
+                            <img src="{{ Storage::url($certificate->image) }}" alt="Jordan Plas, producto certificado por {{ $certificate->name }}">
                             <p>
                               <span>Certificado: </span>{{ $certificate->name }} <br>
                             </p>
@@ -81,11 +80,19 @@
                       <div class="row">
                         <div class="col-sm-6">
                           <img src="{{ Storage::url('assets/medidas.svg') }}" alt="">
-                          <p>
-                            <span>Alto: </span> {{ $product->height }} mm<br>
-                            <span>Ancho: </span> {{ $product->width }} mm<br>
-                            <span>Profundo: </span> {{ $product->depth }} mm<br>
-                          </p>
+                          @if ($product->depth <= 0)
+                            <p>
+                              <span>Alto: </span> {{ $product->height }} mm<br>
+                              <span>Diámetro: </span> {{ $product->width }} mm<br>
+                            </p>
+                            @else
+                              <p>
+                                <span>Alto: </span> {{ $product->height }} mm<br>
+                                <span>Ancho: </span> {{ $product->width }} mm<br>
+                                <span>Profundo: </span> {{ $product->depth }} mm<br>
+                              </p>
+                          @endif
+
                         </div>
                         <div class="col-sm-6">
                           <img src="{{ Storage::url('assets/peso.svg') }}" alt="">
@@ -93,18 +100,22 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-sm-6">
-                          <img src="{{ Storage::url('assets/luz.svg') }}" alt="">
-                          <p><span>Sup. Reflectiva:</span><br> {{ $product->reflex_s }} cm2</p>
-                        </div>
-                        <div class="col-sm-6">
-                          <img src="{{ Storage::url('assets/resistencia.svg') }}" alt="">
-                          <p><span>Resistencia:</span><br> {{ $product->resistence }}</p>
-                        </div>
+                        @if ($product->reflex_s > 0)
+                          <div class="col-sm-6">
+                            <img src="{{ Storage::url('assets/luz.svg') }}" alt="">
+                            <p><span>Sup. Reflectiva:</span><br> {{ $product->reflex_s }} cm2</p>
+                          </div>
+                        @endif
+                        @if ($product->resistence > 0)
+                          <div class="col-sm-6">
+                            <img src="{{ Storage::url('assets/resistencia.svg') }}" alt="">
+                            <p><span>Resistencia:</span><br> {{ $product->resistence }}</p>
+                          </div>
+                        @endif
                       </div>
                       <div class="row">
                         <div class="col-sm-6">
-                          <p><span>Color<br>cuerpo </span></p>
+                          <p><span>Color cuerpo </span></p>
                           <ul>
                             @if ($product->atributes)
                               @foreach ($product->atributes as $color)
@@ -116,7 +127,7 @@
                           </ul>
                         </div>
                         <div class="col-sm-6">
-                          <p><span>Color<br>reflectivo </span></p>
+                          <p><span>Color reflectivo </span></p>
                           <ul>
                             @if ($product->atributes)
                               @foreach ($product->atributes as $color)
@@ -136,7 +147,7 @@
           </div>
           <div class="row imgFicha">
             <div class="col-sm-6">
-              <img src={{ Storage::url($product->left_img) }} alt="">
+              <img src={{ Storage::url($product->left_img) }} alt="{{ $product->category->name . ' ' . $product->name . ' ' . $product->description }}">
             </div>
             <div class="col-sm-6">
               <img src={{ Storage::url($product->right_img) }} alt="">
@@ -185,11 +196,11 @@
                 @foreach ($products as $product)
                   <li>
                     <div class="col-xs-6 col-sm-3">
-                      <a href="{{ url('product', $product->id)}}">
+                      <a href="{{ url($product->category->name, $product->id)}}">
                         <div class="itemCategoria">
-                          <img src="{{ Storage::url($product->avatar)}}" alt="">
+                          <img src="{{ Storage::url($product->avatar)}}" alt="{{ $product->category->name . ' ' . $product->name . ' ' . $product->description }}">
                           <h3>{{ $product->name }}</h3>
-                          <a href="{{ url('product', $product->id)}}">Ver más</a>
+                          <a href="{{ url($product->category->name, $product->id)}}">Ver más</a>
                         </div>
                       </a>
                     </div>
@@ -198,23 +209,24 @@
               </ul>
             </div>
           </div>
-          <div class="linea"></div>
-          <div class="row">
-            <div class="col-sm-12">
-              <h2>Muestras del producto en uso</h2>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="imgProductos">
-                @foreach ($product->images as $image)
-                  <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
-                @endforeach
+          @if (count($product->images) > 0)
+            <div class="linea"></div>
+            <div class="row">
+              <div class="col-sm-12">
+                <h2>Muestras del producto en uso</h2>
               </div>
             </div>
-          </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="imgProductos">
+                  @foreach ($product->images as $image)
+                    <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
+                  @endforeach
+                </div>
+              </div>
+            </div>
+          @endif
         </div>
-
       </section>
     </div>
   </div>

@@ -100,7 +100,7 @@
 		  </div>
 			<div class="x_content">
 				<br />
-				@if ($data)
+				@if ($data !== null)
 					<form class="form-horizontal form-label-left" action="{{ route('company.create') }}" method="post">
 						{{ csrf_field() }}
 						<div class="form-group">
@@ -159,6 +159,54 @@
 							</form>
 						</div>
 					</div>
+					@else
+						<form class="form-horizontal form-label-left" action="{{ route('company.create') }}" method="post">
+							{{ csrf_field() }}
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-3">Descripción empresa</label>
+								<div class="col-md-9 col-sm-9 col-xs-9">
+									<input type="text" class="form-control" name="description" value="{{ old('description') }}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-3">Teléfono</label>
+								<div class="col-md-9 col-sm-9 col-xs-9">
+									<input type="text" class="form-control" name="phone" value="{{ old('phone') }}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-3">Fax</label>
+								<div class="col-md-9 col-sm-9 col-xs-9">
+									<input type="text" class="form-control" name="fax" value="{{ old('fax') }}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-3">Celular</label>
+								<div class="col-md-9 col-sm-9 col-xs-9">
+									<input type="text" class="form-control" name="celular" value="{{ old('celular') }}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-3">Email</label>
+								<div class="col-md-9 col-sm-9 col-xs-9">
+									<input type="text" class="form-control" name="email" value="{{ old('email') }}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-3">Dirección</label>
+								<div class="col-md-9 col-sm-9 col-xs-9">
+									<input type="text" class="form-control" name="address" value="{{ old('address') }}">
+								</div>
+							</div>
+							<div class="ln_solid"></div>
+
+							<div class="form-group">
+								<div class="col-md-9 col-md-offset-3">
+									<a href="backend/backendHome" class="btn btn-danger">Cancel</a>
+									<button type="submit" class="btn btn-success">Submit</button>
+								</div>
+							</div>
+						</form>
 				@endif
 			</div>
 		</div>

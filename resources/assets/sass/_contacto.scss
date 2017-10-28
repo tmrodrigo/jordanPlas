@@ -130,6 +130,30 @@
   .showProduct {
     display: block !important;
   }
+
+  .codigo {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    select {
+      background-color: transparent;
+      border: 1px solid $jordanGray01;
+      height: 32px;
+      width: 45%;
+      option {
+        background-color: transparent;
+      }
+    }
+    .codeInput {
+      width: 50%;
+      input {
+        width: 100%;
+      }
+    }
+  }
 }
 
 @mixin widthHeight($an, $al) {

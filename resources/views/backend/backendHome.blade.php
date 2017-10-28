@@ -171,19 +171,29 @@
                           </div>
                       </form>
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="col-sm-offset-10 col-sm-2">
-                      @foreach ($products as $prodcut)
-                        @if ($product->category->id !== $category->id)
-                          <form class="" action="{{ route('category.destroy', $category) }}" method="post">
-                            {{ method_field('DELETE')}}
-                            {{ csrf_field() }}
-                            <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
-                            <input type="submit" name="" value="Eliminar" class="btn btn-danger">
-                          </form>
-                        @endif
-                      @endforeach
+                    <div class="col-sm-offset-9 col-sm-2">
+                      @if (count($products) <= 0)
+                        <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
+                          {{ method_field('DELETE')}}
+                          {{ csrf_field() }}
+                          <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
+                          <input type="submit" name="" value="Eliminar" class="btn btn-danger">
+                        </form>
+                        @else
+                          @foreach ($products as $product)
+                            @if ($product->category->id !== $category->id)
+                              <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
+                                {{ method_field('DELETE')}}
+                                {{ csrf_field() }}
+                                <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
+                                <input type="submit" name="" value="Eliminar" class="btn btn-danger">
+                              </form>
+                              @break
+                            @endif
+                          @endforeach
+                      @endif
                     </div>
+                    <div class="clearfix"></div>
                   </div>
                   <div class="separador"></div>
                 @endforeach
@@ -234,7 +244,7 @@
             @foreach ($certificates as $certificate)
               <div class="row">
                 <div class="col-sm-12">
-                  <form class="" action="{{ route('certificate.update', $certificate ) }}" method="post">
+                  <form class="" action="{{ route('certificate.update', $certificate ) }}" method="post" enctype="multipart/form-data">
                       {{ csrf_field() }}
                       {{ method_field('PUT')}}
                       <div class="form-group">
@@ -246,7 +256,7 @@
                       </div>
                       <div class="clearfix"></div>
                       <div class="">
-                        <img src="{{ Storage::url($certificate->img) }}" alt="">
+                        <img src="{{ Storage::url($certificate->image) }}" alt="">
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-2">Reemplazar el logo acá:</label>

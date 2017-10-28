@@ -21,9 +21,9 @@ class CertificateController extends Controller
 
 			$certificate = new Certificate();
 			$certificate->name = $request['name'];
-
+      $imgName = str_replace(str_split('\\/:*?"<>|" "()'), '-', strtolower($request['name']));
 			$certImg = $request->file("image");
-			$name = $certificate->name . "-logo" . "." . $certImg->extension();
+			$name = $imgName . "-logo" . "." . $certImg->extension();
 			$folder = "certificates";
 			$path = $certImg->storePubliclyAs($folder, $name);
 			$certificate->image = $path;
@@ -42,14 +42,19 @@ class CertificateController extends Controller
 			return redirect()->back()->with('message', 'Certificado eliminado exitosamente');
 		}
 
+
     public function update(Request $request, Certificate $certificate)
     {
 
 			$this->validate($request, [
 				'name' => 'required',
+				'image'=> 'mimes:jpg,JPG,jpeg,JPEG | dimensions:max_width=150,max_height=150'
 			], [
-				'name.required' => 'El certificado debe tener un nombre'
+				'name.required' => 'El certificado debe tener un nombre',
+				'image.mimes' => 'El logo debe ser un jpg con fondo blanco',
+				'image.dimensions' => 'El logo debe ser cuadrado y no mayor a 150px de lado'
 			]);
+
 
 			$certificate = Certificate::find($request['id']);
 			$certificate->name = $request['name'];
@@ -66,4 +71,5 @@ class CertificateController extends Controller
 
 			return redirect()->back()->with('message', 'Certificado editado exitosamente');
     }
+
 }

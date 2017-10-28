@@ -15,7 +15,7 @@ class CategoryController extends Controller
     $categories = Category::all();
     $category = Category::find($id);
     $products = Product::where('category_id', '=', $id)->get();
-    $certificates = Certificate::all();
+    $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
     return view('products', [
         'categories' => $categories,
         'category' => $category,
@@ -27,7 +27,7 @@ class CategoryController extends Controller
   public function index()
   {
     $categories = Category::all();
-    $certificates = Certificate::all();
+    $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
     return view('productsList', [
         'categories' => $categories,
         'certificates' => $certificates

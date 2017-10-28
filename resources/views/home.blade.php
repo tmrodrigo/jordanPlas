@@ -50,14 +50,19 @@
     <section id="secciones">
       <article  id="1" class="">
         <div class="row">
-          <div class="col-sm-4">
+          <div class="col-sm-12">
+            <img src="storage/home/empresa.jpg" alt="">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
             <div class="textoSeccion">
               @if ($data)
                 <h2>Jordan Plas</h2>
                 <p>{{ $data->description }}</p>
                 <h4>Contactanos</h4>
                 <div class="telMail">
-                  <p><span>Tel: </span>{{ $data->phone }} | <span>Fax: </span> {{ $data->fax }}</p>
+                  <p><span>Tel: </span>{{ $data->phone }}<br><span>Celular: </span> {{ $data->fax }} | <span>Celular: </span>{{ $data->celular }}</p>
                   <p><span>Email: </span><a href="mailto:{{ $data->email }}">{{ $data->email }}</a></p>
                   <div class="direccion">
                     <p><span>Dirección: </span>{{ $data->address }}</p>
@@ -65,8 +70,8 @@
                 </div>
               @endif
             </div>
-            <!-- <a class="presupuesto" href="" onclick="event.preventDefault()">Solicitá presupuesto</a> -->
-            <!-- <h3>Certificado por:</h3> -->
+            <a class="presupuesto" href="" onclick="event.preventDefault()">Solicitá presupuesto</a>
+            <h3>Certificados:</h3>
             <div class="certificados">
               <ul>
                 @foreach ($certificates as $certificate)
@@ -75,30 +80,29 @@
               </ul>
             </div>
           </div>
-          <div class="col-sm-8">
-            <img src="storage/home/empresa.jpg" alt="">
-          </div>
         </div>
-        <h3>Productos destacados</h3>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="destacados">
-              <ul class="bxslider">
-                @foreach ($products as $product)
-                  <li>
-                    <a href="{{ url('product', $product->id)}}">
-                      <div class="itemCategoria">
-                        <img src="{{ Storage::url($product->avatar)}}" alt="">
-                        <h3>{{ $product->name }}</h3>
-                        <a href="{{ url('product', $product->id)}}">Ver más</a>
-                      </div>
-                    </a>
-                  </li>
-                @endforeach
-              </ul>
+        @if (count($products) > 0)
+          <h3>Productos destacados</h3>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="destacados">
+                <ul class="bxslider">
+                  @foreach ($products as $product)
+                    <li>
+                      <a href="{{ url($product->category->name, $product->id)}}">
+                        <div class="itemCategoria">
+                          <img src="{{ Storage::url($product->avatar)}}" alt="">
+                          <h3>{{ $product->name }}</h3>
+                          <a href="{{ url($product->category->name, $product->id)}}">Ver más</a>
+                        </div>
+                      </a>
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        @endif
       </article>
       <article id="2" class="productos">
         <div class="row">

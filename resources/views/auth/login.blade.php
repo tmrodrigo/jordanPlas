@@ -64,16 +64,16 @@
                             Login
                         </button>
 
-                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                        {{-- <a class="btn btn-link" href="{{ route('password.request') }}">
                             ¿Olvidaste tu clave?
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                   <p class="change_link">¿Aún no estás registrado?
                     <a href={{ route('register')}} class="to_register"> Crea una cuenta </a>
                   </p>
-                </div>
+                </div> --}}
             </form>
 {{--
             <form>

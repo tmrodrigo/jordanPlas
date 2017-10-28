@@ -9355,6 +9355,44 @@ input:-webkit-autofill {
   display: block !important;
 }
 
+#contacto .codigo {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row;
+          flex-flow: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+}
+
+#contacto .codigo select {
+  background-color: transparent;
+  border: 1px solid #505050;
+  height: 32px;
+  width: 45%;
+}
+
+#contacto .codigo select option {
+  background-color: transparent;
+}
+
+#contacto .codigo .codeInput {
+  width: 50%;
+}
+
+#contacto .codigo .codeInput input {
+  width: 100%;
+}
+
 #contact {
   width: 100%;
   height: 100vh;
@@ -9875,10 +9913,10 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-flow: row;
-          flex-flow: row;
+      -ms-flex-flow: column;
+          flex-flow: column;
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
@@ -9892,7 +9930,7 @@ footer {
 }
 
 .fichaProducto .datos .datosList .col-sm-6 ul {
-  margin-left: 16px;
+  margin-top: 16px;
   list-style: none;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -9907,7 +9945,7 @@ footer {
 }
 
 .fichaProducto .datos .datosList .col-sm-6 ul li {
-  margin-right: 16px;
+  margin-right: 8px;
   margin-top: 0;
   width: 32px;
   height: 32px;
@@ -9923,11 +9961,41 @@ footer {
 }
 
 .fichaProducto .datos .datosList .col-sm-6 ul .yellow {
-  background-color: yellow;
+  background-color: #FFCB42;
 }
 
 .fichaProducto .datos .datosList .col-sm-6 ul .red {
-  background-color: red;
+  background-color: #ED0E3D;
+}
+
+.fichaProducto .datos .datosList .col-sm-6 ul .orange {
+  background-color: #F19800;
+}
+
+.fichaProducto .datos .datosList .col-sm-6 ul .redWhite {
+  background-image: url("/storage/assets/redWhite.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.fichaProducto .datos .datosList .col-sm-6 ul .redYellow {
+  background-image: url("/storage/assets/redYellow.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.fichaProducto .datos .datosList .col-sm-6 ul .yellowWhite {
+  background-image: url("/storage/assets/yellowWhite.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.fichaProducto .datos .datosList .col-sm-6 ul img {
+  width: 34px;
+  height: 34px;
 }
 
 .fichaProducto .datos .datosList .col-sm-6 img {

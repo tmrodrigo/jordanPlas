@@ -22,14 +22,8 @@ class CompanyController extends Controller
 	public function create(Request $request, Company $company)
 	{
 		$this->validate($request, [
-			'phone' => 'numeric',
-			'fax' => 'numeric',
-			'celular' => 'numeric',
 			'email' => 'email'
 		], [
-			'phone.numeric' => 'El campo teléfono debe ser un número',
-			'fax.numeric' => 'El campo fax debe ser un número',
-			'celular.numeric' => 'El campo celular debe ser un número',
 			'email.email' => 'El campo mail no tiene el formato correcto'
 		]);
 

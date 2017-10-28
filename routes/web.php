@@ -11,24 +11,6 @@
 |
 */
 
-Route::get('/', 'HomeController@home');
-
-Route::get('/category/{id}', 'CategoryController@show');
-
-Route::get('/product/{id}', 'ProductController@showProduct');
-
-Route::get('/productsList', 'CategoryController@index');
-
-Route::get('/projects', 'ProjectController@index');
-
-Route::post('/contact', 'ContactController@create')->name('contact');
-
-Route::get('/search', ['uses' => 'ProductController@search', 'as' => 'search']);
-
-Route::get('services', 'ServiceController@index');
-
-Route::get('/contacto', 'ContactController@show');
-
 // Route::get('/mail', function () {
 //   return view('emails/welcome');
 // });
@@ -84,5 +66,22 @@ Route::middleware(['auth'])->group(function () {
 
   Route::delete('certificate/destroy', 'CertificateController@destroy')->name('certificate.destroy');
 
-
 });
+
+Route::get('/', 'HomeController@home');
+
+Route::get('/category/{id}', 'CategoryController@show');
+
+Route::get('/{category}/{id}', 'ProductController@showProduct');
+
+Route::get('/productsList', 'CategoryController@index');
+
+Route::get('/projects', 'ProjectController@index');
+
+Route::post('/contact', 'ContactController@create')->name('contact');
+
+Route::get('/search', ['uses' => 'ProductController@search', 'as' => 'search']);
+
+Route::get('services', 'ServiceController@index');
+
+Route::get('/contacto', 'ContactController@show');
