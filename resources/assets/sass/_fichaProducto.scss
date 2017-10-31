@@ -90,21 +90,25 @@
     .certificados {
       ul {
         justify-content: flex-start;
-        flex-flow: column !important;
+        flex-flow: row !important;
+        flex-wrap: wrap !important;
         li {
-          width: 100%;
+          width: 48%;
           margin: 16px 0;
           margin-bottom: 16px;
           &:first-child {
             margin-left: 0;
           }
           p {
-            width: 80%;
             display: inline-block;
             font-size: 12px;
-            margin-top: 16px;
+            margin-top: 16px !important;
+            text-align: left !important;
             @media only screen and (min-width : 768px) {
               margin-top: 0;
+            }
+            span {
+              text-align: left !important;
             }
           }
         }
@@ -113,7 +117,9 @@
     img {
       width: 60px;
       vertical-align: top;
-      margin-right: 16px;
+      display: inline !important;
+      margin-right: 16px !important;
+      margin-left: 0 !important;
     }
   }
   .imgFicha {
@@ -198,6 +204,12 @@
         }
         img {
           margin-right: 16px;
+        }
+        .carac {
+          display: flex;
+          flex-flow: row;
+          align-items: center;
+          
         }
       }
     }

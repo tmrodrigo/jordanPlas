@@ -8506,6 +8506,19 @@ input:-webkit-autofill {
   background-color: red;
 }
 
+.null {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.null:hover {
+  text-decoration: none;
+}
+
+main {
+  min-height: 100vh;
+}
+
 .navegacion {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 4px;
@@ -9029,7 +9042,10 @@ input:-webkit-autofill {
 }
 
 #secciones article p {
-  text-align: left;
+  text-align: justify;
+  line-height: 24px !important;
+  padding-left: 18px;
+  padding-right: 18px;
 }
 
 #secciones article h3 {
@@ -9870,14 +9886,16 @@ footer {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  -webkit-box-orient: vertical !important;
+  -webkit-box-orient: horizontal !important;
   -webkit-box-direction: normal !important;
-      -ms-flex-flow: column !important;
-          flex-flow: column !important;
+      -ms-flex-flow: row !important;
+          flex-flow: row !important;
+  -ms-flex-wrap: wrap !important;
+      flex-wrap: wrap !important;
 }
 
 .fichaProducto .textFicha .certificados ul li {
-  width: 100%;
+  width: 48%;
   margin: 16px 0;
   margin-bottom: 16px;
 }
@@ -9887,10 +9905,10 @@ footer {
 }
 
 .fichaProducto .textFicha .certificados ul li p {
-  width: 80%;
   display: inline-block;
   font-size: 12px;
-  margin-top: 16px;
+  margin-top: 16px !important;
+  text-align: left !important;
 }
 
 @media only screen and (min-width: 768px) {
@@ -9899,10 +9917,16 @@ footer {
   }
 }
 
+.fichaProducto .textFicha .certificados ul li p span {
+  text-align: left !important;
+}
+
 .fichaProducto .textFicha img {
   width: 60px;
   vertical-align: top;
-  margin-right: 16px;
+  display: inline !important;
+  margin-right: 16px !important;
+  margin-left: 0 !important;
 }
 
 .fichaProducto .imgFicha {
@@ -10002,6 +10026,19 @@ footer {
   margin-right: 16px;
 }
 
+.fichaProducto .datos .datosList .col-sm-6 .carac {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row;
+          flex-flow: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .fichaProducto #botonesMobile {
   margin-top: 24px;
 }
@@ -10025,8 +10062,20 @@ footer {
 }
 
 .certificados ul li {
-  width: 60px;
   list-style: none;
   margin-left: 8px;
+}
+
+.certificados ul li img {
+  width: 60px;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.certificados ul li p {
+  text-align: center !important;
+  font-size: 12px !important;
 }
 

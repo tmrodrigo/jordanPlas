@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Project;
+use App\Service;
 use App\Category;
 use App\Image;
 use App\Color;
@@ -40,11 +42,13 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $colors = Color::all();
+        $rColors = Color::all();
+        $bColors = Color::take(4)->orderBy('id', 'asc')->get();
         $certificates = Certificate::all();
         return view('backend.products.productsCreate', [
           'categories' => $categories,
-          'colors' => $colors,
+          'rColors' => $rColors,
+          'bColors' => $bColors,
           'certificates' => $certificates,
         ]);
     }
@@ -210,10 +214,16 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $certificates = Certificate::all();
+        $bColors = Color::take(4)->orderBy('id', 'asc')->get();
+        $rColors = Color::all();
+        $products = Product::where('category_id', '=', $product->category->id)->get();
         return view('backend.products.product', [
             'product' => $product,
             'categories' => $categories,
-            'certificates' => $certificates
+            'certificates' => $certificates,
+            'products' => $products,
+            'bColors' => $bColors,
+            'rColors' => $rColors
         ]);
     }
 
@@ -244,9 +254,9 @@ class ProductController extends Controller
             'certificate_description' => 'nullable',
             'info_file' => 'mimes:pdf|max:3000',
             'manual_file' => 'nullable|mimes:pdf|max:5000',
-            'avatar' => 'mimes:png|max:250',
-            'left_img' => 'mimes:png|max:250',
-            'right_img' => 'mimes:png|max:250'
+            'avatar' => 'mimes:png|max:450',
+            'left_img' => 'mimes:png|max:450',
+            'right_img' => 'mimes:png|max:450'
         ],
         [
             'name.required' => 'Nombre requerido',
@@ -261,11 +271,11 @@ class ProductController extends Controller
             'info_file.mimes' => 'La ficha de producto debe ser formato PDF',
             'info_file.size' => 'La ficha de producto debe pesar menos de 3mb',
             'avatar.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'avatar.size' => 'La imagen de producto no debe pesar más de 250kb',
+            'avatar.max' => 'La imagen de producto no debe pesar más de 450kb',
             'left_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'left_img.size' => 'La imagen de producto no debe pesar más de 250kb',
+            'left_img.max' => 'La imagen de producto no debe pesar más de 450kb',
             'right_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'right_img.size' => 'La imagen de producto no debe pesar más de 250kb'
+            'right_img.max' => 'La imagen de producto no debe pesar más de 450kb'
         ]);
 
         $product = Product::find($request['id']);
@@ -334,39 +344,40 @@ class ProductController extends Controller
 
             $product->available = $request['available'];
 
+
         $product->save();
-
-        $bodyColors = $request['body_color_id'];
-
 
         $reflexColor = $request['light_color_id'];
 
-
-        // dd($reflexColor);
-        // if (is_array($bodyColors)) {
-        //     foreach($bodyColors as $color) {
-        //         $bodyColor = $product->atributes()->where('product_id', $request['id'])->where('value', $color)->firstOrFail();
-        //
-        //         $bodyColor->value = $color;
-        //         $bodyColor->update();
+        // dd($rColor);
+        // $atributos = $product->atributes->toArray();
+        // if(isset($request['body_color_id']) && !empty($atributos)) {
+        //     foreach ($atributos as $key => $value) {
+        //         if($value['atribute'] == "body_color"){
+        //             $bColor[] = $value['value'];
+        //         }
+        //     }
+        //     // Agregar color de cuerpo
+        //     $arrColor = array_diff($request['body_color_id'], $bColor);
+        //     if (count($arrColor) == 0){
+        //         $atribute = ProductAtribute::find()->where('product_id', '=', $request['id'])->where('value', '=', $value['value']);
+        //         $atribute->atribute = "body_color";
+        //         $atribute->value = '';
+        //         $product->atributes()->save($atribute);
         //     }
         // } else {
-        //     $bodyColor = $product->atributes()->where('product_id', $request['id'])->where('value', $color)->firstOrFail();
-        //     $bodyColor->value = $color;
-        //     $bodyColor->update();
+        //     if (isset($request['body_color_id'])) {
+        //         foreach ($request['body_color_id'] as $key => $value) {
+        //             $atribute = new ProductAtribute();
+        //             $atribute->atribute = "body_color";
+        //             $atribute->value = $value;
+        //             $product->atributes()->save($atribute);
+        //         }
+        //     }
         // }
 
-        // toDO -> update en el atributo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (isset($bodyColors)) {
-            if (is_array($bodyColors)) {
-                foreach ($bodyColors as $key => $value) {
-                    $atribute = new ProductAtribute();
-                    $atribute->atribute = "body_color";
-                    $atribute->value = $value;
-                    $product->atributes()->save($atribute);
-                }
-            }
-            else {
+        if (isset($request['body_color_id'])) {
+            foreach ($request['body_color_id'] as $key => $value) {
                 $atribute = new ProductAtribute();
                 $atribute->atribute = "body_color";
                 $atribute->value = $value;
@@ -391,13 +402,15 @@ class ProductController extends Controller
         }
 
         $certificates = $request['certificate_id'];
-        if (isset($certificates)) {
-            foreach ($certificates as $key => $value) {
-                $product->certificates()->sync($value);
-            }
+
+        if ($certificates == null) {
+            $product->certificates()->detach();
+        }
+        if ($certificates != null) {
+            $product->certificates()->sync($certificates);
         }
 
-        return redirect('/backend/products')->with('message', 'Producto actualizado correctamente');
+        return redirect()->back()->with('message', 'Producto actualizado correctamente');
     }
 
     public function destroy(Product $product)
@@ -412,13 +425,24 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $product = Product::find($id);
-        $products = Product::all();
+        $products = Product::where('category_id', '=', $product->category->id)
+                            ->orderBy('rating', 'desc')
+                            ->orderBy('updated_at', 'desc')
+                            ->get();
         $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
+        $projects = Project::all();
+        $services = Service::all();
+        $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $id)->get();
+        $rColors = ProductAtribute::where('atribute', '=', 'reflex_color')->where('product_id', '=', $id)->get();
         return view('product', [
             'product' => $product,
             'categories' => $categories,
             'products' => $products,
-            'certificates' => $certificates
+            'certificates' => $certificates,
+            'projects' => $projects,
+            'services' => $services,
+            'bColors' => $bColors,
+            'rColors' => $rColors
         ]);
     }
 
@@ -478,17 +502,21 @@ class ProductController extends Controller
     $products = Product::all();
     $categories = Category::all();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
-    $topProducts = Product::where('rating', '>', '3')->get();
-    $productList = Product::where('name', 'like', '%' . $keyword . '%')
+    $topProducts = Product::where('rating', '<', '3')->get();
+    $productList = Product::where('name', 'like', '%' . $keyword)
                             ->orWhere('description', 'like', '%' . $keyword . '%')
                             ->orderBy('rating', 'asc')
                             ->get();
+    $projects = Project::all();
+    $services = Service::all();
         return view('productsList', [
             'productList' => $productList,
             'categories' => $categories,
             'topProducts' => $topProducts,
             'products' => $products,
-            'certificates' => $certificates
+            'certificates' => $certificates,
+            'projects' => $projects,
+            'services' => $services
         ]);
     }
 

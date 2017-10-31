@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service;
 use App\Product;
+use App\Project;
 use App\Category;
 use App\Certificate;
 
@@ -16,11 +17,13 @@ class ServiceController extends Controller
     $products = Product::all();
 		$services = Service::all();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
+    $projects = Project::all();
     return view('services', [
       'categories' => $categories,
       'products' => $products,
 			'services' => $services,
-      'certificates' => $certificates
+      'certificates' => $certificates,
+      'projects' => $projects
   ]);
   }
 
@@ -45,8 +48,16 @@ class ServiceController extends Controller
 
 	}
 
-	public function update()
+	public function update(Request $request, Service $service)
 	{
+    $service = Service::find($request['id']);
+
+		$service->name = $request['name'];
+		$service->description = $request['description'];
+
+		$service->update();
+
+		return redirect()->back()->with('messageService', 'Servicio actualizado correctamente');
 
 	}
 

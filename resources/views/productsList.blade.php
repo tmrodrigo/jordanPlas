@@ -17,9 +17,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-8">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </div>
+                  <div class="" style="margin: 32px 0"></div>
                 </div>
               </div>
             </div>
@@ -32,17 +30,23 @@
                 </div>
               </div>
               <div class="row">
-                @foreach ($productList as $product)
-                  <div class="col-xs-6 col-sm-3">
-                    <a href="{{ url('category', $product->id) }}">
-                      <div class="itemCategoria">
-                        <img src="{{ Storage::url($product->avatar) }}" alt="">
-                        <h3>{{ $product->name }}</h3>
-                        <a href="productos.php">Ver más</a>
-                      </div>
-                    </a>
+                @if (count($productList) <= 0)
+                  <div class="col-sm-12">
+                    <h4>Disculpe, su busqueda no arrojó ningún resultado. Intente con palabras más cercanas</h4>
                   </div>
-                @endforeach
+                  @else
+                    @foreach ($productList as $product)
+                      <div class="col-xs-6 col-sm-3">
+                        <a href="{{ url($product->category->name, $product->id) }}">
+                          <div class="itemCategoria">
+                            <img src="{{ Storage::url($product->avatar) }}" alt="{{ $product->name . ', ' . $product->description }}">
+                            <h3>{{ $product->name }}</h3>
+                            <a href="{{ url($product->category->name, $product->id) }}">Ver más</a>
+                          </div>
+                        </a>
+                      </div>
+                    @endforeach
+                @endif
               </div>
               <div class="row">
                 <div class="col-sm-12">
@@ -51,12 +55,13 @@
               </div>
               <div class="row">
                 @foreach ($topProducts as $topProduct)
+                  {{-- {{ dd($topProduct->id) }} --}}
                   <div class="col-xs-6 col-sm-3">
-                    <a href="{{ url('category', $topProduct->id) }}">
+                    <a href="{{ url($product->category->name, $topProduct->id) }}">
                       <div class="itemCategoria">
                         <img src="{{ Storage::url($product->avatar) }}" alt="">
                         <h3>{{ $topProduct->name }}</h3>
-                        <a href="productos.php">Ver más</a>
+                        <a href="{{ url($product->category->name, $topProduct->id) }}">Ver más</a>
                       </div>
                     </a>
                   </div>
@@ -65,15 +70,17 @@
             @endif
             <div class="row">
               @foreach ($categories as $category)
-                <div class="col-xs-6 col-sm-3">
-                  <a href="{{ url('category', $category->id) }}">
-                    <div class="itemCategoria">
-                      <img src="storage/productos/tachas-redon.png" alt="">
-                      <h3>{{ $category->name }}</h3>
-                      <a href="productos.php">Ver más</a>
-                    </div>
-                  </a>
-                </div>
+                @if (count($category->product) > 0)
+                  <div class="col-xs-6 col-sm-3">
+                    <a href="{{ url($product->category->name, $category->id) }}">
+                      <div class="itemCategoria">
+                        <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name . ', ' . $category->description }}">
+                        <h3>{{ $category->name }}</h3>
+                        <a href="{{ url($product->category->name, $category->id) }}">Ver más</a>
+                      </div>
+                    </a>
+                  </div>
+                @endif
               @endforeach
             </div>
           </div>

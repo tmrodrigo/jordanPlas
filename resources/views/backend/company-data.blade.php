@@ -37,7 +37,7 @@
 						<div class="tab-content">
 							<div class="tab-pane active" id="description">
 								<p class="lead">Descripción</p>
-								<p>{{ $data->description }}</p>
+								<p>{!! $data->description !!}</p>
 							</div>
 							<div class="tab-pane" id="phones">
 								<p class="lead">Teléfonos</p>
@@ -98,6 +98,7 @@
 		      @endif
 		    </div>
 		  </div>
+
 			<div class="x_content">
 				<br />
 				@if ($data !== null)
@@ -106,7 +107,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">Descripción empresa</label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="text" class="form-control" name="description" value="{{ $data->description }}">
+								<textarea name="description" value="{{ $data->description }}" class="resizable_textarea form-control" placeholder="{{ $data->description }}" style="min-height:250px"></textarea>
 							</div>
 						</div>
 						<div class="form-group">
@@ -116,15 +117,15 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-3">Fax</label>
-							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="text" class="form-control" name="fax" value="{{ $data->fax }}">
-							</div>
-						</div>
-						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">Celular</label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
 								<input type="text" class="form-control" name="celular" value="{{ $data->celular }}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-3">Celular 02</label>
+							<div class="col-md-9 col-sm-9 col-xs-9">
+								<input type="text" class="form-control" name="fax" value="{{ $data->fax }}">
 							</div>
 						</div>
 						<div class="form-group">
@@ -305,6 +306,80 @@
 						</div>
 						<div class="separador"></div>
 					@endforeach
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Ingresar nueva imagen de proyecto</h2><br><br>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<div class="x_content">
+					@if ($errors->any())
+						@foreach ($errors->all() as $error)
+							<div class="alert alert-danger alert-dismissible fade in" role="alert">
+								<strong>{{ $error }}</strong>
+							</div>
+						@endforeach
+					@endif
+					@if (session('Projectmessage'))
+						<div class="alert alert-success alert-dismissible fade in" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+							</button>
+							<strong>{{ session('Projectmessage') }}</strong>
+						</div>
+					@endif
+				</div>
+				<br />
+				<div class="row">
+					<form class="form-horizontal form-label-left" action="{{ route('project.create') }}" method="post" enctype="multipart/form-data">
+						{{ csrf_field() }}
+						<div class="form-group">
+							<label class="control-label col-md-2">Nombre proyecto</label>
+							<div class="col-md-10">
+								<input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-2">Cargar imagen (Proporción recomendada 16:9)</label>
+							<div class="col-md-10">
+								<input type="file" class="form-control" name="url" value="">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-10 col-sm-2">
+								<button type="submit" class="btn btn-success">Guardar</button>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<div class="ln_solid"></div>
+					</form>
+				</div>
+				@if (isset($projects))
+					@foreach ($projects as $project)
+						<div class="row">
+							<div class="col-sm-6">
+								<img src="{{ Storage::url($project->url) }}" alt="{{ $project->name }}" style="max-width: 100%">
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-sm-offset-10 col-sm-2">
+								<form class="" action="{{ route('project.destroy', $project) }}" method="post">
+									{{ method_field('DELETE')}}
+									{{ csrf_field() }}
+									<input type="text" name="id" value="{{ $project->id }}" style="display:none;">
+									<input type="submit" name="" value="Eliminar" class="btn btn-danger">
+								</form>
+							</div>
+						</div>
+						<div class="separador"></div>
+					@endforeach
+				@endif
 			</div>
 		</div>
 	</div>

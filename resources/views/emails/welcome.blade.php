@@ -45,7 +45,7 @@
                     <strong>Fecha:</strong> {{ $client->date }}<br />
                     <strong>Solicitud de presupuesto: # {{ $id }}</strong><br>
                     <strong>Cliente: </strong> {{ $client->name }}<br>
-                    <strong>Teléfono: </strong><a href="tel:{{ $client->phone}}">{{ $client->phone}}</a><br>
+                    <strong>Teléfono: </strong><a href="tel:{{ $client->phone }}">{{ $client->phone }}</a><br>
                     <strong>Email: </strong><a href="mailto:{{ $client->email }}">{{ $client->email }}</a><br>
                   </div>
                 </div>

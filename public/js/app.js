@@ -103,6 +103,7 @@ $(document).ready(function () {
       if (e.keyCode == 27) {
         $('#sButton').removeClass('ocultarSearch');
         $('#searcher').removeClass('mostarSearch');
+        $('#contact').fadeOut('fast');
       }
     });
   }
@@ -222,6 +223,38 @@ $(document).ready(function () {
     }
   });
 
+  var code = $('#code');
+
+  var otro = $('#otro');
+
+  code.on('change', function () {
+    if (code.val() !== "") {
+      $('#phone').focus();
+    }
+    if (code.val() == "") {
+      otro.removeAttr('disabled');
+      otro.focus();
+      otro.css('border-bottom', '1px solid blue');
+      otro.on('blur', function () {
+        if (otro.val() == "") {
+          otro.focus();
+          otro.css('border-bottom', '2px solid #ED0E3D');
+          $('#errorCode').empty();
+          $('#errorCode').append('Debe ingresar un código válido');
+        }
+        if (isNaN(otro.val())) {
+          otro.focus();
+          otro.css('border-bottom', '2px solid #ED0E3D');
+          $('#errorCode').empty();
+          $('#errorCode').append('El código debe ser un número');
+        } else {
+          otro.css('border-bottom', '1px solid #5BAC29');
+          $('#errorCode').empty();
+        }
+      });
+    }
+  });
+
   $('#message').blur(function () {
     var message = $('#message').val();
     var error = $('#messageError');
@@ -275,80 +308,27 @@ $(document).ready(function () {
     input.css('border-bottom', '2px solid #ED0E3D');
   }
 
-  $('#next').on('click', function () {
-    if (($('#bName').val() && $('#bEmail').val() && $('#bPhone').val()) !== "" && $('#bNameError').is(':empty') && $('#bEmailError').is(':empty') && $('#bPhoneError').is(':empty')) {
-      $('#completar').empty();
-      $('#prevForm').hide();
-      $('#nextForm').show();
-    } else {
-      $('#completar').append('Llenar campos requeridos');
-      $('#bName').css('border-bottom', '2px solid #ED0E3D');
-      $('#bEmail').css('border-bottom', '2px solid #ED0E3D');
-      $('#bPhone').css('border-bottom', '2px solid #ED0E3D');
-    }
+  var cerrar = $('#close_login');
+
+  cerrar.on('click', function () {
+    $('#contact').fadeOut('fast');
   });
 
-  // $('#nextForm').hide();
-
-  // $('#form').fadeOut();
-
-
-  var producto = $('.producto');
   var cantidad = $('.cantidad');
-  var campo = '<select class="producto" name="product_id"><option value="">seleccione un producto</option>@foreach ($products as $product)<option value="{{ $product->id}}">{{ $product->name }}</option>@endforeach</select>';
+  var error = $('#nfError');
 
-  producto.each(function () {
-    $(this).blur(function () {
-      var message = $(this).val();
-      if (message === "" && message !== " ") {
-        $(this).css('border-bottom', '2px solid #ED0E3D');
-      } else {
-        $(this).css('border-bottom', '1px solid #5BAC29');
-      }
-    });
-  });
-
-  cantidad.each(function () {
-    $(this).blur(function () {
-      var message = $(this).val();
-      if (cantidad.is(':empty')) {
-        $(this).css('border-bottom', '1px solid #505050');
-      }
-      if ($(this).val()) {
-        if (isNaN($(this).val())) {
-          $('#nfError').empty();
-          $(this).css('border-bottom', '2px solid #ED0E3D');
-          $('#nfError').append('La cantidad debe ser un número');
-        } else {
-          $(this).css('border-bottom', '1px solid #5BAC29');
-          if (producto.val() != "" && cantidad.val() != "") {
-            $('#agregarMas').append(campo);
-            $('#nfError').empty();
-          }
-        }
-      }
-    });
-  });
-
-  $('#enviarBudget').on('click', function () {
-    if (cantidad.val() == "" && producto.val() == "") {
-      $('#nfError').empty();
-      $('#nfError').append('Seleccione al menos un producto');
-    } else {
-      $('#budget').submit();
-    }
-  });
-
-  var product = $('.productsSelect');
-  var cantidad = $('.cantidad');
   cantidad.each(function () {
     $(this).on('blur', function () {
-      if ($(this).val() > 0) {
-        product.each(function () {
-          if ($(this).hasClass('showProduct')) {
-            $(this).next().addClass('showProduct');
-          }
-        });
+      if (isNaN($(this).val())) {
+        error.empty();
+        $(this).focus();
+        error.append('La cantidad debe ser un número');
+        $(this).css('border-bottom', '2px solid #ED0E3D');
+      }
+      if (!isNaN($(this).val())) {
+        error.empty();
+        $(this).css('border-bottom', '1px solid #5BAC29');
+        $(this).parent().parent().parent().next().addClass('showProduct');
       }
     });
   });

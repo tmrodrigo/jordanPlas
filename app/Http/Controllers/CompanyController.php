@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Company;
 use App\Service;
+use App\Project;
 use Validator;
 
 class CompanyController extends Controller
@@ -13,18 +14,29 @@ class CompanyController extends Controller
 	{
 		$data = Company::orderBy('created_at', 'desc')->first();
     $services = Service::all();
+    $projects = Project::all();
 		return view('backend.company-data', [
 			'data' => $data,
-      'services' => $services
+      'services' => $services,
+      'projects' => $projects
 		]);
 	}
 
 	public function create(Request $request, Company $company)
 	{
+
 		$this->validate($request, [
-			'email' => 'email'
+			'email' => 'email',
+			'description' => 'required',
+			'phone' => 'required',
+			'fax' => 'required',
+			'celular' => 'required',
 		], [
-			'email.email' => 'El campo mail no tiene el formato correcto'
+			'email.email' => 'El campo mail no tiene el formato correcto',
+			'email.required' => 'El email es requerido',
+			'description.required' => 'La descripción es requerida',
+			'phone.required' => 'El teléfono es requerido',
+			'celular.required' => 'El celular es requerido'
 		]);
 
 		$data = new Company;
@@ -44,14 +56,8 @@ class CompanyController extends Controller
   public function update(Request $request, Company $company)
   {
     $this->validate($request, [
-      'phone' => 'numeric',
-      'fax' => 'numeric',
-      'celular' => 'numeric',
-      'email' => 'email'
+      'email' => 'email',
     ], [
-      'phone.numeric' => 'El campo teléfono debe ser un número',
-      'fax.numeric' => 'El campo fax debe ser un número',
-      'celular.numeric' => 'El campo celular debe ser un número',
       'email.email' => 'El campo mail no tiene el formato correcto'
     ]);
 

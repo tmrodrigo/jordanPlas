@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Certificate;
 use App\Product;
+use App\Project;
+use App\Service;
 use App\Category;
 use App\Budget;
 use Carbon\Carbon;
@@ -28,8 +30,6 @@ class ContactController extends Controller
         if ($request['budget_id']) {
             $contact->budget_id = $request['budget_id'];
         };
-
-        dd($contact);
 
         $contact->save();
 
@@ -65,12 +65,16 @@ class ContactController extends Controller
         $certificates = Certificate::all();
         $clientId = Client::orderby('updated_at', 'desc')->first();
         $time = Carbon::now();
+        $projects = Project::all();
+        $services = Service::all();
         return view('contact' , [
             'products' => $products,
             'categories' => $categories,
             'certificates' => $certificates,
             'clientId' => $clientId,
-            'time' => $time
+            'time' => $time,
+            'projects' => $projects,
+            'services' => $services
         ]);
     }
 

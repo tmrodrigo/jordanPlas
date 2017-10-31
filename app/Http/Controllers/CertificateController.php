@@ -35,6 +35,7 @@ class CertificateController extends Controller
 
 		public function destroy(Request $request, Certificate $certificate)
 		{
+
 			$certificate = Certificate::find($request['id']);
 
 			$certificate->delete();

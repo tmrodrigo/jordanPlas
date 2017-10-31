@@ -50,20 +50,31 @@
     <section id="secciones">
       <article  id="1" class="">
         <div class="row">
-          <div class="col-sm-12">
-            <img src="storage/home/empresa.jpg" alt="">
+          <div class="col-sm-12"  id="empresa">
+            <div class="jordanPlas">
+              <h2>Jordan Plas</h2>
+              <h3>®</h3>
+            </div>
           </div>
         </div>
+        @if (isset($images))
+          <div class="row">
+            @foreach ($images as $key => $image)
+              <div class="{{ $key == 0 ? 'col-sm-12' : 'col-sm-6'}}">
+                <img src="{{ Storage::url($image->url) }}" alt="{{ $image->name }}">
+              </div>
+            @endforeach
+          </div>
+        @endif
         <div class="row">
           <div class="col-sm-12">
             <div class="textoSeccion">
               @if ($data)
-                <h2>Jordan Plas</h2>
-                <p>{{ $data->description }}</p>
+                <h4>Jordan Plas ®</h4>
+                <p>{!! $data->description !!}</p>
                 <h4>Contactanos</h4>
                 <div class="telMail">
-                  <p><span>Tel: </span>{{ $data->phone }}<br><span>Celular: </span> {{ $data->fax }} | <span>Celular: </span>{{ $data->celular }}</p>
-                  <p><span>Email: </span><a href="mailto:{{ $data->email }}">{{ $data->email }}</a></p>
+                  <p><span>Tel: </span>{{ $data->phone }} | <span>Celular: </span> {{ $data->fax }} | <span>Celular: </span>{{ $data->celular }} | <span>Email: </span><a href="mailto:{{ $data->email }}">{{ $data->email }}</a></p>
                   <div class="direccion">
                     <p><span>Dirección: </span>{{ $data->address }}</p>
                   </div>
@@ -71,11 +82,14 @@
               @endif
             </div>
             <a class="presupuesto" href="" onclick="event.preventDefault()">Solicitá presupuesto</a>
-            <h3>Certificados:</h3>
+            <h3>Certificados</h3>
             <div class="certificados">
               <ul>
                 @foreach ($certificates as $certificate)
-                    <li><img src="{{ Storage::url($certificate->image) }}" alt=""></li>
+                    <li>
+                      <img src="{{ Storage::url($certificate->image) }}" alt="{{ $certificate->name }}">
+                      <p>{{ $certificate->name }}</p>
+                    </li>
                 @endforeach
               </ul>
             </div>
@@ -109,7 +123,6 @@
           <div class="col-sm-offset-2 col-sm-8">
             <div class="textoSeccion">
               <h2>Productos</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
           </div>
         </div>
@@ -118,9 +131,9 @@
             <div class="col-xs-6 col-sm-3">
               <a href="{{ url('category', $category->id) }}">
                 <div class="itemCategoria">
-                  <img src="storage/productos/tachas-redon.png" alt="">
+                  <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name . ', ' . $category->description }}">
                   <h3>{{ $category->name }}</h3>
-                  <a href="productos.php">Ver más</a>
+                  <a href="{{ url('category', $category->id) }}">Ver más</a>
                 </div>
               </a>
             </div>
@@ -132,14 +145,14 @@
           <div class="col-sm-offset-2 col-sm-8">
             <div class="textoSeccion">
               <h2>Proyectos</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
           </div>
         </div>
         <div class="row">
           @foreach ($projects as $project)
             <div class="col-sm-4">
-              <img src="storage/proyectos" alt="">
+              <img src="{{ Storage::url($project->url) }}" alt="{{ $project->name }}">
+              <figcaption>{{ $project->name }}</figcaption>
             </div>
           @endforeach
         </div>

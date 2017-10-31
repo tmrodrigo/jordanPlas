@@ -22,11 +22,25 @@
       <div class="x_panel">
         <div class="x_content">
           <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-              <ul class="pagination pagination-split">
-                {{-- <li>{{ $products->links() }}</li> --}}
-              </ul>
-            </div>
+            @if (count($categories) < 1)
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="">
+                    <h1>Debe cargar una categoría antes de cargar un producto</h1>
+                    <a href="backendHome" class="btn btn-primary">Cargar categoría acá</a>
+                  </div>
+                </div>
+              </div>
+            @endif
+            @if (count($categories) >= 1)
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="btn btn-primary">
+                    <a href="{{route('products.create')}}"  style="color:white">Cargar nuevo producto</a>
+                  </div>
+                </div>
+              </div>
+            @endif
             <div class="clearfix"></div>
             @foreach ($products as $product)
               <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
@@ -52,12 +66,14 @@
                   </div>
                   <div class="col-xs-12 bottom text-center">
                     <div class="col-xs-12 col-sm-6 emphasis">
-                      <p>{{ $product->rating }}</p>
-                      <p class="ratings">
-                        @for ($i=0; $i < $product->rating ; $i++)
-                        <a href="#"><span class="fa fa-star"></span></a>
-                        @endfor
-                      </p>
+                      @if ($product->rating > 0)
+                        <p>{{ $product->rating +1 }}</p>
+                        <p class="ratings">
+                          @for ($i=0; $i < $product->rating +1; $i++)
+                          <a href="#"><span class="fa fa-star"></span></a>
+                          @endfor
+                        </p>
+                      @endif
                     </div>
                     <div class="col-xs-12 col-sm-6 emphasis">
                       <div class="row">
@@ -80,26 +96,6 @@
               </div>
             @endforeach
           </div>
-          @if (count($categories) < 1)
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="">
-                  <h1>Debe cargar una categoría antes de cargar un producto</h1>
-                  <a href="backendHome" class="btn btn-primary">Cargar categoría acá</a>
-                </div>
-              </div>
-            </div>
-          @endif
-          @if (count($categories) >= 1)
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="btn btn-primary">
-                  <a href="{{route('products.create')}}"  style="color:white">Cargar nuevo producto</a>
-                </div>
-              </div>
-            </div>
-          @endif
-
         </div>
       </div>
     </div>

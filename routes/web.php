@@ -66,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
 
   Route::delete('certificate/destroy', 'CertificateController@destroy')->name('certificate.destroy');
 
+  Route::post('project/create', 'ProjectController@create')->name('project.create');
+
+  Route::delete('project/destroy', 'ProjectController@destroy')->name('project.destroy');
+
 });
 
 Route::get('/', 'HomeController@home');

@@ -120,7 +120,7 @@
             </div>
             <div class="x_content">
               <div class="row">
-                <form class="form-horizontal form-label-left" action="{{ route('category.store') }}" method="post">
+                <form class="form-horizontal form-label-left" action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">
                   {{ csrf_field() }}
                   <div class="form-group">
                     <label class="control-label col-md-2">Categoria Nueva</label>
@@ -135,6 +135,12 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label class="control-label col-md-2">Avatar</label>
+                    <div class="col-md-10">
+                      <input type="file" name="avatar" value="" class="form-control" id="" placeholder="">
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <div class="col-sm-offset-10 col-sm-2">
                       <button type="submit" class="btn btn-success pull-right">Guardar</button>
                     </div>
@@ -145,8 +151,9 @@
               </div>
                 @foreach ($categories as $category)
                   <div class="row">
+                    <h3>{{ $category->name }}</h3>
                     <div class="col-sm-12">
-                      <form class="" action="{{ route('category.update', $category ) }}" method="post">
+                      <form action="{{ route('category.update', $category ) }}" method="post" enctype="multipart/form-data">
                           {{ csrf_field() }}
                           {{ method_field('PUT')}}
                           <div class="form-group">
@@ -164,6 +171,17 @@
                             </div>
                           </div>
                           <div class="clearfix"></div>
+                          <div class="">
+                              <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name }}" style="width:150px;">
+                          </div>
+                          <div class="clearfix"></div>
+                          <div class="form-group">
+                            <label class="control-label col-md-2">Reemplazar avatar acá</label>
+                            <div class="col-md-10">
+                              <input type="file" name="avatar" value="" class="form-control">
+                            </div>
+                          </div>
+                          <div class="clearfix"></div>
                           <div class="form-group">
                             <div class="col-sm-offset-10">
                               <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
@@ -172,7 +190,7 @@
                       </form>
                     </div>
                     <div class="col-sm-offset-9 col-sm-2">
-                      @if (count($products) <= 0)
+                      {{-- @if (count($products) <= 0)
                         <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
                           {{ method_field('DELETE')}}
                           {{ csrf_field() }}
@@ -180,18 +198,19 @@
                           <input type="submit" name="" value="Eliminar" class="btn btn-danger">
                         </form>
                         @else
-                          @foreach ($products as $product)
-                            @if ($product->category->id !== $category->id)
-                              <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
-                                {{ method_field('DELETE')}}
-                                {{ csrf_field() }}
-                                <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
-                                <input type="submit" name="" value="Eliminar" class="btn btn-danger">
-                              </form>
-                              @break
-                            @endif
-                          @endforeach
-                      @endif
+
+                      @endif --}}
+                      @foreach ($products as $product)
+                        @if (count($category->product) == 0)
+                          <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
+                            {{ method_field('DELETE')}}
+                            {{ csrf_field() }}
+                            <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
+                            <input type="submit" name="" value="Eliminar" class="btn btn-danger">
+                          </form>
+                          @break($product->category->id != $category->id)
+                        @endif
+                      @endforeach
                     </div>
                     <div class="clearfix"></div>
                   </div>

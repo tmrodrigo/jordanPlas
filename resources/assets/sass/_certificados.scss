@@ -8,9 +8,19 @@
     justify-content: space-between;
     margin: 16px 0;
     li {
-      width: 60px;
       list-style: none;
       margin-left: 8px;
+      img {
+        width: 60px;
+        border-radius: 50%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      p {
+        text-align: center !important;
+        font-size: 12px !important;
+      }
     }
   }
 }

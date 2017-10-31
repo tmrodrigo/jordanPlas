@@ -74,12 +74,26 @@
             <li id="subMenuItem"><a href="{{ url('productsList')}}">Productos</a>
               <ul id="subMenu">
                 @foreach ($categories as $category)
-                  <li><a href="{{ url('category/'. $category->id) }}">{{ $category->name }}</a></li>
+                  @if (count($category->product) > 0)
+                    <li><a href="{{ url('category/'. $category->id) }}">{{ $category->name }}</a></li>
+                  @endif
                 @endforeach
               </ul>
             </li>
-            <li><a href="{{ url('projects')}}">Proyectos</a></li>
-            <li><a href="{{ url('services')}}">Servicios</a></li>
+            <li>
+              @if (count($projects) < 0)
+               <a href="{{ url('projects')}}" class="null" onclick="event.preventDefault()" style="opacity:0.5">Proyectos</a>
+               @else
+                <a href="{{ url('projects')}}">Proyectos</a>
+              @endif
+            </li>
+            <li>
+              @if (count($services) < 0)
+               <a href="{{ url('services')}}" class="null" onclick="event.preventDefault()" style="opacity:0.5">Servicios</a>
+               @else
+                <a href="{{ url('services')}}">Servicios</a>
+              @endif
+            </li>
             <li><a href="{{ url('contacto')}}">Contactanos</a></li>
             {{-- <li class="presupuesto"><a href="#contacto">Contactanos</a></li> --}}
           </ul>
@@ -140,7 +154,7 @@
               </div>
             </section>
             <section id="creditos">
-              <p>© 2017 copyright - Jordan Plas S.A - Todos los derecho reservados. Diseño y desarrollo <a href="http://www.loveinbrands.com">loveinbrands</a></p>
+              <p>© 2017 copyright - Jordan Plas® S.A - Todos los derecho reservados. Diseño y desarrollo <a href="http://www.loveinbrands.com">loveinbrands</a></p>
             </section>
           </footer>
         </div>

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Certificate;
 use App\Product;
+use App\Project;
+use App\Service;
 
 class CategoryController extends Controller
 {
@@ -14,13 +16,20 @@ class CategoryController extends Controller
   {
     $categories = Category::all();
     $category = Category::find($id);
-    $products = Product::where('category_id', '=', $id)->get();
+    $products = Product::where('category_id', '=', $id)
+                        ->orderBy('rating', 'desc')
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
+    $projects = Project::all();
+    $services = Service::all();
     return view('products', [
         'categories' => $categories,
         'category' => $category,
         'products' => $products,
-        'certificates' => $certificates
+        'certificates' => $certificates,
+        'projects' => $projects,
+        'services' => $services
     ]);
   }
 
@@ -28,9 +37,13 @@ class CategoryController extends Controller
   {
     $categories = Category::all();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
+    $projects = Project::all();
+    $services = Service::all();
     return view('productsList', [
         'categories' => $categories,
-        'certificates' => $certificates
+        'certificates' => $certificates,
+        'projects' => $projects,
+        'services' => $services
     ]);
   }
 
@@ -38,13 +51,25 @@ class CategoryController extends Controller
   {
     $this->validate($request, [
       'name' => 'required|string',
+			'avatar'=> 'required'
     ], [
       'name.required' => 'Nombre de categoría requerido',
-      'name.string' => 'El nombre no puede ser un número'
+      'name.string' => 'El nombre no puede ser un número',
+      'avatar.required' => 'La categoría debe tener una imagen como avatar',
     ]);
+
     $category = new Category;
     $category->name = $request['name'];
     $category->description = $request['description'];
+
+    $imgName = str_replace(str_split('\\/:*?"<>|" "()'), '-', strtolower($request['name']));
+    $certImg = $request->file("avatar");
+    $name = $imgName . "-avatar" . "." . $certImg->extension();
+    $folder = "category-avatar";
+    $path = $certImg->storePubliclyAs($folder, $name);
+    $category->avatar = $path;
+
+
     $category->save();
 
     return redirect()->back()->with('message', 'Nueva categoría guardada');
@@ -52,6 +77,7 @@ class CategoryController extends Controller
 
   public function update(Request $request, Category $category)
   {
+
     $this->validate($request, [
       'name' => 'required|string',
     ], [
@@ -63,6 +89,14 @@ class CategoryController extends Controller
 
     $category->name = $request['name'];
     $category->description = $request['description'];
+    if (isset($request['avatar'])) {
+      $imgName = str_replace(str_split('\\/:*?"<>|" "()'), '-', strtolower($request['name']));
+      $certImg = $request->file("avatar");
+      $name = $imgName . "-avatar" . "." . $certImg->extension();
+      $folder = "category-avatar";
+      $path = $certImg->storePubliclyAs($folder, $name);
+      $category->avatar = $path;
+    }
 
     $category->update();
 

@@ -23,7 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = Product::where('rating', '>', '3')->get();
+        // $products = Product::where('rating', '>', '3')->get();
+        $products = Product::all();
+
         $categories = Category::all();
         $clients = Client::orderBy('created_at', 'desc')->limit('5')->get();
         $certificates = Certificate::all();
@@ -40,8 +42,9 @@ class HomeController extends Controller
     {
         $posts = Post::all();
         $categories = Category::all();
+        $images = Project::take(4)->get();
         $projects = Project::all();
-        $products = Product::where('rating', '>', '3')->get();
+        $products = Product::orderBy('rating', 'desc')->get();
         $data = Company::orderBy('created_at', 'desc')->first();
         $logos = ClientLogo::all();
         $certificates = Certificate::all();
@@ -54,7 +57,8 @@ class HomeController extends Controller
             'data' => $data,
             'logos' => $logos,
             'certificates' => $certificates,
-            'services' => $services
+            'services' => $services,
+            'images' => $images
 
         ]);
     }

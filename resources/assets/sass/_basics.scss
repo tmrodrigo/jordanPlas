@@ -130,3 +130,15 @@ input:-webkit-autofill {
   overflow: visible !important;
   background-color: red
 }
+
+.null {
+  opacity: 0.5;
+  cursor: default;
+  &:hover{
+    text-decoration: none;
+  }
+}
+
+main {
+  min-height: 100vh;
+}

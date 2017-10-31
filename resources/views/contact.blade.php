@@ -47,7 +47,7 @@
 										<label for="">Seleccione código de área, si su número no está en la lista, eliga "otro" y escríbalo</label>
 										<div class="codigo">
 											<select class="" name="codigo" id="code">
-												<option value="11">Capital Federal - 11</option>
+												<option value="11" selected="selected">Capital Federal - 11</option>
 												<option value="221">La Plata (Bs.As) - 221</option>
 												<option value="261">Mendoza - 261</option>
 												<option value="264">San Juan - 264</option>
@@ -71,7 +71,6 @@
 												<option value="2954">Sta Rosa (La Pampa) - 2954</option>
 												<option value="2966">Río Gallegos - 2966</option>
 												<option value="">OTRO</option>
-												<option value="">Celular</option>
 											</select>
 											<div class="codeInput">
 												<input type="text" name="codigo" value="" class="form-control required" id="otro" placeholder="Otro código / Código celular" disabled>
@@ -118,7 +117,6 @@
 								</div>
 								<div class="form-group botonera">
 									<button type="button" name="button" id="enviar">Enviar</button>
-									<!-- <button type="button" name="presupuesto" class="btnBudget" id="next">Solicitar presupuesto</button> -->
 								</div>
 								<div class="form-group">
 									<p class="help-block" id="contactError"></p>
