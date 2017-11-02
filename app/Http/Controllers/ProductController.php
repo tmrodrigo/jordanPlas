@@ -43,7 +43,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $rColors = Color::all();
-        $bColors = Color::take(4)->orderBy('id', 'asc')->get();
+        $bColors = Color::all();
         $certificates = Certificate::all();
         return view('backend.products.productsCreate', [
           'categories' => $categories,
@@ -78,9 +78,9 @@ class ProductController extends Controller
             'certificate_description' => 'nullable',
             'info_file' => 'required|mimes:pdf|max:3000',
             'manual_file' => 'nullable|mimes:pdf|max:5000',
-            'avatar' => 'required|mimes:png|max:500',
-            'left_img' => 'required|mimes:png|max:500',
-            'right_img' => 'required|mimes:png|max:500',
+            'avatar' => 'required|mimes:png|max:600',
+            'left_img' => 'required|mimes:png|max:600',
+            'right_img' => 'required|mimes:png|max:600',
             'units' => 'required'
         ],
         [
@@ -98,13 +98,13 @@ class ProductController extends Controller
             'info_file.size' => 'La ficha de producto debe pesar menos de 3mb',
             'avatar.required' => 'Falta imagen de producto',
             'avatar.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'avatar.size' => 'La imagen de producto no debe pesar más de 250kb',
+            'avatar.max' => 'La imagen de producto no debe pesar más de 600 kb',
             'left_img.required' => 'Falta imagen de ficha de producto izquierda',
             'left_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'left_img.size' => 'La imagen de producto no debe pesar más de 250kb',
+            'left_img.max' => 'La imagen de producto no debe pesar más de 600kb',
             'right_img.required' => 'Falta imagen de ficha de producto derecha',
             'right_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'right_img.size' => 'La imagen de producto no debe pesar más de 250kb',
+            'right_img.max' => 'La imagen de producto no debe pesar más de 600kb',
             'units.required' => 'Indique la unidad del producto'
         ]);
 
@@ -165,37 +165,28 @@ class ProductController extends Controller
 
         $reflexColor = $request['light_color_id'];
 
-
         $certificates = $request['certificate_id'];
 
-        if (is_array($bodyColor)){
-          foreach ($bodyColor as $key => $value) {
+        if (isset($bodyColor) || isset($reflexColor)) {
+          if (is_array($bodyColor)){
+            foreach ($bodyColor as $key => $value) {
+                $atribute = new ProductAtribute();
+                $atribute->atribute = "body_color";
+                $atribute->value = $value;
+                $product->atributes()->save($atribute);
+            }
+          }
+          if (is_array($reflexColor)) {
+            foreach ($reflexColor as $key => $value) {
               $atribute = new ProductAtribute();
-              $atribute->atribute = "body_color";
+              $atribute->atribute = "reflex_color";
               $atribute->value = $value;
               $product->atributes()->save($atribute);
+            }
           }
-        } else {
-          $atribute = new ProductAtribute();
-          $atribute->atribute = "body_color";
-          $atribute->value = $value;
-          $product->atributes()->save($atribute);
         }
 
-        if (is_array($reflexColor)) {
-          foreach ($reflexColor as $key => $value) {
-            $atribute = new ProductAtribute();
-            $atribute->atribute = "reflex_color";
-            $atribute->value = $value;
-            $product->atributes()->save($atribute);
-          }
-        } else {
-            $atribute = new ProductAtribute();
-            $atribute->atribute = "reflex_color";
-            $atribute->value = $value;
-            $product->atributes()->save($atribute);
-        }
-        if (is_array($certificates)) {
+        if ((is_array($certificates)) && $certificates != null) {
           foreach ($certificates as $key => $value) {
             $product->certificates()->attach($value);
           }
@@ -214,7 +205,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $certificates = Certificate::all();
-        $bColors = Color::take(4)->orderBy('id', 'asc')->get();
+        $bColors = Color::all();
         $rColors = Color::all();
         $products = Product::where('category_id', '=', $product->category->id)->get();
         return view('backend.products.product', [
@@ -241,10 +232,10 @@ class ProductController extends Controller
             'name' => 'required|max:255',
             'description' => 'required',
             'category_id' => 'required',
-            'height' => 'nullable|numeric',
-            'width' => 'nullable|numeric',
-            'depth' => 'nullable|numeric',
-            'weight' => 'nullable|numeric',
+            'height' => 'nullable',
+            'width' => 'nullable',
+            'depth' => 'nullable',
+            'weight' => 'nullable',
             'reflex_s' => 'nullable|numeric',
             'resistence' => 'nullable|numeric',
             'body_color_id' => 'nullable',
@@ -426,7 +417,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $product = Product::find($id);
         $products = Product::where('category_id', '=', $product->category->id)
-                            ->orderBy('rating', 'desc')
+                            ->orderBy('rating', 'asc')
                             ->orderBy('updated_at', 'desc')
                             ->get();
         $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
@@ -434,6 +425,7 @@ class ProductController extends Controller
         $services = Service::all();
         $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $id)->get();
         $rColors = ProductAtribute::where('atribute', '=', 'reflex_color')->where('product_id', '=', $id)->get();
+        $images = Image::where('category_id', '=', $product->category->id)->where('product_id', '=', $id)->get();
         return view('product', [
             'product' => $product,
             'categories' => $categories,
@@ -442,51 +434,72 @@ class ProductController extends Controller
             'projects' => $projects,
             'services' => $services,
             'bColors' => $bColors,
-            'rColors' => $rColors
+            'rColors' => $rColors,
+            'images' => $images
         ]);
     }
 
     public function imagesUpload(){
         $categories = Category::all();
-        $products = Product::all();
+        $products = Product::orderBy('name', 'asc')->get();
+        $images = Image::all();
         return view('backend.images', [
             'categories' => $categories,
-            'products' => $products
+            'products' => $products,
+            'images' => $images
         ]);
+    }
+
+    public function imageDelete(Request $request)
+    {
+        $image = Image::find($request['id']);
+
+        $image->delete();
+
+        return redirect()->back()->with('ImgMessage', 'Imagen eliminada correctamente');
     }
 
     public function storeImages(Request $request, Image $image)
     {
-        if ($request['client'] == true) {
+        if ($request['client'] == 'client') {
             // $path = public_path().'/storage/clients/';
                 $files = $request->file('file');
                 foreach($files as $file){
                   $image = new ClientLogo();
                   $fileName = $file->getClientOriginalName();
+                  $imgName = str_replace(str_split('\\/:*?"<>|" "()'), '-', strtolower($fileName));
                   $folder = "clients";
-                  $path = $file->storePubliclyAs($folder, $fileName);
+                  $path = $file->storePubliclyAs($folder, $imgName);
                   $image->url = $path;
                   $image->save();
 
-                    //
-                    // $fileName = $file->getClientOriginalName();
-                    // $file->move($path, $fileName);
-                    // $image->url = "images/client/" . $fileName;
-                    // $image->save();
                 }
-        } else {
+        } elseif ($request['client'] == 'company') {
+            $files = $request->file('file');
+            foreach($files as $file){
+                $image = new Image();
+                $fileName = $file->getClientOriginalName();
+                $imgName = str_replace(str_split('\\/:*?"<>|" "()'), '-', strtolower($fileName));
+                $folder = "company";
+                $path = $file->storePubliclyAs($folder, $imgName);
+                $image->url = $path;
+
+                $image->category_id = 'company';
+
+                $image->save();
+            }
+        }
+         else {
             // $path = public_path().'/storage/images/';a
                 $files = $request->file('file');
                 foreach($files as $file){
                     $image = new Image();
-                    $fileName = $file->getClientOriginalName();
+                    $fileName = $file->getClientOriginalName() . '-' . $request['product_id'] . '-' . $request['category_id'];
+                    $imgName = str_replace(str_split('\\/:*?"<>|" "()'), '-', strtolower($fileName));
                     $folder = "products";
-                    $path = $file->storePubliclyAs($folder, $fileName);
+                    $path = $file->storePubliclyAs($folder, $imgName);
                     $image->url = $path;
 
-                    // $fileName = $file->getClientOriginalName();
-                    // $file->move($path, $fileName);
-                    // $image->url = "images/products/" . $fileName;
                     $image->category_id = $request['category_id'];
                     $image->product_id = $request['product_id'];
                     $image->save();

@@ -70,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
 
   Route::delete('project/destroy', 'ProjectController@destroy')->name('project.destroy');
 
+  Route::delete('image/delete', 'ProductController@imageDelete')->name('image.delete');
+
 });
 
 Route::get('/', 'HomeController@home');

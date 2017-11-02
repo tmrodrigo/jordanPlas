@@ -12,6 +12,7 @@ use App\ClientLogo;
 use App\Certificate;
 use App\Company;
 use App\Service;
+use App\Image;
 
 class HomeController extends Controller
 {
@@ -42,9 +43,9 @@ class HomeController extends Controller
     {
         $posts = Post::all();
         $categories = Category::all();
-        $images = Project::take(4)->get();
+        $images = Image::take(3)->where('category_id', '=', 'company')->orderBy('created_at', 'desc')->get();
         $projects = Project::all();
-        $products = Product::orderBy('rating', 'desc')->get();
+        $products = Product::where('rating', '<', 3)->orderBy('rating', 'desc')->get();
         $data = Company::orderBy('created_at', 'desc')->first();
         $logos = ClientLogo::all();
         $certificates = Certificate::all();

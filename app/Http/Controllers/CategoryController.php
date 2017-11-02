@@ -17,7 +17,7 @@ class CategoryController extends Controller
     $categories = Category::all();
     $category = Category::find($id);
     $products = Product::where('category_id', '=', $id)
-                        ->orderBy('rating', 'desc')
+                        ->orderBy('rating', 'asc')
                         ->orderBy('updated_at', 'desc')
                         ->get();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
@@ -37,13 +37,16 @@ class CategoryController extends Controller
   {
     $categories = Category::all();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
+    $topProducts = Product::where('rating', '<', '3')->get();
     $projects = Project::all();
     $services = Service::all();
+
     return view('productsList', [
         'categories' => $categories,
         'certificates' => $certificates,
         'projects' => $projects,
-        'services' => $services
+        'services' => $services,
+        'topProducts' => $topProducts
     ]);
   }
 

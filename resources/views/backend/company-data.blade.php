@@ -365,7 +365,15 @@
 					@foreach ($projects as $project)
 						<div class="row">
 							<div class="col-sm-6">
-								<img src="{{ Storage::url($project->url) }}" alt="{{ $project->name }}" style="max-width: 100%">
+								@if (substr($project->url, -3, 3) == "mp4")
+									<div class="col-sm-3">
+										<video src="{{ Storage::url( $project->url ) }}" autoplay loop style="width:150px"></video>
+										<figcaption>{{ $project->name }}</figcaption>
+									</div>
+									@else
+										<img src={{ Storage::url( $project->url ) }} alt="{{ $project->name }}" style="width:150px"></a>
+										<figcaption>{{ $project->name }}</figcaption>
+								@endif
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-sm-offset-10 col-sm-2">

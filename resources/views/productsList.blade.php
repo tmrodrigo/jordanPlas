@@ -55,7 +55,6 @@
               </div>
               <div class="row">
                 @foreach ($topProducts as $topProduct)
-                  {{-- {{ dd($topProduct->id) }} --}}
                   <div class="col-xs-6 col-sm-3">
                     <a href="{{ url($product->category->name, $topProduct->id) }}">
                       <div class="itemCategoria">
@@ -72,11 +71,11 @@
               @foreach ($categories as $category)
                 @if (count($category->product) > 0)
                   <div class="col-xs-6 col-sm-3">
-                    <a href="{{ url($product->category->name, $category->id) }}">
+                    <a href="{{ url('category', $category->id) }}">
                       <div class="itemCategoria">
                         <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name . ', ' . $category->description }}">
                         <h3>{{ $category->name }}</h3>
-                        <a href="{{ url($product->category->name, $category->id) }}">Ver más</a>
+                        <a href="{{ url('category', $category->id) }}">Ver más</a>
                       </div>
                     </a>
                   </div>

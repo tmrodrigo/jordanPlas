@@ -101,11 +101,13 @@
                       <label>Color cuerpo</label>
                       <div class="row">
                         @foreach ($bColors as $color)
-                          <div class="col-sm-3 checkbox">
-                            <label>
-                              <input type="checkbox" class="flat" name="body_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
-                            </label>
-                          </div>
+                          @if ((strlen($color->name) < 7) && ($color->name != "red"))
+                            <div class="col-sm-3 checkbox">
+                              <label>
+                                <input type="checkbox" class="flat" name="body_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
+                              </label>
+                            </div>
+                          @endif
                         @endforeach
                       </div>
                     </div>
@@ -114,11 +116,13 @@
                       <div class="row">
                         <div class="row">
                           @foreach ($rColors as $color)
-                            <div class="col-sm-3 checkbox">
-                              <label>
-                                <input type="checkbox" class="flat" name="light_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
-                              </label>
-                            </div>
+                            @if (($color->name != 'black') && $color->name != 'orange')
+                              <div class="col-sm-3 checkbox">
+                                <label>
+                                  <input type="checkbox" class="flat" name="light_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
+                                </label>
+                              </div>
+                            @endif
                           @endforeach
                         </div>
                       </div>

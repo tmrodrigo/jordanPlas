@@ -15,7 +15,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-8">
+              <div class="col-sm-12">
                 <p>{{ $category->description }}</p>
               </div>
             </div>
@@ -59,21 +59,23 @@
             </ul>
           </div>
         </div>
-        <div class="linea"></div>
-        <div class="row">
-          <div class="col-sm-12">
-            <h2>Muestras del producto en uso</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="imgProductos">
-              @foreach ($category->images as $image)
-                <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
-              @endforeach
+        @if (count($category->images) > 0)
+          <div class="linea"></div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h2>Muestras del producto en uso</h2>
             </div>
           </div>
-        </div>
+          <div class="row">
+            @foreach ($category->images as $image)
+              <div class="col-sm-6">
+                <div class="imgProductos">
+                  <img src="{{ Storage::url($image->url) }}" alt="{{ $category->name . ', ' . $category->description }}">
+                </div>
+              </div>
+            @endforeach
+          </div>
+        @endif
       </div>
 
     </section>

@@ -1,4 +1,4 @@
-@extends('backend.backend')
+}@extends('backend.backend')
 
 @section('content')
   <div class="row">
@@ -31,6 +31,13 @@
                 </button>
                 <p>Carga realizada con éxito</p>
               </div>
+              @if (session('ImgMessage'))
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <p>{{ session('ImgMessage') }}</p>
+                </div>
+              @endif
             </div>
           </div>
         </div>
@@ -38,17 +45,21 @@
           <p>Suelte acá las imágenes a cargar en el servidor <strong>Asegúrese de seleccionar la categoría y producto correspondiente</strong></p>
           <br>
           <p><strong>Seleccione "logo de cliente" si la carga será de logos de clientes</strong></p>
+          <p><strong>Seleccione "empresa" para imágenes que van en la sección de empresa</strong></p>
           <form action="{{ route('storeImages') }}" class="dropzone" method="post" enctype="multipart/form-data" id="my-dropzone">
             {{ csrf_field() }}
             <div class="row">
               <div class="col-sm-1">
-                <input type="checkbox" name="client" value="1"> Logo de cliente
+                <input type="radio" name="client" value="client"> Logo de cliente
+                <input type="radio" name="client" value="company"> Empresa
               </div>
               <div class="col-sm-3">
                 <select class="select2_group form-control" name="category_id">
                   <option value="">Categoría</option>
                   @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @if (count($category->product) > 0)
+                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endif
                   @endforeach
                 </select>
               </div>
@@ -72,6 +83,24 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="row">
+    @if (isset($images))
+      @foreach ($images as $image)
+        <div class="col-sm-3" style="margin-bottom:48px;">
+          <img src="{{ Storage::url($image->url) }}" alt="" style="max-width:100%">
+          <figcaption>{{ $image->product->name .' - ' . $image->category->name }}</figcaption>
+          <div class="" style="margin-top:24px">
+            <form class="" action="{{ route('image.delete', $image->id) }}" method="post">
+              {{ method_field('DELETE')}}
+              {{ csrf_field() }}
+              <input type="text" name="id" value="{{ $image->id }}" style="display:none;">
+              <input type="submit" name="" value="Eliminar" class="btn btn-danger">
+            </form>
+          </div>
+        </div>
+      @endforeach
+    @endif
   </div>
   <script type="text/javascript">
 

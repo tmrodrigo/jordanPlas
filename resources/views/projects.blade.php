@@ -26,8 +26,13 @@
                 <div class="imgProductos">
                   @foreach ($projects as $image)
                     <div class="col-sm-6">
-                      <img src={{ Storage::url( $image->url ) }} alt="{{ $image->name }}"></a>
-                      <figcaption>{{ $image->name }}</figcaption>
+                      @if (substr($image->url, -3, 3) == "mp4")
+                        <video src="{{ Storage::url( $image->url ) }}" autoplay loop></video>
+                        <figcaption>{{ $image->name }}</figcaption>
+                        @else
+                          <img src={{ Storage::url( $image->url ) }} alt="{{ $image->name }}"></a>
+                          <figcaption>{{ $image->name }}</figcaption>
+                      @endif
                     </div>
                   @endforeach
                 </div>

@@ -16,7 +16,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-12">
                   <p>{{ $product->category->description }}</p>
                 </div>
               </div>
@@ -171,19 +171,19 @@
               <button type="button" name="button">Descargar manual de aplicación</button>
             </div> --}}
           </div>
-          {{-- <div class="row">
+          <div class="row">
             <div class="col-sm-12">
               <div class="imgProductos">
                 <div class="row">
                   @foreach ($product->images as $image)
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                       <img src={{ Storage::url($image->url) }} alt="">
                     </div>
                   @endforeach
                 </div>
               </div>
             </div>
-          </div> --}}
+          </div>
         </div>
         @if ((count($products) > 1) || (count($product->images) > 0))
           <div class="boxProductos">
@@ -207,22 +207,22 @@
                   </ul>
                 </div>
               </div>
+              <div class="linea"></div>
             @endif
             @if (count($product->images) > 0)
-              <div class="linea"></div>
               <div class="row">
                 <div class="col-sm-12">
-                  <h2>Muestras del producto en uso</h2>
+                  <h2>{{ $product->category->name }} en uso</h2>
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-12">
-                  <div class="imgProductos">
-                    @foreach ($product->images as $image)
+                @foreach ($product->category->images as $image)
+                  <div class="col-sm-6">
+                    <div class="imgProductos">
                       <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
-                    @endforeach
+                    </div>
                   </div>
-                </div>
+                @endforeach
               </div>
             @endif
           </div>

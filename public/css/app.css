@@ -9625,6 +9625,7 @@ footer {
 #productos .textoSeccion p {
   color: #99121d;
   margin: 24px 0;
+  text-align: justify;
 }
 
 #productos .boxProductos {
@@ -10043,6 +10044,10 @@ footer {
   margin-top: 24px;
 }
 
+.fichaProducto p {
+  text-align: justify;
+}
+
 .certificados {
   width: 100%;
 }
@@ -10068,7 +10073,6 @@ footer {
 
 .certificados ul li img {
   width: 60px;
-  border-radius: 50%;
   display: block;
   margin-left: auto;
   margin-right: auto;

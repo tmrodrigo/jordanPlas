@@ -61,7 +61,7 @@
           <div class="row">
             @foreach ($images as $key => $image)
               <div class="{{ $key == 0 ? 'col-sm-12' : 'col-sm-6'}}">
-                <img src="{{ Storage::url($image->url) }}" alt="{{ $image->name }}">
+                <img src="{{ Storage::url($image->url) }}" alt="{{ 'Jordan Plas' }}">
               </div>
             @endforeach
           </div>
@@ -128,15 +128,17 @@
         </div>
         <div class="row">
           @foreach ($categories as $category)
-            <div class="col-xs-6 col-sm-3">
-              <a href="{{ url('category', $category->id) }}">
-                <div class="itemCategoria">
-                  <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name . ', ' . $category->description }}">
-                  <h3>{{ $category->name }}</h3>
-                  <a href="{{ url('category', $category->id) }}">Ver más</a>
-                </div>
-              </a>
-            </div>
+            @if (count($category->product) > 0)
+              <div class="col-xs-6 col-sm-3">
+                <a href="{{ url('category', $category->id) }}">
+                  <div class="itemCategoria">
+                    <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name . ', ' . $category->description }}">
+                    <h3>{{ $category->name }}</h3>
+                    <a href="{{ url('category', $category->id) }}">Ver más</a>
+                  </div>
+                </a>
+              </div>
+            @endif
           @endforeach
         </div>
       </article>
