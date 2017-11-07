@@ -14,10 +14,10 @@ class EditPductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('name');
-            $table->string('description');
-            $table->string('avatar');
-            $table->integer('category_id');
+            $table->string('name')->change();
+            $table->string('description')->change();
+            $table->string('avatar')->change();
+            $table->integer('category_id')->change();
         });
     }
 

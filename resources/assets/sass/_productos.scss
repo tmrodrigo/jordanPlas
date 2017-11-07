@@ -9,7 +9,10 @@
     }
   }
   .textoSeccion {
-    margin-top: 15%;
+    margin-top: 35%;
+    @media only screen and (min-width : 768px) {
+      margin-top: 15%;
+    }
     p {
       color: $jordanPpal;
       margin: 24px 0;

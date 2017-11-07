@@ -27,7 +27,7 @@
           <div class="row">
             <div class="col-sm-12 col-md-6">
               <div class="row">
-                <div class="textFicha col-sm-8 col-md-11">
+                <div class="textFicha col-sm-12 col-md-11">
                   <div>
                     <h1>{{ $product->name }}</h1>
                   </div>
@@ -55,7 +55,7 @@
             <div class="col-sm-12 col-md-6 textFicha">
               <div class="row" id="botonesDesktop">
                 @if (is_null($product->manual_file) == true)
-                  <div class="col-sm-4 col-md-4 col-lg-4 pull-right">
+                  <div class="col-sm-4 col-md-4 col-lg-4">
                     <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
                   </div>
                   @else
@@ -95,7 +95,7 @@
                         <div class="col-sm-6">
                           <div class="carac">
                             <img src="{{ Storage::url('assets/peso.svg') }}" alt="">
-                            <p><span>Peso:</span><br> {{ $product->weight }} gr</p>
+                            <p><span>Peso:</span><br> {{ $product->weight }} grs</p>
                           </div>
                         </div>
                       </div>
@@ -194,13 +194,11 @@
                     @foreach ($products as $product)
                       <li>
                         <div class="col-xs-6 col-sm-3">
-                          <a href="{{ url($product->category->name, $product->id)}}">
-                            <div class="itemCategoria">
-                              <img src="{{ Storage::url($product->avatar)}}" alt="{{ $product->category->name . ' ' . $product->name . ' ' . $product->description }}">
-                              <h3>{{ $product->name }}</h3>
-                              <a href="{{ url($product->category->name, $product->id)}}">Ver más</a>
-                            </div>
-                          </a>
+                          <div class="itemCategoria">
+                            <img src="{{ Storage::url($product->avatar)}}" alt="{{ $product->category->name . ' ' . $product->name . ' ' . $product->description }}" style="width:250px">
+                            <h3>{{ $product->name }}</h3>
+                            <a href="{{ url($product->category->name, $product->id)}}">Ver más</a>
+                          </div>
                         </div>
                       </li>
                     @endforeach
@@ -217,10 +215,8 @@
               </div>
               <div class="row">
                 @foreach ($product->category->images as $image)
-                  <div class="col-sm-6">
-                    <div class="imgProductos">
+                  <div class="col-sm-6 col-md-6" style="margin-bottom:24px">
                       <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
-                    </div>
                   </div>
                 @endforeach
               </div>

@@ -56,13 +56,15 @@ $(document).ready( function() {
     $('.carousel-inner').css('height', '100vh');
   });
 
-  $('#subMenuItem').mouseover(function(){
-    $('#subMenu').addClass('mostrarNav')
-  })
+  if (window.innerWidth > 450) {
+    $('#subMenuItem').mouseover(function(){
+      $('#subMenu').addClass('mostrarNav')
+    })
 
-  $('#subMenu').mouseleave(function(){
-    $(this).removeClass('mostrarNav');
-  })
+    $('#subMenu').mouseleave(function(){
+      $(this).removeClass('mostrarNav');
+    })
+  }
 
 
   $('.bxslider').bxSlider({

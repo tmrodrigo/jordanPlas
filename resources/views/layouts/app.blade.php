@@ -116,7 +116,7 @@
         <div class="redesMenu" id="redes">
           <ul>
             <li><a href="https://www.instagram.com/jordanplas_/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-            <li><a href=""><i class="fa fa-facebook"></i></a></li>
+            {{-- <li><a href=""><i class="fa fa-facebook"></i></a></li> --}}
           </ul>
         </div>
       </nav>

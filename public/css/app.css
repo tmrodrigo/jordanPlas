@@ -8482,6 +8482,11 @@ input:-webkit-autofill {
   opacity: 0.8;
 }
 
+.form-group .form-control::-ms-input-placeholder {
+  color: #C8C8C8;
+  opacity: 0.8;
+}
+
 .form-group .form-control::placeholder {
   color: #C8C8C8;
   opacity: 0.8;
@@ -8779,6 +8784,11 @@ main {
 
 .navegacion .nav-container .nav-right #searcher input:-ms-input-placeholder,
 .navegacion .nav-container .nav-right #searcher button:-ms-input-placeholder {
+  color: rgba(153, 18, 29, 0.8);
+}
+
+.navegacion .nav-container .nav-right #searcher input::-ms-input-placeholder,
+.navegacion .nav-container .nav-right #searcher button::-ms-input-placeholder {
   color: rgba(153, 18, 29, 0.8);
 }
 
@@ -9234,6 +9244,10 @@ main {
   color: rgba(80, 80, 80, 0.8);
 }
 
+#contacto .contacto input::-ms-input-placeholder {
+  color: rgba(80, 80, 80, 0.8);
+}
+
 #contacto .contacto input::placeholder {
   color: rgba(80, 80, 80, 0.8);
 }
@@ -9619,7 +9633,13 @@ footer {
 }
 
 #productos .textoSeccion {
-  margin-top: 15%;
+  margin-top: 35%;
+}
+
+@media only screen and (min-width: 768px) {
+  #productos .textoSeccion {
+    margin-top: 15%;
+  }
 }
 
 #productos .textoSeccion p {
@@ -9693,6 +9713,7 @@ footer {
           align-items: center;
   margin-top: 16px;
   margin-bottom: 16px;
+  min-height: 250px;
 }
 
 .itemCategoria h3 {
@@ -9704,6 +9725,10 @@ footer {
 
 .itemCategoria a {
   position: relative;
+  display: inline-block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .itemCategoria a:hover {
@@ -10073,6 +10098,7 @@ footer {
 
 .certificados ul li img {
   width: 60px;
+  border-radius: 50%;
   display: block;
   margin-left: auto;
   margin-right: auto;

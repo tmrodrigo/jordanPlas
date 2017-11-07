@@ -103,13 +103,11 @@
                 <ul class="bxslider">
                   @foreach ($products as $product)
                     <li>
-                      <a href="{{ url($product->category->name, $product->id)}}">
-                        <div class="itemCategoria">
-                          <img src="{{ Storage::url($product->avatar)}}" alt="">
-                          <h3>{{ $product->name }}</h3>
-                          <a href="{{ url($product->category->name, $product->id)}}">Ver más</a>
-                        </div>
-                      </a>
+                      <div class="itemCategoria">
+                        <img src="{{ Storage::url($product->avatar)}}" alt="" style="width:150px">
+                        <h3>{{ $product->name }}</h3>
+                        <a href="{{ url($product->category->name, $product->id)}}">Ver más</a>
+                      </div>
                     </li>
                   @endforeach
                 </ul>
