@@ -17,9 +17,9 @@
 
 // Backend
 
-Route::get('backend', function() {
-    return view('auth.login');
-});
+// Route::get('backend', function() {
+//     return view('auth.login');
+// });
 
 
 Auth::routes();

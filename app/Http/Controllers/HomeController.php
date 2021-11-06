@@ -50,7 +50,8 @@ class HomeController extends Controller
         $logos = ClientLogo::all();
         $certificates = Certificate::all();
         $services = Service::all();
-        return view('home', [
+        
+				return view('home', [
             'posts' => $posts,
             'categories' => $categories,
             'projects' => $projects,
@@ -60,7 +61,6 @@ class HomeController extends Controller
             'certificates' => $certificates,
             'services' => $services,
             'images' => $images
-
         ]);
     }
 
