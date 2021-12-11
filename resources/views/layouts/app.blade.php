@@ -18,45 +18,9 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <link href="https://fonts.googleapis.com/css?family=Oswald:700|Raleway:400,700" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald:700|Roboto:400,700" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script type="text/javascript">
-    function showEmpresas(){
-      $('#e').addClass('selected');
-      $('#p, #pr, #se').removeClass('selected');
-      $('#1').removeClass('articuloOculto');
-      $('#2, #3, #4').addClass('articuloOculto');
-      $('#home').css('height', '50vh');
-      $('.carousel-inner').css('height', '50vh');
-    }
-
-    function showProductos(){
-      $('#p').addClass('selected');
-      $('#e, #pr, #se').removeClass('selected');
-      $('#2').removeClass('articuloOculto');
-      $('#1, #3').addClass('articuloOculto');
-      $('#home').css('height', '50vh');
-      $('.carousel-inner').css('height', '50vh');
-    }
-
-    function showProyectos(){
-      $('#pr').addClass('selected');
-      $('#p, #e, #se').removeClass('selected');
-      $('#3').removeClass('articuloOculto');
-      $('#1, #2, #4').addClass('articuloOculto');
-      $('#home').css('height', '50vh');
-      $('.carousel-inner').css('height', '50vh');
-    }
-
-    function showServicios(){
-      $('#se').addClass('selected');
-      $('#p, #e, #pr').removeClass('selected');
-      $('#4').removeClass('articuloOculto');
-      $('#1, #2, #3').addClass('articuloOculto');
-      $('#home').css('height', '50vh');
-      $('.carousel-inner').css('height', '50vh');
-    }
-    </script>
   </head>
 
   <body style="background-image: url({{ Storage::url('assets/bg.png') }});">
@@ -138,7 +102,6 @@
                         <li><a href="{{ url('contacto') }}">Contacto</a></li>
                         <li><a href="{{ url('services') }}">Servicios</a></li>
                         <li><a href="/">Empresa</a></li>
-                        {{-- <li><a href="">Normativa Vial</a></li> --}}
                       </ul>
                     </div>
                     <div class="col-sm-2">
@@ -161,7 +124,7 @@
       </div>
     </main>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="{{ asset('js/jquery.bxslider.min.js')}}"></script>

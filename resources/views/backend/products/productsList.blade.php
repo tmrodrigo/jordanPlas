@@ -49,7 +49,7 @@
                     <h4 class="brief"><i>{{ $product->category->name }}</i></h4>
                     <div class="left col-xs-7">
                       <h2>{{$product->name}}</h2>
-                      <p><strong>Descripción: </strong> {{$product->description}}</p>
+                      <p><strong>Descripción: </strong> {{ cut_str($product->description) }}</p>
                       <h4>Datos</h4>
                       <ul class="list-unstyled">
                         <li>Alto: {{ $product->height }} mm</li>

@@ -276,4 +276,41 @@ $(document).ready( function() {
       }
     })
   })
+
+            function showEmpresas(){
+      $('#e').addClass('selected');
+      $('#p, #pr, #se').removeClass('selected');
+      $('#1').removeClass('articuloOculto');
+      $('#2, #3, #4').addClass('articuloOculto');
+      $('#home').css('height', '50vh');
+      $('.carousel-inner').css('height', '50vh');
+    }
+
+    function showProductos(){
+      $('#p').addClass('selected');
+      $('#e, #pr, #se').removeClass('selected');
+      $('#2').removeClass('articuloOculto');
+      $('#1, #3').addClass('articuloOculto');
+      $('#home').css('height', '50vh');
+      $('.carousel-inner').css('height', '50vh');
+    }
+
+    function showProyectos(){
+      $('#pr').addClass('selected');
+      $('#p, #e, #se').removeClass('selected');
+      $('#3').removeClass('articuloOculto');
+      $('#1, #2, #4').addClass('articuloOculto');
+      $('#home').css('height', '50vh');
+      $('.carousel-inner').css('height', '50vh');
+    }
+
+    function showServicios(){
+      $('#se').addClass('selected');
+      $('#p, #e, #pr').removeClass('selected');
+      $('#4').removeClass('articuloOculto');
+      $('#1, #2, #3').addClass('articuloOculto');
+      $('#home').css('height', '50vh');
+      $('.carousel-inner').css('height', '50vh');
+    }
+  
 })
