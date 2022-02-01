@@ -22,12 +22,21 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function home()
+    {
+        $categories = Category::orderBy('name')->get();
+        $images = Image::take(3)->where('category_id', '=', 'company')->orderBy('created_at', 'desc')->get();
+
+        return view('home', [
+            'categories' => $categories,
+            'images' => $images
+        ]);
+    }
+
     public function index()
     {
-        // $products = Product::where('rating', '>', '3')->get();
         $products = Product::all();
-
-        $categories = Category::all();
+        $categories = Category::all()->sortBy('name');
         $clients = Client::orderBy('created_at', 'desc')->limit('5')->get();
         $certificates = Certificate::all();
 
@@ -36,31 +45,6 @@ class HomeController extends Controller
             'categories' => $categories,
             'clients' => $clients,
             'certificates' => $certificates
-        ]);
-    }
-
-    public function home()
-    {
-        $posts = Post::all();
-        $categories = Category::all();
-        $images = Image::take(3)->where('category_id', '=', 'company')->orderBy('created_at', 'desc')->get();
-        $projects = Project::all();
-        $products = Product::where('rating', '<', 3)->orderBy('rating', 'desc')->get();
-        $data = Company::orderBy('created_at', 'desc')->first();
-        $logos = ClientLogo::all();
-        $certificates = Certificate::all();
-        $services = Service::all();
-        
-				return view('home', [
-            'posts' => $posts,
-            'categories' => $categories,
-            'projects' => $projects,
-            'products' => $products,
-            'data' => $data,
-            'logos' => $logos,
-            'certificates' => $certificates,
-            'services' => $services,
-            'images' => $images
         ]);
     }
 

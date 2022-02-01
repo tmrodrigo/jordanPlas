@@ -1,0 +1,35 @@
+.product-card {
+  min-height: 400px;
+
+  @media screen and (min-width: $md) {
+    min-height: 448px;
+    .card-body {
+      .btn {
+        display: none;
+      }
+    }
+    
+    &:hover {
+      .card-body {
+
+        .btn, .card-title {
+          display: block;
+        }
+
+        ul {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.side-menu {
+  li {
+    margin: 0.5rem 0;
+
+    a {
+      color: $neutral-text;
+    }
+  }
+}

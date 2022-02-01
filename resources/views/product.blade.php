@@ -4,227 +4,172 @@
 
 @section('content')
   <div class="container">
-    <div class="">
-      <section id="productos">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="textoSeccion">
-              <h1>{{ $product->category->name }}</h1>
-              <div class="row">
-                <div class="col-xs-3 col-sm-1">
-                  <div class="lineaRoja"></div>
-                </div>
+    <section id="product">
+      <div class="row">
+        <div class="col-sm-12">
+          <a class="breadcrumb" href="{{ route('category', ['id' => $product->category->id, 'category' => $product->category->name]) }}"> < Volver a {{ $product->category->name }}</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div id="carouselExampleControlsNoTouching" class="carousel slide carousel-fade" data-bs-touch="true" data-bs-interval="false">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 0"></button>
+              <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="1" class="" aria-current="false" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="2" class="" aria-current="false" aria-label="Slide 2"></button>                                
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="{{ Storage::url($product->avatar) }}" class="d-block w-100" alt="...">
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <p>{{ $product->category->description }}</p>
-                </div>
+              <div class="carousel-item">
+                <img src="{{ Storage::url($product->left_img) }}" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="{{ Storage::url($product->right_img) }}" class="d-block w-100" alt="...">
               </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
         </div>
-        <div class="fichaProducto">
+        <div class="col-sm-6">
           <div class="row">
-            <div class="col-sm-12 col-md-6">
-              <div class="row">
-                <div class="textFicha col-sm-12 col-md-11">
-                  <div>
-                    <h1>{{ $product->name }}</h1>
-                  </div>
-                  <p>{{ $product->description }}</p>
-                  <p><span>Kit de instalación:</span><br>Todos nuestros productos incluyen el material necesario para su instalación, en este caso tornillo, tarugo y arandela</p>
-
-                    <div class="certificados">
-                      <ul>
-                        @foreach ($product->certificates as $certificate)
-                          <li>
-                            <img src="{{ Storage::url($certificate->image) }}" alt="Jordan Plas, producto certificado por {{ $certificate->name }}">
-                            <p>
-                              <span>Certificado</span><br>{{ $certificate->name }} <br>
-                            </p>
-                          </li>
-                        @endforeach
-                      </ul>
-                    </div>
-                  <div class="consulta">
-                    <button type="button" onClick="window.location='{{ url('/contacto')}}'">Consultar</button>
-                  </div>
-                </div>
-              </div>
+            <div class="col-md-12 col-lg-8">
+              <h3 class="cap">{{ $product->category->name }}</h3>
+              <h1 class="bold primary upper">{{ $product->name }}</h1>
             </div>
-            <div class="col-sm-12 col-md-6 textFicha">
-              <div class="row" id="botonesDesktop">
-                @if (is_null($product->manual_file) == true)
-                  <div class="col-sm-4 col-md-4 col-lg-4">
-                    <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
-                  </div>
-                  @else
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
-                    </div>
-                @endif
-                @if (is_null($product->manual_file) == false)
-                  <div class="col-sm-4 col-md-8 col-lg-5">
-                    <button type="button" name="button" onclick="window.open('{{ Storage::url($product->manual_file) }}')">Descargar manual de aplicación</button>
-                  </div>
-                @endif
-              </div>
-              <div class="row">
-                <div class="col-sm-12 col-lg-12">
-                  <div class="datos">
-                    <h3><span>Ficha técnica</span></h3>
-                    <div class="datosList">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <div class="carac">
-                            <img src="{{ Storage::url('assets/medidas.svg') }}" alt="">
-                            @if ($product->depth <= 0)
-                              <p>
-                                <span>Alto: </span> {{ $product->height }} mm<br>
-                                <span>Diámetro: </span> {{ $product->width }} mm<br>
-                              </p>
-                              @else
-                                <p>
-                                  <span>Alto: </span> {{ $product->height }} mm<br>
-                                  <span>Ancho: </span> {{ $product->width }} mm<br>
-                                  <span>Profundo: </span> {{ $product->depth }} mm<br>
-                                </p>
-                            @endif
-                          </div>
-                        </div>
-                        <div class="col-sm-6">
-                          <div class="carac">
-                            <img src="{{ Storage::url('assets/peso.svg') }}" alt="">
-                            <p><span>Peso:</span><br> {{ $product->weight }} grs</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        @if ($product->reflex_s > 0)
-                          <div class="col-sm-6">
-                            <div class="carac">
-                              <img src="{{ Storage::url('assets/luz.svg') }}" alt="">
-                              <p><span>Sup. Reflectiva:</span><br> {{ $product->reflex_s }} cm2</p>
-                            </div>
-                          </div>
-                        @endif
-                        @if ($product->resistence > 0)
-                          <div class="col-sm-6">
-                            <div class="carac">
-                              <img src="{{ Storage::url('assets/resistencia.svg') }}" alt="">
-                              <p><span>Resistencia:</span><br> mayor a: {{ $product->resistence }} tn</p>
-                            </div>
-                          </div>
-                        @endif
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <p><span>Color cuerpo </span></p>
-                          <ul>
-                            @foreach ($bColors->unique('value')->values()->all() as $bColor)
-                              <li class="{{ $bColor->value }}"></li>
-                            @endforeach
-                          </ul>
-                        </div>
-                        <div class="col-sm-6">
-                          <p><span>Color reflectivo </span></p>
-                          <ul>
-                            @foreach ($rColors->unique('value')->values()->all() as $rColor)
-                              <li class="{{ $rColor->value }}"></li>
-                            @endforeach
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {{-- Botón desktop --}}
+            <div class="col-md-12 col-lg-4 d-none d-md-block">
+              <div class="my-md-2 my-lg-0"></div>
+              <button class="btn btn-primary" type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
             </div>
           </div>
-          <div class="row imgFicha">
-            <div class="col-sm-6">
-              <img src={{ Storage::url($product->left_img) }} alt="{{ $product->category->name . ' ' . $product->name . ' ' . $product->description }}">
-            </div>
-            <div class="col-sm-6">
-              <img src={{ Storage::url($product->right_img) }} alt="">
-            </div>
-          </div>
-          <div class="row" id="botonesMobile">
-            @if (is_null($product->manual_file) == true)
-              <div class="col-xs-5 col-sm-6 col-md-12 col-lg-4 pull-right">
-                <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
-              </div>
-              @else
-                <div class="col-xs-5 col-sm-6 col-md-12 col-lg-4">
-                  <button type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
-                </div>
-            @endif
-            @if (is_null($product->manual_file) == false)
-              <div class="col-xs-7 col-sm-6 col-md-12 col-lg-8">
-                <button type="button" name="button" onclick="window.open('{{ Storage::url($product->manual_file) }}')">Descargar manual de aplicación</button>
-              </div>
-            @endif
-            {{-- <div class="col-xs-5 col-sm-6 col-md-12 col-lg-4">
-              <button type="button" name="button">Descargar ficha</button>
-            </div>
-            <div class="col-xs-7 col-sm-6 col-md-12 col-lg-8">
-              <button type="button" name="button">Descargar manual de aplicación</button>
-            </div> --}}
-          </div>
+          <div class="my-4"></div>
           <div class="row">
             <div class="col-sm-12">
-              <div class="imgProductos">
-                <div class="row">
-                  @foreach ($product->images as $image)
-                    <div class="col-sm-6">
-                      <img src={{ Storage::url($image->url) }} alt="">
-                    </div>
+              <p>{{ $product->description }}</p>
+            </div>
+          </div>
+          <div class="row my-md-5 my-3">
+            <div class="col-sm-6">
+              <h3>Medidas</h3>
+              <div class="my-3"></div>
+              <ul>
+                <li>Alto: <b class="number">{{ format_number($product->height) }}</b> <b>mm</b></li>
+                <li>{{ $product->depth > 0 ? 'Ancho:' : 'Diámetro:'  }} <b class="number">{{ format_number($product->width) }}</b> <b>mm</b></li>
+                @if ($product->depth > 0)
+                  <li>Pisada: <b class="number">{{ format_number($product->depth) }}</b> <b>mm</b></li>                                    
+                @endif
+              </ul>
+              <ul>
+                <li>Peso: <b class="number">{{ format_number($product->weight) }}</b> <b>grs</b></li>
+              </ul>
+              @if ($product->reflex_s > 0)
+                <ul>
+                  <li>Superficie reflectiva: <b class="number">{{ format_number($product->reflex_s, 2) }}</b> <b>cm2</b></li>
+                </ul>                  
+              @endif
+              @if ($product->resistence > 0)
+                <ul>
+                  <li>Resistencia: mayor a: <b class="number">{{ format_number($product->resistence, 2) }}</b> <b>tn</b></li>
+                </ul>                
+              @endif                            
+            </div>
+            <div class="col-sm-6">
+              <h3>Características</h3>
+              <div class="my-3"></div>
+              @if ($bColors->count() > 0)
+                <p><span>Color cuerpo </span></p>
+                <div class="row mb-4">
+                  @foreach ($bColors as $k => $bColor)
+                    <div class="col-auto color-dot {{ $bColor->value }}"></div>
                   @endforeach
                 </div>
-              </div>
+              @endif
+              @if ($rColors->count() > 0)
+                <p><span>Color reflectivo </span></p>
+                <div class="row mb-4">
+                  @foreach ($rColors as $k => $rColor)
+                    <div class="col-auto color-dot {{ $rColor->value }}"></div>
+                  @endforeach
+                </div>
+              @endif
             </div>
           </div>
         </div>
-        @if ((count($products) > 1) || (count($product->images) > 0))
-          <div class="boxProductos">
-            @if (count($products) > 1)
-              <div class="slider row">
-                <div class="slider-inner">
-                  <ul>
-                    @foreach ($products as $product)
-                      <li>
-                        <div class="col-xs-6 col-sm-3">
-                          <div class="itemCategoria">
-                            <img src="{{ Storage::url($product->avatar)}}" alt="{{ $product->category->name . ' ' . $product->name . ' ' . $product->description }}" style="width:250px">
-                            <h3>{{ $product->name }}</h3>
-                            <a href="{{ url($product->category->name, $product->id)}}">Ver más</a>
-                          </div>
-                        </div>
-                      </li>
-                    @endforeach
-                  </ul>
-                </div>
-              </div>
-              <div class="linea"></div>
-            @endif
-            @if (count($product->images) > 0)
-              <div class="row">
-                <div class="col-sm-12">
-                  <h2>{{ $product->category->name }} en uso</h2>
-                </div>
-              </div>
-              <div class="row">
-                @foreach ($product->category->images as $image)
-                  <div class="col-sm-6 col-md-6" style="margin-bottom:24px">
-                      <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
-                  </div>
-                @endforeach
-              </div>
-            @endif
+      </div>
+      <div class="row my-3 my-md-5">
+        <div class="col-sm-4 d-md-none">
+          <button class="btn btn-primary" type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
+        </div>
+      </div>
+      <div class="row">
+        @if (isset($product->fijaciones))
+          <div class="{{ $product->certificates->count() > 0 ? 'col-sm-6' : 'col-sm-12' }}">
+            <h2>Fijaciones</h2>
+            <div class="my-3 my-md-5"></div>
           </div>
         @endif
-      </section>
-      <div class="separador" style="margin: 32px 0"></div>
-    </div>
+        <div class="my-3 my-sm-0"></div>
+        @if ($product->certificates->count() > 0)
+          <div class="{{ isset($product->fijaciones) ? 'col-sm-6' : 'col-sm-12' }}">
+            <h2>Certificados</h2>
+            <div class="my-3 my-md-5"></div>
+            <div class="row justify-content-between">
+              @forelse ($product->certificates as $certificate)
+                  <div class="col-auto">
+                    <img src="{{ Storage::url($certificate->image) }}" alt="Jordan Plas, producto certificado por {{ $certificate->name }}">
+                    <p>
+                      <span>Certificado</span><br>{{ $certificate->name }} <br>
+                    </p>
+                  </div>
+              @empty
+                  
+              @endforelse
+            </div>
+          </div>
+        @endif
+      </div>
+      <div class="my-5"></div>
+      @if ($products->count() > 0)
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="upper">Productos relacionados</h3>
+          </div>
+          <div class="my-4"></div>
+          <div class="row row-cols-1 row-cols-2 row-cols-md-4 g-4">
+            @forelse ($products as $product)
+              <div class="col-xs-6 col-sm-3">
+                @include('components.productCard')
+              </div>
+            @empty
+                
+            @endforelse
+          </div>
+        </div>
+      @endif
+      <div class="my-5"></div>
+      @if (count($product->images) > 0)
+      <div class="row">
+        <div class="col-sm-12 mb-3">
+          <h3 class="upper">{{ $product->category->name }} en uso</h3>
+        </div>
+      </div>
+      <div class="row">
+        @foreach ($product->category->images as $image)
+          <div class="col-sm-6 col-md-6 mb-3">
+              <img src="{{ Storage::url($image->url) }}" alt="{{ Storage::url($image->url) }}">
+          </div>
+        @endforeach
+      </div>
+      @endif
+    </section>
   </div>
 @endsection

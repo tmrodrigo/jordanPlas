@@ -12,30 +12,28 @@ use App\Service;
 
 class CategoryController extends Controller
 {
-  public function show($id)
+  public function show($category, $id)
   {
-    $categories = Category::all();
+    $categories = Category::orderBy('name')->get();
     $category = Category::find($id);
     $products = Product::where('category_id', '=', $id)
                         ->orderBy('rating', 'asc')
                         ->orderBy('updated_at', 'desc')
                         ->get();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
-    $projects = Project::all();
-    $services = Service::all();
+
     return view('products', [
         'categories' => $categories,
         'category' => $category,
         'products' => $products,
         'certificates' => $certificates,
-        'projects' => $projects,
-        'services' => $services
+        'id' => $id,
     ]);
   }
 
   public function index()
   {
-    $categories = Category::all();
+    $categories = Category::all()->sortBy('name');
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
     $topProducts = Product::where('rating', '<', '3')->get();
     $projects = Project::all();

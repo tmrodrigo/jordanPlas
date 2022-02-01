@@ -1,0 +1,54 @@
+nav {
+
+  .navbar-brand {
+    margin-right: 2rem;
+  }
+
+  .nav-item {
+    margin-right: 1rem;
+
+    .whatsapp {
+      color: #178740!important;
+      font-weight: bold;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: $neutral-background;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 8px 16px 0px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0 8px 16px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 8px 16px 0px rgba(0,0,0,0.25);
+
+    .dropdown-item {
+
+      &:hover {
+        color: $primary-text;
+        background-color: transparent;
+        text-decoration: underline;
+      }
+
+      &.active {
+        background-color: $primary-background;
+        color: $neutral-text-inverted;
+      }
+    }
+  }
+
+  .search-form {
+    border: 1px solid $neutral-border;
+
+    input {
+      border: 0;
+      padding: 0;
+      padding: 0.5rem 1rem;
+      margin: 0;
+      background-color: transparent;
+
+      &:focus-visible {
+        outline: 2px solid $primary-border;
+      }
+    }
+  }
+}

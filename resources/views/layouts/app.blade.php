@@ -3,130 +3,106 @@
   <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title')</title>
+    <title>Jordan-Plas | @yield('title')</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="favicon.gif" type="image/gif" sizes="16x16">
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <link href="https://fonts.googleapis.com/css?family=Oswald:700|Roboto:400,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   </head>
 
   <body style="background-image: url({{ Storage::url('assets/bg.png') }});">
     <header>
-      <nav class="navegacion" id="nav">
-        <div class="nav-container">
-          <div class="nav-logo">
-            <a href="/"><img src={{ Storage::url('assets/logo.svg') }} alt=""></a>
-          </div>
-          <div class="burguer" id="burguer">
-            <i class="fa fa-bars"></i>
-          </div>
-          <ul class="nav-items">
-            <li><a href="/">Empresa</a></li>
-            <li id="subMenuItem"><a href="{{ url('productsList')}}">Productos</a>
-              <ul id="subMenu">
-                @foreach ($categories as $category)
-                  @if (count($category->product) > 0)
-                    <li><a href="{{ url('category/'. $category->id) }}">{{ $category->name }}</a></li>
-                  @endif
-                @endforeach
-              </ul>
-            </li>
-            <li>
-              @if (count($projects) < 0)
-               <a href="{{ url('projects')}}" class="null" onclick="event.preventDefault()" style="opacity:0.5">Proyectos</a>
-               @else
-                <a href="{{ url('projects')}}">Proyectos</a>
-              @endif
-            </li>
-            <li>
-              @if (count($services) < 0)
-               <a href="{{ url('services')}}" class="null" onclick="event.preventDefault()" style="opacity:0.5">Servicios</a>
-               @else
-                <a href="{{ url('services')}}">Servicios</a>
-              @endif
-            </li>
-            <li><a href="{{ url('contacto')}}">Contactanos</a></li>
-            {{-- <li class="presupuesto"><a href="#contacto">Contactanos</a></li> --}}
-          </ul>
-          <div class="nav-right">
-            <button type="button" name="button" id="sButton"><i class="fa fa-search"></i></button>
-            <form class="buscador" action="{{ url('search/') }}" method="get" id="searcher">
-              {{ csrf_field() }}
-              <input type="text" name="s" value="" placeholder="ingresá nombre de producto">
-              <button type="submit" name=""><i class="fa fa-search"></i></button>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top|fixed-bottom|sticky-top">
+        <div class="container">
+          <a class="navbar-brand" href="/">
+            <img src="{{ asset('logos/logo-vert.svg') }}" alt="Logo Jordan Plas">
+          </a>
+          <button class="navbar-toggler hidden-lg-up" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+              aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+            </button>
+          <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Productos</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownId">
+                  @forelse ($categories as $category)
+                    <a class="cap dropdown-item  {{ isset($id) && $id == $category->id ? 'active' : ''  }} " href="{{ route('category', ['category' => $category->name, 'id' => $category->id]) }}">{{ $category->name }}</a>
+                  @empty
+                    
+                  @endforelse
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link whatsapp" href="#">Contactanos por Whatsapp</a>
+              </li>
+            </ul>
+            <form class="d-flex my-2 my-lg-0">
+              @csrf
+              <div class="search-form">
+                <input name="search" value="" type="text" placeholder="¿Qué estás buscando?">
+                <button class="btn btn-tertiary" name="button" value="button" type="submit">Buscar</button>
+              </div>
             </form>
-            <div class="certificados">
-              <ul>
-                @foreach ($certificates as $certificate)
-                    <li><img src="{{ Storage::url($certificate->image) }}" alt=""></li>
-                @endforeach
-              </ul>
-            </div>
           </div>
-        </div>
-        <div class="redesMenu" id="redes">
-          <ul>
-            <li><a href="https://www.instagram.com/jordanplas_/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-            {{-- <li><a href=""><i class="fa fa-facebook"></i></a></li> --}}
-          </ul>
         </div>
       </nav>
     </header>
     <main>
       @yield('content')
-      <div class="container-fluid">
+    </main>
+    <footer class="py-5">
+      <div class="container">
         <div class="row">
-          @yield('logo_client')
-          <footer>
-            <section id="mapaSitio">
-              <div class="container">
-                <nav>
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <ul>
-                        <li><a href="{{ url('productsList') }}">Productos</a></li>
-                        <li><a href="{{ url('projects') }}">Proyectos</a></li>
-                        <li><a href="{{ url('contacto') }}">Contacto</a></li>
-                        <li><a href="{{ url('services') }}">Servicios</a></li>
-                        <li><a href="/">Empresa</a></li>
-                      </ul>
-                    </div>
-                    <div class="col-sm-2">
-                      <div class="redes">
-                        <ul>
-                          <li><a href=""><i class="fa fa-facebook"></i></a></li>
-                          <li><a href=""><i class="fa fa-instagram"></i></a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
+          <div class="col-sm-2">
+            <img src="{{ asset('logos/logo-vert.svg') }}" alt="Logo Jordan-Plas">
+          </div>
+          <div class="col-sm-2">
+            <h5>Section</h5>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+              <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+            </ul>
+          </div>
+          <div class="my-3"></div>
+          <div class="col-12 col-sm-4 offset-sm-4">
+            <form>
+              <h5>Subscribe to our newsletter</h5>
+              <p>Monthly digest of whats new and exciting from us.</p>
+              <div class="d-flex w-100 gap-2">
+                <label for="newsletter1" class="visually-hidden">Email address</label>
+                <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                <button class="btn btn-primary" type="button">Subscribe</button>
               </div>
-            </section>
-            <section id="creditos">
-              <p>© 2017 copyright - Jordan Plas® S.A - Todos los derecho reservados. Diseño y desarrollo <a href="http://www.loveinbrands.com">loveinbrands</a></p>
-            </section>
-          </footer>
+            </form>
+          </div>
         </div>
       </div>
-    </main>
+      <div class="d-flex justify-content-between py-4 my-4 border-top">
+        <p>© 2021 Company, Inc. All rights reserved.</p>
+        <ul class="list-unstyled d-flex">
+          <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+          <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+          <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+        </ul>
+      </div>
+    </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="{{ asset('js/jquery.bxslider.min.js')}}"></script>
     <script src="{{ asset('js/app.js')}}"></script>
   </body>

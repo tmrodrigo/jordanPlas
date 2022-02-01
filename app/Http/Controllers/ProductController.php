@@ -417,22 +417,20 @@ class ProductController extends Controller
         $categories = Category::all();
         $product = Product::find($id);
         $products = Product::where('category_id', '=', $product->category->id)
+                            ->with('category')
                             ->orderBy('rating', 'asc')
                             ->orderBy('updated_at', 'desc')
                             ->get();
         $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
-        $projects = Project::all();
-        $services = Service::all();
         $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $id)->get();
         $rColors = ProductAtribute::where('atribute', '=', 'reflex_color')->where('product_id', '=', $id)->get();
         $images = Image::where('category_id', '=', $product->category->id)->where('product_id', '=', $id)->get();
+        
         return view('product', [
             'product' => $product,
             'categories' => $categories,
             'products' => $products,
             'certificates' => $certificates,
-            'projects' => $projects,
-            'services' => $services,
             'bColors' => $bColors,
             'rColors' => $rColors,
             'images' => $images

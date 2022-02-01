@@ -51,18 +51,12 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/', 'HomeController@home');
 
-Route::get('/category/{id}', 'CategoryController@show');
+Route::get('/rubro/{category}/{id}', 'CategoryController@show')->name('category');
+Route::get('/productos', 'CategoryController@index')->name('products');
 
-Route::get('/{category}/{id}', 'ProductController@showProduct');
-
-Route::get('/productsList', 'CategoryController@index');
-
-Route::get('/projects', 'ProjectController@index');
-
-Route::post('/contact', 'ContactController@create')->name('contact');
-
+Route::get('rubro/{product}/producto/{id}', 'ProductController@showProduct')->name('product');
 Route::get('/search', ['uses' => 'ProductController@search', 'as' => 'search']);
 
-Route::get('services', 'ServiceController@index');
+Route::post('/contact', 'ContactController@create')->name('contact');
 
 Route::get('/contacto', 'ContactController@show');

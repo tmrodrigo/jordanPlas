@@ -1,0 +1,147 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: $neutral-background;
+  font-size: 16px;
+  min-height: 100vh;
+  color: $neutral-text;
+}
+
+img {
+  max-width: 100%;
+}
+
+.number {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.upper {
+  text-transform: uppercase;
+}
+
+.cap {
+  text-transform: capitalize;
+}
+
+.primary {
+  color: $primary-text;
+}
+
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  line-height: 2.75rem;
+}
+
+h2 {
+  font-size: 2rem;
+  line-height: 2.25rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+button, .btn {
+  margin: 0;
+  border: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 0;
+}
+
+.btn-primary {
+  background-color: $primary-background;
+  color: $neutral-text-inverted;
+
+  &:hover{
+    background-color: $primary-background-strong;
+  }
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: $primary-text;
+  border: 3px solid $primary-border;
+
+  &:hover{
+    background-color: $primary-background;
+    color: $neutral-text-inverted;
+    border-color: $primary-border;
+  }
+}
+
+.btn-tertiary {
+  background-color: transparent;
+  color: $primary-text;
+
+  &:hover{
+    background-color: $primary-background-low;
+    color: $primary-text;
+  }
+}
+
+.breadcrumb {
+  background-color: transparent;
+  color: $neutral-text;
+  margin-top: 2rem;
+  padding: 0;
+
+  &:hover{
+    text-decoration: underline;
+    color: $neutral-text-strong;
+  }
+}
+
+.card {
+  border: 0;
+  border-radius: 0;
+  background-color: $neutral-background-lowest;
+  min-height: 466px;
+
+  .btn {
+    width: 100%;
+  }
+
+  @media screen and (min-width: $md) {
+    .card-body {
+      .btn {
+        display: none;
+      }
+    }
+    
+    &:hover {
+      .card-body {
+
+        .btn {
+          display: block;
+        }
+
+        .card-title {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+
+ul {
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+}

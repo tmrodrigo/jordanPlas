@@ -3,81 +3,50 @@
 @section('title', $category->name)
 
 @section('content')
-  <div class="container">
+  <div class="container">    
     <section id="productos">
       <div class="row">
         <div class="col-sm-12">
           <div class="textoSeccion">
-            <h1>{{ $category->name }}</h1>
-            <div class="row">
-              <div class="col-xs-3 col-sm-1">
-                <div class="lineaRoja"></div>
-              </div>
+            <div>
+             <a class="breadcrumb" href="/">< Volver a Home</a>
             </div>
+            <h1 class="bold cap primary">{{ $category->name }}</h1>
+            <div class="my-3"></div>
             <div class="row">
               <div class="col-sm-12">
-                <p>{{ $category->description }}</p>
+                <p>{{ cut_str($category->description, 500) }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="boxProductos">
-        <div class="slider row">
-          <div class="slider-inner">
-            <ul>
-              @foreach ($products as $product)
-                @if ($product->available)
-                  <li>
-                    <div class="col-xs-6 col-sm-3">
-                      <a href="" onclick="event.preventDefault()">
-                        <div class="prox">
-                          <p>próximamente</p>
-                        </div>
-                        <div class="itemCategoria soon">
-                          <img src="{{ Storage::url($product->avatar)}}" alt="">
-                          <h3>{{ $product->name }}</h3>
-                          <a href="" onclick="event.preventDefault()">proximamente</a>
-                        </div>
-                      </a>
-                    </div>
-                  </li>
-                  @else
-                    <li>
-                      <div class="col-xs-6 col-sm-3">
-                        <a href="{{ url($product->category->name, $product)}}">
-                          <div class="itemCategoria">
-                            <img src="{{ Storage::url($product->avatar)}}" alt="">
-                            <h3>{{ $product->name }}</h3>
-                            <a href="{{ url($product->category->name, $product)}}">Ver más</a>
-                          </div>
-                        </a>
-                      </div>
-                    </li>
-                @endif
-              @endforeach
-            </ul>
+      <div class="my-5"></div>
+      <div class="row flex-column-reverse flex-md-row">
+        <div class="col-md-3 col-lg-2">
+          <div class="my-5 my-md-0"></div>
+          <h3 class="upper mb-2">Productos</h3>
+          <ul class="side-menu">
+            @forelse ($categories as $category)
+              <li><a class="cap {{ $id == $category->id ? 'bold' : '' }}" href="{{ route('category', ['id' => $category->id, 'category' => $category->name]) }}">{{ $category->name }}</a></li>
+            @empty
+              
+            @endforelse
+          </ul>
+        </div>
+        <div class="col-md-9 col-lg-10">
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @forelse ($products as $product)
+              <div class="col-sm-4">
+                @include('components.productCard')
+              </div>
+            @empty
+              
+            @endforelse
           </div>
         </div>
-        @if (count($category->images) > 0)
-          <div class="linea"></div>
-          <div class="row">
-            <div class="col-sm-12">
-              <h2>Muestras del producto en uso</h2>
-            </div>
-          </div>
-          <div class="row">
-            @foreach ($category->images as $image)
-              <div class="col-sm-6">
-                <div class="imgProductos">
-                  <img src="{{ Storage::url($image->url) }}" alt="{{ $category->name . ', ' . $category->description }}">
-                </div>
-              </div>
-            @endforeach
-          </div>
-        @endif
       </div>
-
     </section>
+    <div class="my-5"></div>
   </div>
 @endsection

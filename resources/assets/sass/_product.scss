@@ -1,0 +1,43 @@
+#product {
+
+  .btn {
+    width: 100%;
+
+    @media screen and (min-width: $md) {
+      width: auto;
+    }
+  }
+  ul {
+    margin: 0.5rem 0;
+  }
+
+  .color-dot {
+    width: 2rem;
+    height: 2rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: $neutral-background-strong;
+    border-radius: 50%;
+  }
+
+  // Colores reflectivo y cuerpo
+  .yellow {
+    background-color: #FBD347;
+  }
+
+  .red {
+    background-color: #F23939;
+  }
+
+  .orange {
+    background-color: #FB8847;
+  }
+
+  .black {
+    background-color: #1E1E1E;
+  }
+
+  .white {
+    background-color: white;
+  }
+}
