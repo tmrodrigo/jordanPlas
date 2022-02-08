@@ -47,7 +47,21 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('project/destroy', 'ProjectController@destroy')->name('project.destroy');
   Route::delete('image/delete', 'ProductController@imageDelete')->name('image.delete');
 
+  Route::prefix('budget')->group(function(){
+
+    Route::get('/', 'BudgetController@show_form')->name('budget');
+    Route::post('/get_budget_info', 'BudgetController@get_budget_info')->name('get_budget_info');
+    Route::post('/add_client_info', 'BudgetController@add_client_info')->name('add_client_info');
+    Route::get('/remove/{key}', 'BudgetController@remove_item')->name('remove_item');
+    Route::post('/create_budget', 'BudgetController@create_budget')->name('create_budget');
+
+    Route::get('/pdf', 'BudgetController@show_pdf');
+
+
+  });
+
 });
+
 
 Route::get('/', 'HomeController@home');
 

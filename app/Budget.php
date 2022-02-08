@@ -19,4 +19,9 @@ class Budget extends Model
 	{
 		return $this->belongsTo(Client::class);
 	}
+
+	public function products()
+	{
+		return $this->belongsToMany(Product::class)->withPivot('amount', 'unit_price', 'unit', 'color', 'support');
+	}
 }

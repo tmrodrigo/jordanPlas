@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Budget;
+use App\Category;
 use App\Client;
 use App\Product;
+use App\ProductAtribute;
+use PDF;
 
 class BudgetController extends Controller
 {
@@ -52,5 +55,292 @@ class BudgetController extends Controller
       'client' => $client,
       'products' => $products
     ]);
+  }
+
+  public function show_form(Request $request){
+    
+    $categories = Category::orderBy('name')->get();
+
+    $products = [];
+    $s_product = '';
+    $colors = [];
+    $s_color = '';
+    $measure = '';
+    $support = '';
+    $amount = '';
+    $unit_price = '';
+    $selected_category = '';
+    $observations = '';
+    $delivery_date = '';
+    $payment = '';
+
+    $client_data = $request->session()->get('client_data');
+    if (!isset($client_data)) {
+      $client_data = [];
+    }
+
+    $session = $request->session()->get('data');
+
+    $selected_products = $request->session()->get('selected_products');
+
+    if (!isset($selected_products)) {
+      $selected_products = [];
+    }
+
+    if (isset($session['category'])) {
+      $selected_category = $session['category'];
+    }
+
+    if (isset($session['products'])) {
+      $products = $session['products'];
+    }
+
+    if (isset($session['s_product'])) {
+      $s_product = $session['s_product'];
+    }
+
+    if (isset($session['colors'])) {
+      $colors = $session['colors'];
+    }
+
+    if (isset($session['s_color'])) {
+      $s_color = $session['s_color'];
+    }
+
+    if (isset($session['amount'])) {
+      $amount = $session['amount'];
+    }
+
+    if (isset($session['unit_price'])) {
+      $unit_price = $session['unit_price'];
+    }
+
+    if (isset($session['measure'])) {
+      $measure = $session['measure'];
+    }
+
+    if (isset($session['support'])) {
+      $support = $session['support'];
+    }
+
+    if (isset($session['observations'])) {
+      $observations = $session['observations'];
+    }
+
+    if (isset($session['delivery_date'])) {
+      $delivery_date = $session['delivery_date'];
+    }
+
+    if (isset($session['payment'])) {
+      $payment = $session['payment'];
+    }    
+
+    $total = '';
+    if (isset($selected_products)) {
+      $total = arrSum($selected_products, 'sub_total');
+    }
+
+    $iva = '';
+    if (isset($client_data['tax']) && $client_data['tax'] == true) {
+      $iva = $total * 0.21;
+      $total = $total + $iva;
+    }
+
+    return view('backend.budget.form', [
+      'categories' => $categories,
+      'products' => $products,
+      's_product' => $s_product,
+      's_color' => $s_color,
+      'colors' => $colors,
+      'amount' => $amount,
+      'measure' => $measure,
+      'support' => $support,
+      'unit_price' => $unit_price,
+      'selected_category' => $selected_category,
+      'selected_products' => $selected_products,
+      'client_data' => $client_data,
+      'total' => $total,
+      'iva' => $iva,
+      'observations' => $observations,
+      'delivery_date' => $delivery_date,
+      'payment' => $payment,
+    ]);
+
+  }
+
+  public function get_budget_info(Request $request){
+    
+    $products = Product::where('category_id', $request->category_id)->orderBy('name')->get();
+    $bColors = [];
+
+    if (isset($request->product_id)) {
+      $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $request->product_id)->get();
+    }
+
+    $data = [
+      'category' => $request->category_id,
+      'products' => $products,
+      'colors' => $bColors,
+      's_color' => $request->color,
+      's_product' => $request->product_id,
+      'amount' => $request->amount,
+      'measure' => $request->measure,
+      'support' => $request->support,
+      'unit_price' => $request->unit_price,
+    ];
+
+    $request->session()->put('data', $data);
+
+    if (isset($request->product_id) && isset($request->amount) && isset($request->unit_price) ) {
+
+      $product = Product::where('id', $request->product_id)
+                        ->with('category')
+                        ->select('id', 'name', 'category_id', 'avatar', 'description')
+                        ->first();
+
+      $m = 'Metro lineal';
+      if ($request->amount > 1) {
+        $m = 'Metros lineales';
+      }
+
+      if ($request->measure == false) {
+        $m = 'Unidad';
+        if ($request->amount > 1) {
+          $m = 'Unidades';
+        }
+      }
+
+      $s = 'Fijación mecánica';
+      if ($request->support == false) {
+        $s = 'Pegamento';
+      }
+
+      $sp = [
+        'id' => $product->id,
+        'name' => $product->name,
+        'category_id'  => $product->category_id,
+        'category_name' => $product->category->name,
+        'color' => $request->color,
+        'avatar' => $product->avatar,
+        'description' => $product->description,
+        'unit_price' => (int)$request->unit_price,
+        'measure' => $m,
+        'support' => $s,
+        'amount' => (int)$request->amount,
+        'sub_total' => $request->amount * $request->unit_price
+      ];
+
+      $selected_products = $request->session()->get('selected_products');
+
+      if (!isset($selected_products)) {
+        $selected_products = [];
+      }
+
+      $selected_products[] = $sp;
+
+      $request->session()->put('selected_products', $selected_products);
+
+      $data = [];
+      $request->session()->put('data', $data);
+
+    }
+
+    return redirect()->route('budget');
+
+  }
+
+  public function add_client_info(Request $request){
+
+    $data = $request->all();
+    $data['cuit'] = cuit($request->cuit);
+
+    $request->session()->put('client_data', $data);
+
+    return redirect()->route('budget');
+  }
+
+  public function remove_item(Request $request, $key){
+
+    $p = $request->session()->get('selected_products');
+
+    unset($p[$key]);
+
+    $request->session()->put('selected_products', $p);
+
+    return redirect()->route('budget');
+
+  }
+
+  public function create_budget(Request $request){
+
+    $client_info = $request->session()->get('client_data');
+
+    unset($client_info['_token']);
+    unset($client_info['tax']);
+    unset($client_info['delivery']);
+    unset($client_info['observations']);
+    unset($client_info['delivery_date']);
+    unset($client_info['payment']);
+
+    $client_info['cuit'] = str_replace('-', '', $client_info['cuit']);
+    
+    $client = Client::create($client_info);
+
+    $budget_data = $request->session()->get('client_data');
+    $products = $request->session()->get('selected_products');
+
+    $tax = 0;
+    $total = arrSum($products, 'sub_total');
+    if ($budget_data['tax'] == true) {
+      $tax = $total * 0.21;
+      $total = $total + $tax;
+    }
+
+    $budget = Budget::create([
+      'has_tax' => $budget_data['tax'],
+      'has_delivery' => $budget_data['delivery'],
+      'observation' => $budget_data['observations'],
+      'delivery_date' => $budget_data['delivery_date'],
+      'payment' => $budget_data['payment'],
+      "client_id" => $client->id,
+      "tax" => $tax,
+      "total" => $total
+    ]);
+
+    foreach ($products as $product) {
+      $budget->products()->attach($product['id'], ['amount' => $product['amount'], 'unit_price' => $product['unit_price'], 'color' => $product['color'], 'unit' => $product['measure'], 'support' => $product['support']]);
+    }
+
+    $products = $budget->products;
+
+    $data = [
+      'client' => $client, 
+      'products' => $products,
+      'budget' => $budget
+    ];
+
+    $pdf = PDF::loadView('backend.budget.pdf', $data);
+    
+    $name = 'JordanPlas-Presupuesto_N-' . $budget->id . '.pdf';
+
+    return $pdf
+          // ->stream($name);
+          ->download($name);
+
+  }
+
+  public function show_pdf(){
+
+    $client = Client::orderBy('created_at', 'DESC')->first();
+
+    $products = $client->budget->products;
+    $budget = $client->budget;
+
+    return view('backend.budget.pdf', [
+      'client' => $client,
+      'products' => $products,
+      'budget' => $budget,
+    ]);
+
   }
 }
