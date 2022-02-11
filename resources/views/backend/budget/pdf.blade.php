@@ -56,6 +56,7 @@
         .client-info td {
           border: 2px solid black;
           padding: 8px;
+          padding-bottom: 16px;
         }
 
         .client-info .td-left {
@@ -158,33 +159,80 @@
           text-align: right;
         }
 
+        .product-info p {
+          margin: 6px 0;
+        }
+
+        .circle {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          display: inline-block;
+          vertical-align: middle;
+          margin-top: 3px;
+          margin-left: 3px;
+        }
+
+        .bi-color {
+              height: 0px;
+              width: 0px;
+              border: 8px solid;
+              border-radius: 50%;
+              border-color: gold gold black black; 
+              transform: rotate(45deg);
+        }
+
+          /* background: linear-gradient( 90deg, gold, gold 49%, white 49%, white 51%, black 51% );  */
+
+        .yellow {
+          background: gold;
+        }
+
+        .black {
+          background: black;
+        }
+
+        .orange {
+          background: orange;
+        }
+
+        .white {
+          background: white;
+          border-color: 1px solid black;
+        }
+
     </style>
 </head>
 <body>
+  </div>
   <table cellspacing="0" class="client-info">
     <tr>
       <td class="td-left">
         <p>Cliente: <b>{{ $client->name }}</b></p>
         <p>CUIT: <b>{{ cuit($client->cuit) }}</b></p>
+        <p>Teléfono: <b>{{ $client->phone }}</b></p>
       </td>
       <td class="td-right">
-        <p>Teléfono: <b>{{ $client->phone }}</b></p>
         <p>Dirección: <b>{{ $client->address }}</b></p>
+        <p>Provincia: <b>{{ $client->state }}</b></p>
+        <p>Código postal: <b>{{ $client->post_code }}</b></p>
         <p>Email: <b>{{ $client->email }}</b></p>
       </td>
       <td>
-        <h1 style="text-align: center">Presupuesto Nº {{ $budget->id }} <br> Fecha {{ date_format($budget->created_at, 'd/m/Y') }}</h1>
+        <h1 style="text-align: center">Presupuesto Nº {{ $budget->id }} <br> Fecha {{ format_date($budget->budget_date) }} </h1>
+        {{-- Campo modificable --}}
+        {{-- Agregar ceros --}}
       </td>
     </tr>
   </table>
 
   <table cellspacing="0" class="products">
     <tr>
-      <th><b>Imagen</b></th>
+      <th style="text-align: center"><b>Producto</b></th>
       <th><b>Datos</b></th>
       <th><b>Descripción</b></th>
-      <th><b>Precio Un</b></th>
-      <th><b>Neto</b></th>
+      <th style="text-align: center"><b>Precio Unitario</b></th>
+      <th><b>Sub-Total</b></th>
     </tr>
     @foreach ($products as $product)
       <tr>
@@ -192,10 +240,10 @@
           <img src="{{ asset("storage/". $product->avatar. "")}}" alt="">
         </td>
         <td class="product-info">
-          <h6><b>{{ $product->category->name }}</b></h6>
+          <h6><b>{{ $product->category->name }} {!! $product->sub_category != null ? '<br><small>'. $product->sub_category->name . '</small>' : '' !!}</b></h6>
           <h5><b>{{ $product->name }}</b></h5>
           <p>Cantidad: <b>{{ format_number($product->pivot->amount) }} {{ $product->pivot->unit }}</b></p>
-          <p>Color: <span style="height: 12px; width: 12px; background-color: {{ $product->pivot->color }}; display: inline-block; border-radius: 20px; margin-top:3px;"></span></p>
+          <p>Color: <span class="circle {{ $product->pivot->color }}"></span></p>
           <p>Soporte: <b>{{ $product->pivot->support }}</b></p>
         </td>
         <td class="product-description"><p>{{ cut_str($product->description, 500) }}</p></td>
@@ -205,7 +253,7 @@
     @endforeach
     <tr>
       <td style="padding: 6px">
-        {!! $budget->has_delivery == true ? '<p>Forma de envío: <br><b>Envío incluido</b></p>' : '<p>Forma de envío: <br><b>Retiro por nuestra fábrica</b></p>' !!}
+        {!! $budget->has_delivery == true ? '<p>Forma de envío: <br><b>Flete incluido</b></p>' : '<p>Forma de envío: <br><b>Con retiro en nuestro depósito (No incluye flete)</b></p>' !!}
       </td>
       <td style="padding: 6px">
         {!! !is_null($budget->delivery_date) ? '<p>Plazo de entrega: <br><b>' . $budget->delivery_date . '</b></p>' : '' !!}

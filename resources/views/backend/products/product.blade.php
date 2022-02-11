@@ -48,24 +48,34 @@
               <div class="clearfix"></div>
             </div>
             <div class="row">
-              <div class="col-sm-4">
+              <div class="col-sm-6">
                 <label for="first-name">Nombre <span class="required">*</span></label>
                 <input type="text" id="name" name="name" value="{{ $product->name }}" required="required" class="form-control">
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-6">
                 <label for="last-name">Descripción <span class="required">*</span></label>
                 <input type="text" id="last-name" name="description"  value="{{ $product->description }} " required="required" class="form-control">
               </div>
-              <div class="col-sm-4">
+            </div>
+            <div class="row">
+              <div class="col-sm-6 mb-4">
                 <label>Categoría*</label>
                 <select class="form-control" name="category_id">
-                  @foreach ($categories as $category)
-                    @if ($product->category->name == $category->name)
-                      <option value={{ $category->id }} selected> {{ $category->name }}</option>
-                      @else
-                        <option value={{ $category->id }}> {{ $category->name }}</option>
-                    @endif
-                  @endforeach
+                  @forelse ($categories as $category)
+                    <option value={{ $category->id }} {{ $product->category->id == $category->id ? 'selected' : '' }}> {{ $category->name }}</option>
+                  @empty
+                    
+                  @endforelse
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <label>Sub Categoría*</label>
+                <select class="form-control" name="sub_category_id">
+                  @forelse ($sub_categories as $sub_category)
+                    <option value={{ $sub_category->id }} {{ isset($product->sub_category) && $product->sub_category->id == $sub_category->id ? 'selected' : '' }}> {{ $sub_category->category->name . ' - ' . $sub_category->name }}</option>
+                  @empty
+                    
+                  @endforelse
                 </select>
               </div>
             </div>

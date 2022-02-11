@@ -42,6 +42,35 @@
         border: none;
         box-shadow: 0px 0px 25px -10px rgba(0,0,0,0.4);;
       }
+
+      .circle {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .bi-color {
+          background: linear-gradient( 90deg, gold, gold 49%, white 49%, white 51%, black 51% ); 
+        }
+
+        .yellow {
+          background: gold;
+        }
+
+        .black {
+          background: black;
+        }
+
+        .orange {
+          background: orange;
+        }
+
+        .white {
+          background: white;
+          border-color: 1px solid black;
+        }
     </style>
   </head>
 
@@ -72,7 +101,7 @@
           <div class="col-sm-12">
             @if ($errors->any())
               @foreach ($errors->all() as $error)
-                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <div class="alert alert-danger" role="alert">
                   <strong>{{ $error }}</strong>
                 </div>
               @endforeach
@@ -82,22 +111,30 @@
         <div class="card">
           <div class="card-body">
             <div class="card-title">
-              <h3>Datos del cliente</h3>
+              <h3>Datos del presupuesto</h3>
             </div>
             <form class="mb-4" role="form" method="POST" action="{{ route('add_client_info') }}">
               @csrf
               <div class="row">
-                <div class="form-group col-12 col-sm-4 mb-2">
+                <div class="form-group col-12 col-sm-3 mb-2">
                   <label for="client_input">Cliente</label>
-                  <input id="client_input" class="form-control" type="text" name="name" value="{{ isset($client_data['name']) ?  $client_data['name'] : '' }}">
+                  <input id="client_input" class="form-control" type="text" name="name" value="{{ isset($client_data['name']) ?  $client_data['name'] : '' }}" required>
                 </div>
-                <div class="form-group col-12 col-sm-4 mb-2">
+                <div class="form-group col-12 col-sm-2 mb-2">
                   <label for="cuit_input">CUIT</label>
                   <input id="cuit_input" class="form-control" type="text" name="cuit" value="{{ isset($client_data['cuit']) ? cuit($client_data['cuit']) : '' }}">
                 </div>
-                <div class="form-group col-12 col-sm-4 mb-2">
+                <div class="form-group col-12 col-sm-3 mb-2">
                   <label for="address_input">Domicilio</label>
                   <input id="address_input" class="form-control" type="text" name="address" value="{{ isset($client_data['address']) ?  $client_data['address'] : '' }}">
+                </div>
+                <div class="form-group col-12 col-sm-2 mb-2">
+                  <label for="post_code_input">Código Postal</label>
+                  <input id="post_code_input" class="form-control" type="text" name="post_code" value="{{ isset($client_data['post_code']) ?  $client_data['post_code'] : '' }}">
+                </div>
+                <div class="form-group col-12 col-sm-2 mb-2">
+                  <label for="state_input">Provincia</label>
+                  <input id="state_input" class="form-control" type="text" name="state" value="{{ isset($client_data['state']) ?  $client_data['state'] : '' }}">
                 </div>
               </div>
               <div class="row">
@@ -147,8 +184,12 @@
                   <label for="payment_input">Condición de pago</label>
                   <input id="payment_input" class="form-control" type="text" name="payment" value="{{ isset($client_data['payment']) ?  $client_data['payment'] : '' }}">
                 </div>
+                <div class="form-group col-12 col-sm-3 mb-2">
+                  <label for="budget_date_input">Fecha del presupuesto</label>
+                  <input id="budget_date_input" class="form-control" type="date" name="budget_date" value="{{ isset($client_data['budget_date']) ?  $client_data['budget_date'] : '' }}">
+                </div>
               </div>
-              <button class="btn btn-outline-primary" type="submit">{{ isset($client_data['client_name']) ?  'Actualizar' : 'Guardar' }}</button>
+              <button class="btn btn-outline-primary" type="submit">{{ isset($client_data['client_name']) ?  'Actualizar datos cliente' : 'Guardar datos cliente' }}</button>
             </form>
           </div>
         </div>
@@ -156,7 +197,7 @@
         <div class="card">
           <div class="card-body">
             <div class="card-title">
-              <h3>Cargar producto</h3>
+              <h3>Agregar producto</h3>
             </div>
             <form class="mb-4" id="product-form" role="form" method="POST" action="{{ route('get_budget_info') }}">
               {{ csrf_field() }}
@@ -185,7 +226,7 @@
                   <label for="color_input">Color</label>
                   <select id="color_input" class="form-control" name="color">
                     @forelse ($colors as $color)
-                      <option value="{{ $color->value }}" {{ $s_color == $color->value ? 'selected' : '' }}>{{ $color->value }}</option>
+                      <option value="{{ $color['value'] }}" {{ $s_color == $color['value'] ? 'selected' : '' }}>{{ translate($color['value']) }}</option>
                     @empty
                       
                     @endforelse
@@ -200,6 +241,10 @@
                   <div class="form-check form-check-inline">
                     <input id="support_false" class="form-check-input" type="radio" value="0" name="support"> 
                     <label for="support_false" class="form-check-label">Pegamento</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input id="support_false" class="form-check-input" type="radio" value="na" name="support"> 
+                    <label for="support_false" class="form-check-label">No incluida</label>
                   </div>
                 </div>
               </div>
@@ -264,10 +309,11 @@
                   <img style="max-width: 100%" src="{{ asset("storage/". $s_product['avatar']. "")}}" alt="">
                 </div>
                 <div class="col-sm-2">
-                  <h5><b>{{ $s_product['name'] }}</b> | {{ $s_product['category_name'] }}</h5>
+                  <h6>{{ $s_product['category_name'] }} {!! $s_product['sub_category_name'] != null ? '<br><small>'.$s_product['sub_category_name'] . '</small>' : '' !!} </h6>
+                  <h5><b>{{ $s_product['name'] }}</b></h5>
                   <a href="{{ route('remove_item', ['key' => $k]) }}">Eliminar</a>
                   <p>Cantidad: <b>{{ $s_product['amount'] }} {{ $s_product['measure'] }}</b></p>
-                  <p>Color: <span style="height: 20px; width: 20px; background-color: {{ $s_product['color'] }}; display: inline-block; border-radius: 20px;"></span></p>
+                  <p>Color: <span class="circle {{ $s_product['color'] }}"></span></p>
                   <p>Soporte: <b>{{ $s_product['support'] }}</b></p>
                 </div>
                 <div class="col-sm-6 d-none d-sm-block">
@@ -284,7 +330,11 @@
               </div>
               <hr>
             @empty
-              
+              <div class="row">
+                <div class="col-sm-12">
+                  <h3>Para crear un presupuesto debes agregar un producto</h3>
+                </div>
+              </div>
             @endforelse
             <div class="row justify-content-end">
               <div class="col-sm-3 text-end">
@@ -299,7 +349,7 @@
         <div>
           <form action="{{ route('create_budget') }}" method="POST" role="form">
             @csrf
-            <button type="submit" class="btn btn-primary">Crear presupuesto</button>
+            <button type="submit" class="btn btn-primary" {{ count($selected_products) == 0 || !isset($client_data['name']) ? 'disabled' : '' }}>Crear presupuesto</button>
           </form>
         </div>
         <div class="m-4"></div>

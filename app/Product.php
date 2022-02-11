@@ -8,6 +8,8 @@ use App\Color;
 use App\Budget;
 use App\ProductAtribute;
 use App\Certificate;
+use App\SubCategory;
+use App\Category;
 
 class Product extends Model
 {
@@ -15,7 +17,12 @@ class Product extends Model
 
   public function category()
   {
-      return $this->belongsTo(Category::class);
+    return $this->belongsTo(Category::class);
+  }
+
+  public function sub_category()
+  {
+    return $this->belongsTo(SubCategory::class);
   }
 
   public function images()

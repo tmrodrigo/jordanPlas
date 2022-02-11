@@ -10217,6 +10217,12 @@ footer {
 .side-menu li a {
   color: #383837;
 }
+.side-menu .submenu {
+  padding-left: 1.5rem;
+}
+.side-menu .submenu li {
+  margin-top: 0;
+}
 
 #product .btn {
   width: 100%;
@@ -10251,4 +10257,32 @@ footer {
 }
 #product .white {
   background-color: white;
+}
+#product .bi-color {
+  background: linear-gradient(-90deg, #FBD347, #FBD347 49%, #1E1E1E 49%, #1E1E1E 51%, #1E1E1E 51%);
+  border-radius: 50%;
+}
+#product .redWhite {
+  background: linear-gradient(-90deg, #F23939, #F23939 49%, white 49%, white 51%, white 51%);
+  border-radius: 50%;
+}
+#product .redYellow {
+  background: linear-gradient(-90deg, #F23939, #F23939 49%, #FBD347 49%, #FBD347 51%, #FBD347 51%);
+  border-radius: 50%;
+}
+#product .yellowWhite {
+  background: linear-gradient(-90deg, #FBD347, #FBD347 49%, white 49%, white 51%, white 51%);
+  border-radius: 50%;
+}
+#product .certificate {
+  text-align: center;
+}
+#product .certificate img {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  margin-bottom: 0.2rem;
+}
+#product .certificate p {
+  font-size: 0.8rem;
 }

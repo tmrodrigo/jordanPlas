@@ -29,28 +29,18 @@
           @endif
         </div>
         <div class="x_content">
-
           <div class="row">
             <div class="col-sm-12">
               <p>Listado de productos ordenados por número de ventas</p>
             </div>
             @foreach ($products as $product)
-              <div class="col-md-55">
-                <div class="thumbnail">
-                  <div class="image view view-first">
+              <div class="col-md-2">
+                <div style="min-height: 260px;">
+                  <div class="image">
                     <img style="width: 100%; display: block;" src="{{ Storage::url( $product->avatar ) }}" alt="{{ strtolower( str_replace(' ', '-', $product->name)) . '-' . strtolower( str_replace(' ', '-', $product->category->name))}}" />
-                    <div class="mask">
-                      <p>{{ $product->name }}</p>
-                      <div class="tools tools-bottom">
-                        <a href="{{ route('products.show', $product->id) }}"><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('products.show', $product->id) }}"><i class="fa fa-pencil"></i></a>
-                      </div>
-                    </div>
                   </div>
                   <div class="caption">
-                    <h2>{{ $product->name }}</h2>
-                    <p>{{ $product->category->name }}</p>
-                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-default">Ver producto</a>
+                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-default">Ver {{ cut_str($product->name, 10) }}</a>
                   </div>
                 </div>
               </div>
@@ -63,10 +53,12 @@
   <div class="clearfix"></div>
   @if (isset($clients))
     <div class="row">
-      <div class="col-md-6 col-sm-5 col-xs-12">
+      <div class="col-md-6 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h2><i class="fa fa-envelope-o"></i> Mensajes más recientes <small></small></h2>
+            <h2>Ingresar / Editar nueva categoría</h2><br><br>
+            <p>Al cambiar el nombre de una categoría cambiará la categoría de todos los productos asociados a esta</p>
+            <p>Solo podrá eliminar categorías que aún no tengan ningún producto asociado</p>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
               </li>
@@ -74,152 +66,202 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-              <div class="panel-group" id="accordion">
-                @foreach ($clients as $key => $client)
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h2>
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $client->id }}"> {{ '#'.$client->id . ' - ' . strtoupper($client->name) }} - </a>
-                        <span>{{ date('d-m-Y | g:i a', strtotime($client->created_at))}}</span>
-                      </h2>
-                    </div>
-                    <div id="collapse{{ $client->id }}" class="panel-collapse collapse{{ $key == 0 ? ' in' : '' }}">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <div class="panel-body">
-                            <h4><strong>Teléfono: </strong>{{ $client->phone }}</h4>
-                            <h4><strong>Email: </strong>{{ $client->email }}</h4>
-                            <h4><strong>Mensaje: </strong>{{ $client->message }}</h4>
+            <div class="row">
+              <form class="form-horizontal form-label-left" action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <div class="form-group">
+                  <label class="control-label col-md-2">Categoria Nueva</label>
+                  <div class="col-md-10">
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-2">Descripción</label>
+                  <div class="col-md-10">
+                    <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Descripción">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-2">Avatar</label>
+                  <div class="col-md-10">
+                    <input type="file" name="avatar" value="" class="form-control" id="" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-10 col-sm-2">
+                    <button type="submit" class="btn btn-success pull-right">Guardar</button>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="ln_solid"></div>
+              </form>
+            </div>
+              @foreach ($categories as $category)
+                <div class="row">
+                  <h3>{{ $category->name }}</h3>
+                  <div class="col-sm-12">
+                    <form action="{{ route('category.update', $category ) }}" method="post" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        {{ method_field('PUT')}}
+                        <div class="form-group">
+                          <label class="control-label col-md-2">Reemplazar el nombre acá:</label>
+                          <div class="col-md-10">
+                            <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
+                            <input type="text" class="form-control" value="{{ $category->name }}" name="name">
                           </div>
                         </div>
-                        <div class="col-sm-6">
-                          @if (isset($client->budget_id))
-                            {{ 'Presupuesto: '. $client->budget_id }}
-                          @endif
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">Reemplazar la descripción acá:</label>
+                          <div class="col-md-10">
+                            <input type="text" class="form-control" value="{{ $category->description }}" name="description">
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                @endforeach
-              </div>
-              <button type="button" name="button" class="btn btn-success" onclick="window.location='{{url('messages')}}'">Ver más mensajes</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
-          <div class="x_panel">
-            <div class="x_title">
-              <h2>Ingresar / Editar nueva categoría</h2><br><br>
-              <p>Al cambiar el nombre de una categoría cambiará la categoría de todos los productos asociados a esta</p>
-              <p>Solo podrá eliminar categorías que aún no tengan ningún producto asociado</p>
-              <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-              </ul>
-              <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-              <div class="row">
-                <form class="form-horizontal form-label-left" action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">
-                  {{ csrf_field() }}
-                  <div class="form-group">
-                    <label class="control-label col-md-2">Categoria Nueva</label>
-                    <div class="col-md-10">
-                      <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-2">Descripción</label>
-                    <div class="col-md-10">
-                      <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Descripción">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label col-md-2">Avatar</label>
-                    <div class="col-md-10">
-                      <input type="file" name="avatar" value="" class="form-control" id="" placeholder="">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-10 col-sm-2">
-                      <button type="submit" class="btn btn-success pull-right">Guardar</button>
-                    </div>
-                  </div>
-                  <div class="clearfix"></div>
-                  <div class="ln_solid"></div>
-                </form>
-              </div>
-                @foreach ($categories as $category)
-                  <div class="row">
-                    <h3>{{ $category->name }}</h3>
-                    <div class="col-sm-12">
-                      <form action="{{ route('category.update', $category ) }}" method="post" enctype="multipart/form-data">
-                          {{ csrf_field() }}
-                          {{ method_field('PUT')}}
-                          <div class="form-group">
-                            <label class="control-label col-md-2">Reemplazar el nombre acá:</label>
-                            <div class="col-md-10">
-                              <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
-                              <input type="text" class="form-control" value="{{ $category->name }}" name="name">
-                            </div>
+                        <div class="clearfix"></div>
+                        <div class="">
+                            <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name }}" style="width:150px;">
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                          <label class="control-label col-md-2">Reemplazar avatar acá</label>
+                          <div class="col-md-10">
+                            <input type="file" name="avatar" value="" class="form-control">
                           </div>
-                          <div class="clearfix"></div>
-                          <div class="form-group">
-                            <label class="control-label col-md-2">Reemplazar la descripción acá:</label>
-                            <div class="col-md-10">
-                              <input type="text" class="form-control" value="{{ $category->description }}" name="description">
-                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                          <div class="col-sm-offset-10">
+                            <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
                           </div>
-                          <div class="clearfix"></div>
-                          <div class="">
-                              <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name }}" style="width:150px;">
-                          </div>
-                          <div class="clearfix"></div>
-                          <div class="form-group">
-                            <label class="control-label col-md-2">Reemplazar avatar acá</label>
-                            <div class="col-md-10">
-                              <input type="file" name="avatar" value="" class="form-control">
-                            </div>
-                          </div>
-                          <div class="clearfix"></div>
-                          <div class="form-group">
-                            <div class="col-sm-offset-10">
-                              <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
-                            </div>
-                          </div>
-                      </form>
-                    </div>
-                    <div class="col-sm-offset-9 col-sm-2">
-                      {{-- @if (count($products) <= 0)
+                        </div>
+                    </form>
+                  </div>
+                  <div class="col-sm-offset-9 col-sm-2">
+                    
+                    @foreach ($products as $product)
+                      @if (count($category->product) == 0)
                         <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
                           {{ method_field('DELETE')}}
                           {{ csrf_field() }}
                           <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
                           <input type="submit" name="" value="Eliminar" class="btn btn-danger">
                         </form>
-                        @else
-
-                      @endif --}}
-                      @foreach ($products as $product)
-                        @if (count($category->product) == 0)
-                          <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
-                            {{ method_field('DELETE')}}
-                            {{ csrf_field() }}
-                            <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
-                            <input type="submit" name="" value="Eliminar" class="btn btn-danger">
-                          </form>
-                          @break($product->category->id != $category->id)
-                        @endif
-                      @endforeach
-                    </div>
-                    <div class="clearfix"></div>
+                        @break($product->category->id != $category->id)
+                      @endif
+                    @endforeach
                   </div>
-                  <div class="separador"></div>
-                @endforeach
-            </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="separador"></div>
+              @endforeach
           </div>
         </div>
       </div>
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="x_panel">
+        <div class="x_title">
+          <h2>Ingresar / Editar nueva subcategoría</h2><br><br>
+          <p>Al cambiar el nombre de una categoría cambiará la categoría de todos los productos asociados a esta</p>
+          <p>Solo podrá eliminar categorías que aún no tengan ningún producto asociado</p>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="row">
+            <form class="form-horizontal form-label-left" action="{{ route('sub_category_create') }}" method="post" enctype="multipart/form-data">
+              @csrf
+              <div class="form-group">
+                <label class="control-label col-md-2">Nombre</label>
+                <div class="col-md-10">
+                  <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-2">Descripción</label>
+                <div class="col-md-10">
+                  <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Descripción">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="category_id" class="control-label col-md-2">Categoría</label>
+                <select class="form-control col-md-10" name="category_id" id="category_id">
+                  @forelse ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    
+                  @empty
+                    
+                  @endforelse
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-10 col-sm-2">
+                  <button type="submit" class="btn btn-success pull-right">Guardar</button>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="ln_solid"></div>
+            </form>
+          </div>
+            @foreach ($sub_categories as $sub_category)
+              <div class="row">
+                <h3>{{ $sub_category->name }}</h3>
+                <div class="col-sm-12">
+                  <form action="{{ route('sub_category_update', ['sub_category' => $sub_category]) }}" method="post" enctype="multipart/form-data">
+                      @csrf
+                      <div class="form-group">
+                        <label class="control-label col-md-2">Reemplazar el nombre acá:</label>
+                        <div class="col-md-10">
+                          <input type="text" class="form-control" value="{{ $sub_category->name }}" name="name">
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="form-group">
+                        <label class="control-label col-md-2">Reemplazar la descripción acá:</label>
+                        <div class="col-md-10">
+                          <input type="text" class="form-control" value="{{ $sub_category->description }}" name="description">
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="">
+                          <img src="{{ Storage::url($sub_category->avatar) }}" alt="{{ $sub_category->name }}" style="width:150px;">
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="form-group">
+                        <label for="category_id" class="control-label col-md-2">Categoría</label>
+                        <select class="form-control col-md-10" name="category_id" id="category_id">
+                          @forelse ($categories as $category)
+                            <option value="{{ $category->id }}" {{ $sub_category->category->id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            
+                          @empty
+                            
+                          @endforelse
+                        </select>
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="form-group">
+                        <div class="col-sm-offset-10">
+                          <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
+                        </div>
+                      </div>
+                  </form>
+                </div>
+                <div class="col-sm-offset-9 col-sm-2">
+                  <form class="" action="{{  route('sub_category_delete', ['sub_category' => $sub_category->id]) }}" method="post">
+                    @csrf
+                    <input type="submit" name="" value="Eliminar" class="btn btn-danger">
+                  </form>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="separador"></div>
+            @endforeach
+        </div>
+        </div>
+      </div>
+    </div>
     <div class="clearfix"></div>
   @endif
   <div class="row">
@@ -309,4 +351,5 @@
       </div>
     </div>
   </div>
+  
 @endsection

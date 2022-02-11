@@ -16,6 +16,9 @@
 // });
 
 // Backend
+
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
 
 Route::get('/backend', function() {
@@ -27,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('backend/backendHome', 'HomeController@index');
   Route::resource('/backend/products', 'ProductController');
   Route::resource('/backend/posts', 'PostsController');
+
   Route::get('/messages', 'ContactController@index');
   Route::get('backend/images', 'ProductController@imagesUpload');
   Route::post('backend/images/storeImages', 'ProductController@storeImages')->name('storeImages');
@@ -47,6 +51,12 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('project/destroy', 'ProjectController@destroy')->name('project.destroy');
   Route::delete('image/delete', 'ProductController@imageDelete')->name('image.delete');
 
+  Route::prefix('sub_category')->group(function(){
+    Route::post('/', 'SubCategoryController@create')->name('sub_category_create');    
+    Route::post('/update/{sub_category}', 'SubCategoryController@update')->name('sub_category_update');  
+    Route::post('/delete/{sub_category}', 'SubCategoryController@delete')->name('sub_category_delete');  
+  });
+
   Route::prefix('budget')->group(function(){
 
     Route::get('/', 'BudgetController@show_form')->name('budget');
@@ -66,10 +76,12 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/', 'HomeController@home');
 
 Route::get('/rubro/{category}/{id}', 'CategoryController@show')->name('category');
+Route::get('/sub-rubro/{subcategory}', 'CategoryController@showSubCategory')->name('subcategory');
 Route::get('/productos', 'CategoryController@index')->name('products');
 
 Route::get('rubro/{product}/producto/{id}', 'ProductController@showProduct')->name('product');
-Route::get('/search', ['uses' => 'ProductController@search', 'as' => 'search']);
+
+Route::get('/search', 'ProductController@search')->name('search');
 
 Route::post('/contact', 'ContactController@create')->name('contact');
 

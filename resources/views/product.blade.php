@@ -42,7 +42,7 @@
         <div class="col-sm-6">
           <div class="row">
             <div class="col-md-12 col-lg-8">
-              <h3 class="cap">{{ $product->category->name }}</h3>
+              <h3 class="cap">{{ $product->category->name }} {!! isset($product->sub_category) ? '<small> | '. $product->sub_category->name . '</small>' : '' !!} </h3>
               <h1 class="bold primary upper">{{ $product->name }}</h1>
             </div>
             {{-- Botón desktop --}}
@@ -54,7 +54,7 @@
           <div class="my-4"></div>
           <div class="row">
             <div class="col-sm-12">
-              <p>{{ $product->description }}</p>
+              <p class="text-justify">{{ $product->description }}</p>
             </div>
           </div>
           <div class="row my-md-5 my-3">
@@ -88,8 +88,8 @@
               @if ($bColors->count() > 0)
                 <p><span>Color cuerpo </span></p>
                 <div class="row mb-4">
-                  @foreach ($bColors as $k => $bColor)
-                    <div class="col-auto color-dot {{ $bColor->value }}"></div>
+                  @foreach (add_bi_color($bColors) as $k => $bColor)
+                    <div class="col-auto color-dot {{ $bColor['value'] }}"></div>
                   @endforeach
                 </div>
               @endif
@@ -124,11 +124,9 @@
             <div class="my-3 my-md-5"></div>
             <div class="row justify-content-between">
               @forelse ($product->certificates as $certificate)
-                  <div class="col-auto">
+                  <div class="certificate col-6 col-sm-auto">
                     <img src="{{ Storage::url($certificate->image) }}" alt="Jordan Plas, producto certificado por {{ $certificate->name }}">
-                    <p>
-                      <span>Certificado</span><br>{{ $certificate->name }} <br>
-                    </p>
+                    <p>Certificado {{ $certificate->name }}</p>
                   </div>
               @empty
                   

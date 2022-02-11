@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Category;
+use App\SubCategory;
 use App\Certificate;
 use App\Product;
 use App\Project;
@@ -30,6 +31,29 @@ class CategoryController extends Controller
         'id' => $id,
     ]);
   }
+
+  public function showSubCategory(SubCategory $subcategory)
+  {
+
+    $categories = Category::orderBy('name')->get();
+    $category = $subcategory->category;
+    $id = $category->id;
+    $products = Product::where('sub_category_id', '=', $subcategory->id)
+                        ->orderBy('rating', 'asc')
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+
+    $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
+
+    return view('products', [
+        'categories' => $categories,
+        'category' => $category,
+        'products' => $products,
+        'certificates' => $certificates,
+        'id' => $id,
+    ]);
+  }
+
 
   public function index()
   {

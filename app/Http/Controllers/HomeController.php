@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Product;
-use App\Post;
 use App\Category;
-use App\Project;
+use App\SubCategory;
 use App\Client;
-use App\ClientLogo;
 use App\Certificate;
-use App\Company;
-use App\Service;
 use App\Image;
 
 class HomeController extends Controller
@@ -37,12 +32,14 @@ class HomeController extends Controller
     {
         $products = Product::with('category')->get();
         $categories = Category::get()->sortBy('name');
+        $sub_categories = SubCategory::get()->sortBy('name');
         $clients = Client::orderBy('created_at', 'desc')->limit('5')->get();
         $certificates = Certificate::all();
 
         return view('backend/backendHome', [
             'products' => $products,
             'categories' => $categories,
+            'sub_categories' => $sub_categories,
             'clients' => $clients,
             'certificates' => $certificates
         ]);

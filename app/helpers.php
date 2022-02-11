@@ -31,6 +31,10 @@
 
  function arrSum($arr, $key){
 
+    if (!isset($arr)) {
+      return false;
+    }
+
     $sum = [];
 
     foreach ($arr as $a => $item) {
@@ -72,6 +76,57 @@
   $cleanUrl = strtolower($cleanUrl);
 
   return $cleanUrl;
+  }
+
+
+  function translate($str){
+
+    $word = ['yellow' => 'amarillo', 'black' => 'negro', 'white' => 'blanco', 'orange' => 'naranja', 'green' => 'verde', 'blue' => 'azul'];
+
+    $clean = strtr($str, $word);
+
+    return $clean;
+
+  }
+
+  function add_bi_color($colors){
+
+    $ama = false;
+    $neg = false;
+
+    foreach ($colors->toArray() as $color) {
+      if ($color['value'] == 'yellow') {
+        $ama = true;
+      }
+
+      if ($color['value'] == 'black') {
+        $neg = true;
+      }
+    }
+
+    if ($ama == true && $neg == true) {
+
+      $colors->push([
+        'value' => 'bi-color'
+      ]);
+
+      return $colors->toArray();
+
+    }
+
+    return $colors;
+
+  }
+
+  function format_date($str){
+
+    $a = explode('-', $str);
+    
+    if (count($a) > 1) {
+      return $a[2] . '-' . $a[1] . '-' . $a[0];
+    }
+    return false;
+    
   }
 
 ?>

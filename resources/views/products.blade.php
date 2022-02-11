@@ -28,7 +28,19 @@
           <h3 class="upper mb-2">Productos</h3>
           <ul class="side-menu">
             @forelse ($categories as $category)
-              <li><a class="cap {{ $id == $category->id ? 'bold' : '' }}" href="{{ route('category', ['id' => $category->id, 'category' => $category->name]) }}">{{ $category->name }}</a></li>
+              <li>
+                <a class="cap {{ $id == $category->id ? 'bold' : '' }}" href="{{ route('category', ['id' => $category->id, 'category' => $category->name]) }}">{{ $category->name }}</a>
+                @if ($category->sub_categories->count() > 0)
+                  @forelse ($category->sub_categories as $sub_category)
+                    <ul class="submenu">
+                      <li><a class="{{ $id == $category->id ? 'bold' : '' }}" href="{{ route('subcategory', ['subcategory' => $sub_category]) }}">{{ $sub_category->name }}</a></li>
+                    </ul>
+                  @empty
+                  
+                @endforelse
+              @endif
+              </li>
+
             @empty
               
             @endforelse
@@ -49,4 +61,35 @@
     </section>
     <div class="my-5"></div>
   </div>
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll('.nav-link').forEach(function(element){
+    
+    element.addEventListener('click', function (e) {
+
+      let nextEl = element.nextElementSibling;
+      let parentEl  = element.parentElement;	
+
+        if(nextEl) {
+            e.preventDefault();	
+            let mycollapse = new bootstrap.Collapse(nextEl);
+            
+            if(nextEl.classList.contains('show')){
+              mycollapse.hide();
+            } else {
+                mycollapse.show();
+                // find other submenus with class=show
+                var opened_submenu = parentEl.parentElement.querySelector('.submenu.show');
+                // if it exists, then close all of them
+                if(opened_submenu){
+                  new bootstrap.Collapse(opened_submenu);
+                }
+            }
+        }
+    }); // addEventListener
+  }) // forEach
+}); 
+
+  </script>
 @endsection

@@ -89,7 +89,7 @@
       @foreach ($images as $image)
         <div class="col-sm-3" style="margin-bottom:48px;">
           <img src="{{ Storage::url($image->url) }}" alt="" style="max-width:100%">
-          <figcaption>{{ $image->product->name .' - ' . $image->category->name }}</figcaption>
+          <figcaption>{{ $image->product != null && $image->category != null ? $image->product->name .' - ' . $image->category->name : '' }}</figcaption>
           <div class="" style="margin-top:24px">
             <form class="" action="{{ route('image.delete', $image->id) }}" method="post">
               {{ method_field('DELETE')}}

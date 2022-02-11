@@ -6,6 +6,7 @@ use App\Product;
 use App\Project;
 use App\Service;
 use App\Category;
+use App\SubCategory;
 use App\Image;
 use App\Color;
 use App\ClientLogo;
@@ -113,6 +114,7 @@ class ProductController extends Controller
             $product->name = $request['name'];
             $product->description = $request['description'];
             $product->category_id = $request['category_id'];
+            $product->sub_category_id = $request['sub_category_id'];
 
             $product->height = $request['height'];
             $product->width = $request['width'];
@@ -204,13 +206,16 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $categories = Category::all();
+        $sub_categories = SubCategory::all();
         $certificates = Certificate::all();
         $bColors = Color::all();
         $rColors = Color::all();
         $products = Product::where('category_id', '=', $product->category->id)->get();
+
         return view('backend.products.product', [
             'product' => $product,
             'categories' => $categories,
+            'sub_categories' => $sub_categories,
             'certificates' => $certificates,
             'products' => $products,
             'bColors' => $bColors,
@@ -282,6 +287,7 @@ class ProductController extends Controller
 
             $product->reflex_s = $request['reflex_s'];
             $product->resistence = $request['resistence'];
+            $product->sub_category_id = $request['sub_category_id'];
 
             if ($request['info_file'] || $request["manual_file"] || $request['left_img'] || $request['right_img'] || $request['avatar'] || $request['rating'] || $request['units'])
             {
@@ -340,33 +346,6 @@ class ProductController extends Controller
 
         $reflexColor = $request['light_color_id'];
 
-        // dd($rColor);
-        // $atributos = $product->atributes->toArray();
-        // if(isset($request['body_color_id']) && !empty($atributos)) {
-        //     foreach ($atributos as $key => $value) {
-        //         if($value['atribute'] == "body_color"){
-        //             $bColor[] = $value['value'];
-        //         }
-        //     }
-        //     // Agregar color de cuerpo
-        //     $arrColor = array_diff($request['body_color_id'], $bColor);
-        //     if (count($arrColor) == 0){
-        //         $atribute = ProductAtribute::find()->where('product_id', '=', $request['id'])->where('value', '=', $value['value']);
-        //         $atribute->atribute = "body_color";
-        //         $atribute->value = '';
-        //         $product->atributes()->save($atribute);
-        //     }
-        // } else {
-        //     if (isset($request['body_color_id'])) {
-        //         foreach ($request['body_color_id'] as $key => $value) {
-        //             $atribute = new ProductAtribute();
-        //             $atribute->atribute = "body_color";
-        //             $atribute->value = $value;
-        //             $product->atributes()->save($atribute);
-        //         }
-        //     }
-        // }
-
         if (isset($request['body_color_id'])) {
             foreach ($request['body_color_id'] as $key => $value) {
                 $atribute = new ProductAtribute();
@@ -422,7 +401,7 @@ class ProductController extends Controller
                             ->orderBy('updated_at', 'desc')
                             ->get();
         $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
-        $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $id)->get();
+        $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $product->id)->select('value')->get();
         $rColors = ProductAtribute::where('atribute', '=', 'reflex_color')->where('product_id', '=', $id)->get();
         $images = Image::where('category_id', '=', $product->category->id)->where('product_id', '=', $id)->get();
         
@@ -506,28 +485,21 @@ class ProductController extends Controller
 
     }
 
-    public function search()
+    public function search(Request $request)
     {
+    
+        $keyword = $request->search;
 
-    $keyword = Input::get('s');
-    $products = Product::all();
-    $categories = Category::all();
-    $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
-    $topProducts = Product::where('rating', '<', '3')->get();
-    $productList = Product::where('name', 'like', '%' . $keyword)
-                            ->orWhere('description', 'like', '%' . $keyword . '%')
-                            ->orderBy('rating', 'asc')
-                            ->get();
-    $projects = Project::all();
-    $services = Service::all();
+        $categories = Category::all();
+        $products = Product::where('name', 'like', '%' . $keyword)
+                                ->orWhere('description', 'like', '%' . $keyword . '%')
+                                ->orderBy('name')
+                                ->with('category')
+                                ->get();
+
         return view('productsList', [
-            'productList' => $productList,
-            'categories' => $categories,
-            'topProducts' => $topProducts,
             'products' => $products,
-            'certificates' => $certificates,
-            'projects' => $projects,
-            'services' => $services
+            'categories' => $categories,
         ]);
     }
 

@@ -40,4 +40,41 @@
   .white {
     background-color: white;
   }
+
+  .bi-color {
+    background: linear-gradient( -90deg, #FBD347, #FBD347 49%, #1E1E1E 49%, #1E1E1E 51%, #1E1E1E 51% ); 
+    border-radius: 50%;
+  }
+
+  .redWhite {
+    background: linear-gradient( -90deg, #F23939, #F23939 49%, white 49%, white 51%, white 51% ); 
+    border-radius: 50%;
+  }
+
+  .redYellow {
+    background: linear-gradient( -90deg, #F23939, #F23939 49%, #FBD347 49%, #FBD347 51%, #FBD347 51% ); 
+    border-radius: 50%;
+  }
+
+    .yellowWhite {
+    background: linear-gradient( -90deg, #FBD347, #FBD347 49%, white 49%, white 51%, white 51% ); 
+    border-radius: 50%;
+  }
+
+  .certificate {
+    text-align: center;
+
+    img{
+      width: 6rem;
+      height: 6rem;
+      border-radius: 50%;
+      margin-bottom: 0.2rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
+
+  }
+
 }

@@ -61,9 +61,9 @@ class BudgetController extends Controller
     
     $categories = Category::orderBy('name')->get();
 
-    $products = [];
+    $products = $categories->first()->product;
     $s_product = '';
-    $colors = [];
+    $colors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $products[0]->id)->select('value')->get();
     $s_color = '';
     $measure = '';
     $support = '';
@@ -73,6 +73,7 @@ class BudgetController extends Controller
     $observations = '';
     $delivery_date = '';
     $payment = '';
+    $sub_category_name = '';
 
     $client_data = $request->session()->get('client_data');
     if (!isset($client_data)) {
@@ -133,6 +134,10 @@ class BudgetController extends Controller
 
     if (isset($session['payment'])) {
       $payment = $session['payment'];
+    }
+
+    if (isset($session['sub_category_name'])) {
+      $sub_category_name = $session['sub_category_name'];
     }    
 
     $total = '';
@@ -164,6 +169,7 @@ class BudgetController extends Controller
       'observations' => $observations,
       'delivery_date' => $delivery_date,
       'payment' => $payment,
+      'sub_category_name' => $sub_category_name,
     ]);
 
   }
@@ -174,7 +180,14 @@ class BudgetController extends Controller
     $bColors = [];
 
     if (isset($request->product_id)) {
-      $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $request->product_id)->get();
+
+      $product = Product::where('id', $request->product_id)
+                  ->with('category')
+                  ->select('id', 'units')
+                  ->first();
+
+      $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $request->product_id)->select('value')->get();
+      $bColors = add_bi_color($bColors);
     }
 
     $data = [
@@ -194,8 +207,8 @@ class BudgetController extends Controller
     if (isset($request->product_id) && isset($request->amount) && isset($request->unit_price) ) {
 
       $product = Product::where('id', $request->product_id)
-                        ->with('category')
-                        ->select('id', 'name', 'category_id', 'avatar', 'description')
+                        ->with('category', 'sub_category')
+                        ->select('id', 'name', 'category_id', 'avatar', 'description', 'sub_category_id')
                         ->first();
 
       $m = 'Metro lineal';
@@ -211,8 +224,17 @@ class BudgetController extends Controller
       }
 
       $s = 'Fijación mecánica';
-      if ($request->support == false) {
+      if ($request->support === false) {
         $s = 'Pegamento';
+      }
+
+      if ($request->support === 'na') {
+        $s = 'No incluida';
+      }
+
+      $sub_category_name = '';
+      if ($product->sub_category != null) {
+        $sub_category_name = $product->sub_category->name;
       }
 
       $sp = [
@@ -220,6 +242,7 @@ class BudgetController extends Controller
         'name' => $product->name,
         'category_id'  => $product->category_id,
         'category_name' => $product->category->name,
+        'sub_category_name' => $sub_category_name,
         'color' => $request->color,
         'avatar' => $product->avatar,
         'description' => $product->description,
@@ -275,15 +298,23 @@ class BudgetController extends Controller
 
     $client_info = $request->session()->get('client_data');
 
+    if (!isset($client_info) || isset($client_info['budget_info'])) {
+      return redirect()->back()->withErrors('Falta el nombre del cliente o la fecha de presupuesto');
+    }
+
     unset($client_info['_token']);
     unset($client_info['tax']);
     unset($client_info['delivery']);
     unset($client_info['observations']);
     unset($client_info['delivery_date']);
     unset($client_info['payment']);
+    unset($client_info['budget_date']);
+    $client_info['cuit'] = null;
 
-    $client_info['cuit'] = str_replace('-', '', $client_info['cuit']);
-    
+    if (isset($client_info['cuit'])) {
+      $client_info['cuit'] = str_replace('-', '', $client_info['cuit']);
+    }
+
     $client = Client::create($client_info);
 
     $budget_data = $request->session()->get('client_data');
@@ -291,7 +322,7 @@ class BudgetController extends Controller
 
     $tax = 0;
     $total = arrSum($products, 'sub_total');
-    if ($budget_data['tax'] == true) {
+    if (isset($budget_data['tax']) && $budget_data['tax'] == true) {
       $tax = $total * 0.21;
       $total = $total + $tax;
     }
@@ -304,7 +335,8 @@ class BudgetController extends Controller
       'payment' => $budget_data['payment'],
       "client_id" => $client->id,
       "tax" => $tax,
-      "total" => $total
+      "total" => $total,
+      'budget_date' => $budget_data['budget_date'],
     ]);
 
     foreach ($products as $product) {
