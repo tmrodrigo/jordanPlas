@@ -19,6 +19,21 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/clear-cache', function() {
+    Artisan::call('route:cache');
+    Artisan::call('view:clear'); 
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    return "Cleared!";
+});
+
+Route::get('/migrate', function() {
+    Artisan::call('migrate');
+    return "Migrated";
+});
+
+
 Auth::routes();
 
 Route::get('/backend', function() {
@@ -86,3 +101,5 @@ Route::get('/search', 'ProductController@search')->name('search');
 Route::post('/contact', 'ContactController@create')->name('contact');
 
 Route::get('/contacto', 'ContactController@show');
+
+Route::get('/{hash}', 'BudgetController@get_budget')->name('get_budget');

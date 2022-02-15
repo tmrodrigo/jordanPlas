@@ -1,3 +1,19 @@
 footer {
-  background-color: $neutral-background-low;
+  background-color: $neutral-background-strongest;
+  text-align: center;
+  p {
+    color: $neutral-text-inverted;
+    &.copy {
+      color: $neutral-text-low;
+      font-size: 0.8rem;
+    }
+  }
+
+  a {
+    color: $neutral-text-inverted;
+    text-decoration: underline;
+    &:hover{
+      color: $neutral-text-low
+    }
+  }
 }

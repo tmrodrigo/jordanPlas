@@ -23,7 +23,7 @@
             </div>
           @empty
             <div class="col-sm-12">
-              <h4>Disculpe, su busqueda no arrojó ningún resultado. Intente con palabras más cercanas</h4>
+              <h4>Disculpe, su busqueda no arrojó ningún resultado</h4>
             </div>  
           @endforelse
         </div>

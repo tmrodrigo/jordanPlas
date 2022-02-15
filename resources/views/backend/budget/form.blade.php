@@ -117,7 +117,7 @@
               @csrf
               <div class="row">
                 <div class="form-group col-12 col-sm-3 mb-2">
-                  <label for="client_input">Cliente</label>
+                  <label for="client_input">Cliente *</label>
                   <input id="client_input" class="form-control" type="text" name="name" value="{{ isset($client_data['name']) ?  $client_data['name'] : '' }}" required>
                 </div>
                 <div class="form-group col-12 col-sm-2 mb-2">
@@ -185,8 +185,8 @@
                   <input id="payment_input" class="form-control" type="text" name="payment" value="{{ isset($client_data['payment']) ?  $client_data['payment'] : '' }}">
                 </div>
                 <div class="form-group col-12 col-sm-3 mb-2">
-                  <label for="budget_date_input">Fecha del presupuesto</label>
-                  <input id="budget_date_input" class="form-control" type="date" name="budget_date" value="{{ isset($client_data['budget_date']) ?  $client_data['budget_date'] : '' }}">
+                  <label for="budget_date_input">Fecha del presupuesto *</label>
+                  <input id="budget_date_input" class="form-control" type="date" name="budget_date" value="{{ isset($client_data['budget_date']) ?  $client_data['budget_date'] : '' }}" required>
                 </div>
               </div>
               <button class="btn btn-outline-primary" type="submit">{{ isset($client_data['client_name']) ?  'Actualizar datos cliente' : 'Guardar datos cliente' }}</button>
@@ -194,7 +194,7 @@
           </div>
         </div>
         <div class="m-4"></div>
-        <div class="card">
+        <div class="card" id="add_product">
           <div class="card-body">
             <div class="card-title">
               <h3>Agregar producto</h3>

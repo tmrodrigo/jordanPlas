@@ -33,7 +33,7 @@
                 @if ($category->sub_categories->count() > 0)
                   @forelse ($category->sub_categories as $sub_category)
                     <ul class="submenu">
-                      <li><a class="{{ $id == $category->id ? 'bold' : '' }}" href="{{ route('subcategory', ['subcategory' => $sub_category]) }}">{{ $sub_category->name }}</a></li>
+                      <li><a class="{{ $sub_id == $sub_category->id ? 'bold' : '' }}" href="{{ route('subcategory', ['subcategory' => $sub_category]) }}">{{ $sub_category->name }}</a></li>
                     </ul>
                   @empty
                   

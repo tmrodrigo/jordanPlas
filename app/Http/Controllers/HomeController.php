@@ -7,7 +7,8 @@ use App\Category;
 use App\SubCategory;
 use App\Client;
 use App\Certificate;
-use App\Image;
+use App\Post;
+use App\Company;
 
 class HomeController extends Controller
 {
@@ -20,11 +21,13 @@ class HomeController extends Controller
     public function home()
     {
         $categories = Category::orderBy('name')->get();
-        $images = Image::take(3)->where('category_id', '=', 'company')->orderBy('created_at', 'desc')->get();
+        $images = Post::select('name as category_id', 'image as url' )->get();
+        $company_data = Company::orderBy('created_at', 'DESC')->first();
 
         return view('home', [
             'categories' => $categories,
-            'images' => $images
+            'images' => $images,
+            'company_data' => $company_data
         ]);
     }
 
@@ -35,13 +38,15 @@ class HomeController extends Controller
         $sub_categories = SubCategory::get()->sortBy('name');
         $clients = Client::orderBy('created_at', 'desc')->limit('5')->get();
         $certificates = Certificate::all();
+        $company_data = Company::orderBy('created_at', 'DESC')->first();
 
         return view('backend/backendHome', [
             'products' => $products,
             'categories' => $categories,
             'sub_categories' => $sub_categories,
             'clients' => $clients,
-            'certificates' => $certificates
+            'certificates' => $certificates,
+            'company_data' => $company_data
         ]);
     }
 

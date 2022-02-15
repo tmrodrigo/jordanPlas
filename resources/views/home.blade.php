@@ -5,16 +5,18 @@
 @section('content')
   <div id="carouselExampleControlsNoTouching" class="carousel slide carousel-fade" data-bs-touch="true" data-bs-interval="false">
     <div class="carousel-indicators">
-      @for ($i = 0; $i < 10; $i++)
+      @for ($i = 0; $i < $images->count(); $i++)
         <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="{{ $i }}" class="{{ $i == 0 ? 'active' : ''}}" aria-current="true" aria-label="Slide {{ $i }}"></button>
       @endfor
     </div>
     <div class="carousel-inner">
-      @for ($i = 0; $i < 10; $i++)
-        <div class="carousel-item {{ $i == 0 ? 'active' : ''}}">
-          <img src="{{ asset('storage/novedades/placeholder-02.png') }}" class="d-block w-100" alt="...">
+      @forelse ($images as $k => $image)
+        <div class="carousel-item {{ $k == 0 ? 'active' : ''}}">
+          <img src="{{  Storage::url($image->url) }}" class="d-block w-100" alt="{{ $image->category_id }}">
         </div>
-      @endfor
+      @empty
+        
+      @endforelse
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -43,4 +45,5 @@
       @endforelse
     </div>
   </div>
+  <div class="my-5"></div>
 @endsection

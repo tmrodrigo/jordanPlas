@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\Project;
-use App\Service;
 use App\Category;
 use App\SubCategory;
 use App\Image;
 use App\Color;
+use App\Company;
 use App\ClientLogo;
 use App\Certificate;
 use App\ProductAtribute;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -404,7 +401,8 @@ class ProductController extends Controller
         $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $product->id)->select('value')->get();
         $rColors = ProductAtribute::where('atribute', '=', 'reflex_color')->where('product_id', '=', $id)->get();
         $images = Image::where('category_id', '=', $product->category->id)->where('product_id', '=', $id)->get();
-        
+        $company_data = Company::orderBy('created_at', 'DESC')->first();
+
         return view('product', [
             'product' => $product,
             'categories' => $categories,
@@ -412,7 +410,8 @@ class ProductController extends Controller
             'certificates' => $certificates,
             'bColors' => $bColors,
             'rColors' => $rColors,
-            'images' => $images
+            'images' => $images,
+            'company_data' => $company_data
         ]);
     }
 
@@ -496,10 +495,12 @@ class ProductController extends Controller
                                 ->orderBy('name')
                                 ->with('category')
                                 ->get();
+        $company_data = Company::orderBy('created_at', 'DESC')->first();
 
         return view('productsList', [
             'products' => $products,
             'categories' => $categories,
+            'company_data' => $company_data
         ]);
     }
 

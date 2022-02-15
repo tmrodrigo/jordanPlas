@@ -43,7 +43,7 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link whatsapp" href="#">Contactanos por Whatsapp</a>
+                <a class="nav-link whatsapp" href="{{ format_cel($company_data->fax) }}" target="_blanc">Contactanos por Whatsapp</a>
               </li>
             </ul>
             <form action="{{ route('search') }}" method="GET" class="d-flex my-2 my-lg-0">
@@ -60,21 +60,30 @@
     <main>
       @yield('content')
     </main>
-    <footer class="py-5">
+    <footer class="pt-4 pb-2">
       <div class="container">
         <div class="row">
-          <div class="col-sm-2">
+          <div class="col-sm-2 mb-4">
             <img src="{{ asset('logos/logo-vert.svg') }}" alt="Logo Jordan-Plas">
           </div>
+          <div class="col-sm-8">
+            <p>
+              Dirección: {{ $company_data->address }} <br> Whatsapp: <a href="{{ format_cel($company_data->fax) }}" target="_blanc">{{ $company_data->fax }}</a> - <a href="{{ format_cel($company_data->celular) }}" target="_blanc">{{ $company_data->celular }}</a> | Fijo: {{ $company_data->phone }} <br> Email: <a href="mailto:{{ $company_data->email }}" target="_blanc">{{ $company_data->email }}</a>
+            </p>            
+          </div>
+          <div class="col-sm-2">
+            <ul class="list-unstyled">
+              <li><a href="https://www.linkedin.com/in/fernando-gabriel-mosc%C3%B3n-88b78572/" target="_blanc">Linkedin</a></li>
+              <li><a href="https://www.instagram.com/jordanplas_/" target="_blanc">Instagram</a></li>
+              <li><a href="https://www.facebook.com/JordanPlasVialidad" target="_blanc">Facebook</a></li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="d-flex justify-content-between py-4 my-4 border-top">
-        <p>©{{ date('Y') }} Jordan Plas. Todos los derechos reservados.</p>
-        <ul class="list-unstyled d-flex">
-          <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-          <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-          <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-        </ul>
+        <div class="row">
+          <div class="col-sm-12 py-2 mt-3">
+            <p class="copy text-center m-0">©{{ date('Y') }} Jordan Plas. Todos los derechos reservados.</p>
+          </div>
+        </div>
       </div>
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

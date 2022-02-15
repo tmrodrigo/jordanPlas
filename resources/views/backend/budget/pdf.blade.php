@@ -68,31 +68,43 @@
         }
 
         .product-info {
-          width: 154px;
+          width: 140px;
           padding-left: 6px;
+          padding-bottom: 6px;
         }
 
         .product-description {
-          width: 264px;
+          width: 220px;
           padding-left: 6px;
+          padding-bottom: 6px;
         }
 
         .product-unit-price {
-          width: 74px;
+          width: 77px;
           padding-left: 6px;
           padding-right: 6px;
+          padding-bottom: 6px;
           text-align: right !important;
         }
 
         .product-sub-total {
-          width: 84px;
+          width: 77px;
           padding-left: 6px;
           padding-right: 6px;
+          padding-bottom: 6px;
+          text-align: right !important;
+        }
+
+        .product-amount {
+          width: 76px;
+          padding-left: 6px;
+          padding-right: 6px;
+          padding-bottom: 6px;
           text-align: right !important;
         }
 
         img {
-          width: 114px;
+          width: 100px;
           padding-left: 6px;
         }
 
@@ -182,8 +194,6 @@
               transform: rotate(45deg);
         }
 
-          /* background: linear-gradient( 90deg, gold, gold 49%, white 49%, white 51%, black 51% );  */
-
         .yellow {
           background: gold;
         }
@@ -219,9 +229,7 @@
         <p>Email: <b>{{ $client->email }}</b></p>
       </td>
       <td>
-        <h1 style="text-align: center">Presupuesto Nº {{ $budget->id }} <br> Fecha {{ format_date($budget->budget_date) }} </h1>
-        {{-- Campo modificable --}}
-        {{-- Agregar ceros --}}
+        <h1 style="text-align: center">Presupuesto Nº {{ str_pad($budget->id, 7, '0', STR_PAD_LEFT) }} <br> Fecha {{ format_date($budget->budget_date) }} </h1>
       </td>
     </tr>
   </table>
@@ -231,6 +239,7 @@
       <th style="text-align: center"><b>Producto</b></th>
       <th><b>Datos</b></th>
       <th><b>Descripción</b></th>
+      <th><b>Cantidad</b></th>
       <th style="text-align: center"><b>Precio Unitario</b></th>
       <th><b>Sub-Total</b></th>
     </tr>
@@ -242,11 +251,11 @@
         <td class="product-info">
           <h6><b>{{ $product->category->name }} {!! $product->sub_category != null ? '<br><small>'. $product->sub_category->name . '</small>' : '' !!}</b></h6>
           <h5><b>{{ $product->name }}</b></h5>
-          <p>Cantidad: <b>{{ format_number($product->pivot->amount) }} {{ $product->pivot->unit }}</b></p>
           <p>Color: <span class="circle {{ $product->pivot->color }}"></span></p>
           <p>Soporte: <b>{{ $product->pivot->support }}</b></p>
         </td>
         <td class="product-description"><p>{{ cut_str($product->description, 500) }}</p></td>
+        <td class="product-amount"><b>{{ format_number($product->pivot->amount) }} {{ $product->pivot->unit }}</b></p></td>
         <td class="product-unit-price"><p>${{ format_number($product->pivot->unit_price) }}</p></td>
         <td class="product-sub-total"><p><b>${{ format_number($product->pivot->amount * $product->pivot->unit_price) }}</p></b></td>
       </tr>
@@ -261,7 +270,7 @@
       <td style="padding: 6px">
         {!! !is_null($budget->payment) ? '<p>Condición de pago: <br><b>' . $budget->payment . '</b></p>' : '' !!}
       </td>
-      <td colspan="2">
+      <td colspan="3">
         <h4>
           {{ $budget->has_tax == true ? 'I.V.A (21%): $' . format_number($budget->tax, 2) : 'I.V.A incluido' }}
         </h4>
@@ -275,7 +284,7 @@
         <b>Observaciones:</b>
         <p>{{ !is_null($budget->observation) ? $budget->observation : '' }}</p>
       </td>
-      <td class="total" colspan="3">
+      <td class="total" colspan="4">
         <h2>
           Total: ${{ format_number($budget->total, 2) }}
         </h2>

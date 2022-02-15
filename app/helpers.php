@@ -129,4 +129,16 @@
     
   }
 
+  function format_cel($str){
+
+    $unwanted_array = array(' ' => '', '-' => '', '(' => '', ')' => '');
+
+    $nc = strtr($str, $unwanted_array);
+
+    $nc = 'https://wa.me/' . $nc;
+
+    return $nc;
+
+  }
+
 ?>

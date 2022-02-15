@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Budget;
 use App\Category;
 use App\Client;
 use App\Product;
 use App\ProductAtribute;
+use Illuminate\Support\Facades\Hash;
 use PDF;
 
 class BudgetController extends Controller
@@ -268,7 +270,7 @@ class BudgetController extends Controller
 
     }
 
-    return redirect()->route('budget');
+    return redirect('budget#add_product');
 
   }
 
@@ -290,7 +292,7 @@ class BudgetController extends Controller
 
     $request->session()->put('selected_products', $p);
 
-    return redirect()->route('budget');
+    return redirect('budget#add_product');
 
   }
 
@@ -299,7 +301,11 @@ class BudgetController extends Controller
     $client_info = $request->session()->get('client_data');
 
     if (!isset($client_info) || isset($client_info['budget_info'])) {
-      return redirect()->back()->withErrors('Falta el nombre del cliente o la fecha de presupuesto');
+      return redirect()->back()->withErrors('Falta el nombre del cliente');
+    }
+
+    if (!isset($client_info) || $client_info['budget_date'] == null) {
+      return redirect()->back()->withErrors('Falta la fecha de presupuesto');
     }
 
     unset($client_info['_token']);
@@ -355,10 +361,15 @@ class BudgetController extends Controller
     
     $name = 'JordanPlas-Presupuesto_N-' . $budget->id . '.pdf';
 
-    return $pdf
-          // ->stream($name);
-          ->download($name);
+    Storage::put('pdf/' . $name , $pdf->output());
 
+    $pdf_url = Storage::url($name);
+
+    $budget->update([
+      'pdf_url' => $pdf_url
+    ]);
+
+    return Storage::download('pdf/'. $name);
   }
 
   public function show_pdf(){
@@ -375,4 +386,12 @@ class BudgetController extends Controller
     ]);
 
   }
+
+  // public function get_budget($hash){
+    
+  //   $budget = Budget::find($hash);
+    
+  //   return redirect($budget->pdf_url);
+    
+  // }
 }

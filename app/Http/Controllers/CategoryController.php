@@ -10,6 +10,7 @@ use App\Certificate;
 use App\Product;
 use App\Project;
 use App\Service;
+use App\Company;
 
 class CategoryController extends Controller
 {
@@ -17,11 +18,13 @@ class CategoryController extends Controller
   {
     $categories = Category::orderBy('name')->get();
     $category = Category::find($id);
+    $sub_id = '';
     $products = Product::where('category_id', '=', $id)
                         ->orderBy('rating', 'asc')
                         ->orderBy('updated_at', 'desc')
                         ->get();
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
+    $company_data = Company::orderBy('created_at', 'DESC')->first();
 
     return view('products', [
         'categories' => $categories,
@@ -29,6 +32,8 @@ class CategoryController extends Controller
         'products' => $products,
         'certificates' => $certificates,
         'id' => $id,
+        'sub_id' => $sub_id,
+        'company_data' => $company_data
     ]);
   }
 
@@ -38,10 +43,13 @@ class CategoryController extends Controller
     $categories = Category::orderBy('name')->get();
     $category = $subcategory->category;
     $id = $category->id;
+    $sub_id = $subcategory->id;
     $products = Product::where('sub_category_id', '=', $subcategory->id)
                         ->orderBy('rating', 'asc')
                         ->orderBy('updated_at', 'desc')
                         ->get();
+    $company_data = Company::orderBy('created_at', 'DESC')->first();
+    
 
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
 
@@ -51,6 +59,8 @@ class CategoryController extends Controller
         'products' => $products,
         'certificates' => $certificates,
         'id' => $id,
+        'sub_id' => $sub_id,
+        'company_data' => $company_data
     ]);
   }
 
@@ -62,13 +72,15 @@ class CategoryController extends Controller
     $topProducts = Product::where('rating', '<', '3')->get();
     $projects = Project::all();
     $services = Service::all();
+    $company_data = Company::orderBy('created_at', 'DESC')->first();
 
     return view('productsList', [
         'categories' => $categories,
         'certificates' => $certificates,
         'projects' => $projects,
         'services' => $services,
-        'topProducts' => $topProducts
+        'topProducts' => $topProducts,
+        'company_data' => $company_data
     ]);
   }
 
