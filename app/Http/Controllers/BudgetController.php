@@ -9,7 +9,6 @@ use App\Category;
 use App\Client;
 use App\Product;
 use App\ProductAtribute;
-use Illuminate\Support\Facades\Hash;
 use PDF;
 
 class BudgetController extends Controller
@@ -62,82 +61,82 @@ class BudgetController extends Controller
   public function show_form(Request $request){
     
     $categories = Category::orderBy('name')->get();
-
     $products = $categories->first()->product;
-    $s_product = '';
-    $colors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $products[0]->id)->select('value')->get();
-    $s_color = '';
-    $measure = '';
-    $support = '';
-    $amount = '';
-    $unit_price = '';
-    $selected_category = '';
-    $observations = '';
-    $delivery_date = '';
-    $payment = '';
-    $sub_category_name = '';
-
-    $client_data = $request->session()->get('client_data');
-    if (!isset($client_data)) {
-      $client_data = [];
-    }
-
+    
     $session = $request->session()->get('data');
 
     $selected_products = $request->session()->get('selected_products');
 
-    if (!isset($selected_products)) {
-      $selected_products = [];
-    }
-
+    $selected_category = $categories[0]->id;
     if (isset($session['category'])) {
       $selected_category = $session['category'];
+    }
+
+    $s_product = $products[0]->id;
+    if (isset($session['s_product'])) {
+      $s_product = $session['s_product'];
+    }
+
+    $colors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $products[0]->id)->select('value')->get();
+    $colors = add_bi_color($colors);
+    if (isset($session['colors'])) {
+      $colors = $session['colors'];
+    }
+
+    $s_color = $colors[0]['value'];
+    if (isset($session['s_color'])) {
+      $s_color = $session['s_color'];
     }
 
     if (isset($session['products'])) {
       $products = $session['products'];
     }
 
-    if (isset($session['s_product'])) {
-      $s_product = $session['s_product'];
+    $client_data = $request->session()->get('client_data');
+    if (!isset($client_data)) {
+      $client_data = [];
     }
 
-    if (isset($session['colors'])) {
-      $colors = $session['colors'];
+    if (!isset($selected_products)) {
+      $selected_products = [];
     }
 
-    if (isset($session['s_color'])) {
-      $s_color = $session['s_color'];
-    }
-
+    $amount = '';
     if (isset($session['amount'])) {
       $amount = $session['amount'];
     }
 
+    $unit_price = '';
     if (isset($session['unit_price'])) {
       $unit_price = $session['unit_price'];
     }
 
+    $measure = '';
     if (isset($session['measure'])) {
       $measure = $session['measure'];
     }
 
+    $support = '';
     if (isset($session['support'])) {
       $support = $session['support'];
     }
 
+    $observations = '';
     if (isset($session['observations'])) {
       $observations = $session['observations'];
     }
 
+    $delivery_date = '';
     if (isset($session['delivery_date'])) {
       $delivery_date = $session['delivery_date'];
     }
 
+    $payment = '';
     if (isset($session['payment'])) {
       $payment = $session['payment'];
     }
 
+    $sub_category_name = '';
     if (isset($session['sub_category_name'])) {
       $sub_category_name = $session['sub_category_name'];
     }    
@@ -178,19 +177,28 @@ class BudgetController extends Controller
 
   public function get_budget_info(Request $request){
     
+    // Cambia la categoría
     $products = Product::where('category_id', $request->category_id)->orderBy('name')->get();
-    $bColors = [];
+    $product = $products[0];
 
-    if (isset($request->product_id)) {
+    $session = $request->session()->get('data');
 
-      $product = Product::where('id', $request->product_id)
-                  ->with('category')
-                  ->select('id', 'units')
-                  ->first();
+    if (!empty($session)) {
+    
+      //Cambia el producto
+      if (($request->category_id == $session['category']) && ($session['s_product'] != $request->product_id)) {
+        
+        $product = Product::where('id', $request->product_id)
+                          ->with('category')
+                          ->select('id', 'units', 'name')
+                          ->first();
 
-      $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $request->product_id)->select('value')->get();
-      $bColors = add_bi_color($bColors);
+      }
+    
     }
+
+    $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $product->id)->select('value')->get();
+    $bColors = add_bi_color($bColors);
 
     $data = [
       'category' => $request->category_id,
@@ -226,7 +234,7 @@ class BudgetController extends Controller
       }
 
       $s = 'Fijación mecánica';
-      if ($request->support === false) {
+      if ($request->support === 'p') {
         $s = 'Pegamento';
       }
 
@@ -239,6 +247,11 @@ class BudgetController extends Controller
         $sub_category_name = $product->sub_category->name;
       }
 
+      $unit_price = (float)str_replace(',','.',$request->unit_price);
+
+      $p_colors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $product->id)->select('value')->get();
+      $p_colors = add_bi_color($p_colors);
+
       $sp = [
         'id' => $product->id,
         'name' => $product->name,
@@ -246,13 +259,14 @@ class BudgetController extends Controller
         'category_name' => $product->category->name,
         'sub_category_name' => $sub_category_name,
         'color' => $request->color,
+        'colors' => $p_colors,
         'avatar' => $product->avatar,
         'description' => $product->description,
-        'unit_price' => (int)$request->unit_price,
+        'unit_price' => $unit_price,
         'measure' => $m,
         'support' => $s,
-        'amount' => (int)$request->amount,
-        'sub_total' => $request->amount * $request->unit_price
+        'amount' => $request->amount,
+        'sub_total' => $request->amount * $unit_price
       ];
 
       $selected_products = $request->session()->get('selected_products');
@@ -278,6 +292,7 @@ class BudgetController extends Controller
 
     $data = $request->all();
     $data['cuit'] = cuit($request->cuit);
+    $data['phone'] = format_phone($request->phone);
 
     $request->session()->put('client_data', $data);
 
@@ -293,6 +308,47 @@ class BudgetController extends Controller
     $request->session()->put('selected_products', $p);
 
     return redirect('budget#add_product');
+
+  }
+
+  public function edit_item(Request $request, $id){
+
+    $p = $request->session()->get('selected_products');
+
+    $unit_price = (float)str_replace(',','.',$request->unit_price);
+
+    $p[$id]['unit_price'] = $unit_price;
+    $p[$id]['amount'] = $request->amount;
+    $p[$id]['sub_total'] = $request->amount * $unit_price;
+    $p[$id]['color'] = $request->color;
+
+    $m = 'Metro lineal';
+    if ($request->amount > 1) {
+      $m = 'Metros lineales';
+    }
+
+    if ($request->measure == false) {
+      $m = 'Unidad';
+      if ($request->amount > 1) {
+        $m = 'Unidades';
+      }
+    }
+
+    $s = 'Fijación mecánica';
+    if ($request->support === 'p') {
+      $s = 'Pegamento';
+    }
+
+    if ($request->support === 'na') {
+      $s = 'No incluida';
+    }
+
+    $p[$id]['measure'] = $m;
+    $p[$id]['support'] = $s;
+    
+    $request->session()->put('selected_products', $p);
+
+    return back()->withErrors($p[$id]['name']. ' actualizado');
 
   }
 
@@ -315,10 +371,13 @@ class BudgetController extends Controller
     unset($client_info['delivery_date']);
     unset($client_info['payment']);
     unset($client_info['budget_date']);
-    $client_info['cuit'] = null;
 
     if (isset($client_info['cuit'])) {
       $client_info['cuit'] = str_replace('-', '', $client_info['cuit']);
+    }
+
+    if ($client_info['cuit'] == '') {
+      $client_info['cuit'] = null;
     }
 
     $client = Client::create($client_info);
@@ -349,7 +408,7 @@ class BudgetController extends Controller
       $budget->products()->attach($product['id'], ['amount' => $product['amount'], 'unit_price' => $product['unit_price'], 'color' => $product['color'], 'unit' => $product['measure'], 'support' => $product['support']]);
     }
 
-    $products = $budget->products;
+    $products = $budget->products->chunk(5);
 
     $data = [
       'client' => $client, 
@@ -361,7 +420,7 @@ class BudgetController extends Controller
     
     $name = 'JordanPlas-Presupuesto_N-' . $budget->id . '.pdf';
 
-    Storage::put('pdf/' . $name , $pdf->output());
+    Storage::put('pdf/' . $name , $pdf->output(), 'public');
 
     $pdf_url = Storage::url($name);
 
@@ -369,29 +428,57 @@ class BudgetController extends Controller
       'pdf_url' => $pdf_url
     ]);
 
-    return Storage::download('pdf/'. $name);
+    $url = str_replace('storage/',  'storage/pdf/' , $budget->pdf_url); 
+    // return Storage::download('pdf/'. $name);
+
+    return back()->with('budget', 'http://jordanplas.test/' . $url);
   }
 
-  public function show_pdf(){
+  public function show_pdf(Budget $budget){
 
-    $client = Client::orderBy('created_at', 'DESC')->first();
+    // $url = str_replace('storage/',  'storage/pdf/' , $budget->pdf_url);
+    // $budgets = Budget::all();
 
-    $products = $client->budget->products;
-    $budget = $client->budget;
+    // return view('backend.budget.list',[
+    //   'budgets' => $budgets,
+    // ]);
+    // $client = Client::orderBy('created_at', 'DESC')->first();
 
-    return view('backend.budget.pdf', [
-      'client' => $client,
-      'products' => $products,
-      'budget' => $budget,
+    // $products = $client->budget->products;
+    // $budget = $client->budget;
+
+    // return view('backend.budget.pdf', [
+    //   'client' => $client,
+    //   'products' => $products,
+    //   'budget' => $budget,
+    // ]);
+
+  }
+
+  public function list(){
+
+    $budgets = Budget::where('budget_date', '!=', null)->get();
+
+    return view('backend.budget.list',[
+      'budgets' => $budgets,
+    ]);
+  }
+
+  public function search_budget(Request $request){
+    
+    $budgets = Budget::where('id', 'like', '%' . $request->search . '%' )
+                      ->orWhereHas('client', function($query) use($request){
+                          $query
+                          ->where('name', 'like', '%' . $request->search. '%')
+                          ->orWhere('budget_date', 'like', '%' . $request->search. '%');
+                      })
+                      ->get()
+                      ->where('budget_date', '!=', null);
+
+    return view('backend.budget.list',[
+      'budgets' => $budgets,
     ]);
 
   }
 
-  // public function get_budget($hash){
-    
-  //   $budget = Budget::find($hash);
-    
-  //   return redirect($budget->pdf_url);
-    
-  // }
 }

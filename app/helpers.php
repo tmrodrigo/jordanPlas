@@ -19,10 +19,12 @@
 
  function format_number($num, $decimals = null) {
 
+    $num = floatval($num);
+
     if ($decimals == null){
       $decimals = 0;
+      $num = intval($num);
     }
-    $num = intval($num);
     
     $num = number_format($num, $decimals, ',', '.');
 
@@ -94,7 +96,7 @@
     $ama = false;
     $neg = false;
 
-    foreach ($colors->toArray() as $color) {
+    foreach ($colors as $color) {
       if ($color['value'] == 'yellow') {
         $ama = true;
       }
@@ -136,6 +138,17 @@
     $nc = strtr($str, $unwanted_array);
 
     $nc = 'https://wa.me/' . $nc;
+
+    return $nc;
+
+  }
+
+
+  function format_phone($str){
+
+    $unwanted_array = array(' ' => '', '-' => '', '(' => '', ')' => '' , '+' => '', '/' => '');
+
+    $nc = strtr($str, $unwanted_array);
 
     return $nc;
 

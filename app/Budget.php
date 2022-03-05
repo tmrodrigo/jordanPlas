@@ -15,7 +15,7 @@ class Budget extends Model
 		return $this->belongsTo(Product::class);
 	}
 
-	public function clients()
+	public function client()
 	{
 		return $this->belongsTo(Client::class);
 	}

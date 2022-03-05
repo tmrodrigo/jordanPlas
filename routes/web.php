@@ -78,12 +78,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/get_budget_info', 'BudgetController@get_budget_info')->name('get_budget_info');
     Route::post('/add_client_info', 'BudgetController@add_client_info')->name('add_client_info');
     Route::get('/remove/{key}', 'BudgetController@remove_item')->name('remove_item');
+    Route::get('/edit/{id}', 'BudgetController@edit_item')->name('edit_item');
     Route::post('/create_budget', 'BudgetController@create_budget')->name('create_budget');
-
-    Route::get('/pdf', 'BudgetController@show_pdf');
-
+    Route::get('/list', 'BudgetController@list')->name('list');
+    Route::get('/search-budget', 'BudgetController@search_budget')->name('search-budget');
 
   });
+
+  Route::get('/{budget}', 'BudgetController@show_pdf');
 
 });
 
