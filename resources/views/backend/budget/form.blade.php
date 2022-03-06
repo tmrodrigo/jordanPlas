@@ -376,7 +376,28 @@
     })
   </script>
   @if (Session::has('budget'))
-    <button style="display: none" id="getBudget" onclick="window.open('{{ Session::get('budget') }}')"></button>
+    <button style="display: none" id="getBudget" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">¡Listo!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Presupuesto generado con éxito
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" onclick="window.open('{{ Session::get('budget') }}')">Descargar presupuesto</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
     <script>
       $(document).ready(function(){
         $('#getBudget').click()

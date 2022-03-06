@@ -380,6 +380,15 @@ class BudgetController extends Controller
       $client_info['cuit'] = null;
     }
 
+    if ($client_info['phone'] == '') {
+      $client_info['phone'] = null;
+    }
+
+    if ($client_info['email'] == '') {
+      $client_info['email'] = null;
+    }
+
+
     $client = Client::create($client_info);
 
     $budget_data = $request->session()->get('client_data');
@@ -431,6 +440,12 @@ class BudgetController extends Controller
     $url = str_replace('storage/',  'storage/pdf/' , $budget->pdf_url); 
     // return Storage::download('pdf/'. $name);
 
+    $budget_data = [];
+    $products = [];
+
+    $budget_data = $request->session()->put('client_data', $budget_data );
+    $products = $request->session()->put('selected_products', $products);
+
     return back()->with('budget', 'http://jordanplas.test/' . $url);
   }
 
@@ -457,7 +472,7 @@ class BudgetController extends Controller
 
   public function list(){
 
-    $budgets = Budget::where('budget_date', '!=', null)->get();
+    $budgets = Budget::where('budget_date', '!=', null)->orderBy('id', 'DESC')->get();
 
     return view('backend.budget.list',[
       'budgets' => $budgets,
@@ -472,6 +487,7 @@ class BudgetController extends Controller
                           ->where('name', 'like', '%' . $request->search. '%')
                           ->orWhere('budget_date', 'like', '%' . $request->search. '%');
                       })
+                      ->orderBy('id', 'DESC')
                       ->get()
                       ->where('budget_date', '!=', null);
 
