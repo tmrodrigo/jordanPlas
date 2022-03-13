@@ -20,9 +20,9 @@ class CategoryController extends Controller
     $category = Category::find($id);
     $sub_id = '';
     $products = Product::where('category_id', '=', $id)
-                        ->orderBy('rating', 'asc')
-                        ->orderBy('updated_at', 'desc')
+                        ->orderBy('rating')
                         ->get();
+
     $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
     $company_data = Company::orderBy('created_at', 'DESC')->first();
 

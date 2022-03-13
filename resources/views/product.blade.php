@@ -57,19 +57,19 @@
               <p class="text-justify">{{ $product->description }}</p>
             </div>
           </div>
-          <div class="row my-md-5 my-3">
+          <div class="row my-md-4 my-3">
             <div class="col-sm-6">
               <h3>Medidas</h3>
               <div class="my-3"></div>
               <ul>
-                <li>Alto: <b class="number">{{ format_number($product->height) }}</b> <b>mm</b></li>
-                <li>{{ $product->depth > 0 ? 'Ancho:' : 'Diámetro:'  }} <b class="number">{{ format_number($product->width) }}</b> <b>mm</b></li>
+                <li>Alto: <b class="number">{{ format_number($product->height, 2) }}</b> <b>cm</b></li>
+                <li>{{ $product->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b class="number">{{ format_number($product->width, 2) }}</b> <b>cm</b></li>
                 @if ($product->depth > 0)
-                  <li>Pisada: <b class="number">{{ format_number($product->depth) }}</b> <b>mm</b></li>                                    
+                  <li>Ancho: <b class="number">{{ format_number($product->depth, 2) }}</b> <b>cm</b></li>                                    
                 @endif
               </ul>
               <ul>
-                <li>Peso: <b class="number">{{ format_number($product->weight) }}</b> <b>grs</b></li>
+                <li>Peso: <b class="number">{{ format_number($product->weight, 2) }}</b> <b>kg</b></li>
               </ul>
               @if ($product->reflex_s > 0)
                 <ul>
@@ -105,8 +105,8 @@
           </div>
         </div>
       </div>
-      <div class="row my-3 my-md-5">
-        <div class="col-sm-4 d-md-none">
+      <div class="row my-2 my-md-5 d-md-none">
+        <div class="col-sm-4">
           <button class="btn btn-primary" type="button" name="button" onclick="window.open('{{ Storage::url($product->info_file) }}')">Descargar ficha</button>
         </div>
       </div>
@@ -117,7 +117,7 @@
             <div class="my-3 my-md-5"></div>
           </div>
         @endif
-        <div class="my-3 my-sm-0"></div>
+        <div class="my-2 my-sm-0"></div>
         @if ($product->certificates->count() > 0)
           <div class="{{ isset($product->fijaciones) ? 'col-sm-6' : 'col-sm-12' }}">
             <h2>Certificados</h2>

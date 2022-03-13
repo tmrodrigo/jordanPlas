@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Jordan Plas | Sitio en construcción</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -25,10 +25,17 @@
                 height: 100vh;
             }
 
+            img {
+              height: 80px;
+            }
+
             .flex-center {
                 align-items: center;
                 display: flex;
                 justify-content: center;
+                flex-flow: column;
+                padding: 16px;
+                text-align: center
             }
 
             .position-ref {
@@ -59,37 +66,25 @@
                 text-transform: uppercase;
             }
 
+            .whatsapp {
+              color: #178740!important;
+              font-weight: bold;
+            }
+
             .m-b-md {
                 margin-bottom: 30px;
             }
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+        <div class="flex-center position-ref full-height flex-column">
+            <img src="{{ asset('logos/logo-vert.svg') }}" alt="Logo Jordan Plas">
+            <h2>
+                Estamos mejorando nuestra web, volveremos el 11/03/2022. 
+            </h2>
+            <h4>
+              Para cualquier consulta escribinos al <a class="whatsapp" href="https://wa.me/+5491167891320" target="_blanc">+54911 6789-1320</a> o al <a class="whatsapp" href="https://wa.me/+5491133602561" target="_blanc">+54911 3360-2561</a> o llamanos al +5411 2196-0484
+            </h4>
         </div>
     </body>
 </html>

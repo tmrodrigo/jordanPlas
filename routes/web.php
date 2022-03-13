@@ -33,6 +33,20 @@ Route::get('/migrate', function() {
     return "Migrated";
 });
 
+Route::get('/', 'HomeController@home');
+
+Route::get('/rubro/{category}/{id}', 'CategoryController@show')->name('category');
+Route::get('/sub-rubro/{subcategory}', 'CategoryController@showSubCategory')->name('subcategory');
+Route::get('/productos', 'CategoryController@index')->name('products');
+
+Route::get('rubro/{product}/producto/{id}', 'ProductController@showProduct')->name('product');
+
+Route::get('/search-product', 'ProductController@search')->name('get-search');
+
+Route::post('/contact', 'ContactController@create')->name('contact');
+
+Route::get('/contacto', 'ContactController@show');
+
 
 Auth::routes();
 
@@ -89,19 +103,3 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-
-Route::get('/', 'HomeController@home');
-
-Route::get('/rubro/{category}/{id}', 'CategoryController@show')->name('category');
-Route::get('/sub-rubro/{subcategory}', 'CategoryController@showSubCategory')->name('subcategory');
-Route::get('/productos', 'CategoryController@index')->name('products');
-
-Route::get('rubro/{product}/producto/{id}', 'ProductController@showProduct')->name('product');
-
-Route::get('/search', 'ProductController@search')->name('search');
-
-Route::post('/contact', 'ContactController@create')->name('contact');
-
-Route::get('/contacto', 'ContactController@show');
-
-Route::get('/{hash}', 'BudgetController@get_budget')->name('get_budget');

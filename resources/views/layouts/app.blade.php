@@ -46,8 +46,8 @@
                 <a class="nav-link whatsapp" href="{{ format_cel($company_data->fax) }}" target="_blanc">Contactanos por Whatsapp</a>
               </li>
             </ul>
-            <form action="{{ route('search') }}" method="GET" class="d-flex my-2 my-lg-0">
-              @csrf
+            <form action="{{ route('get-search') }}" method="GET" class="d-flex my-2 my-lg-0">
+              
               <div class="search-form">
                 <input name="search" value="" type="text" placeholder="¿Qué estás buscando?">
                 <button class="btn btn-tertiary" type="submit">Buscar</button>

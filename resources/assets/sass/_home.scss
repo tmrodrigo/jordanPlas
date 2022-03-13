@@ -1,0 +1,8 @@
+#carouselHome {
+  height: 25vh;
+  overflow: hidden;
+
+  @media screen and (min-width: $md) {
+      height: 60vh;
+  }
+}

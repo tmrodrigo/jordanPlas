@@ -23,7 +23,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::
+                        orderBy('category_id')
+                        ->get();
         $categories = Category::all();
         return view('backend.products.productsList', [
           'products' => $products,
@@ -284,7 +286,10 @@ class ProductController extends Controller
 
             $product->reflex_s = $request['reflex_s'];
             $product->resistence = $request['resistence'];
-            $product->sub_category_id = $request['sub_category_id'];
+            $product->sub_category_id = null;
+            if ($request['sub_category_id'] != 'null') {
+                $product->sub_category_id = $request['sub_category_id'];
+            }
 
             if ($request['info_file'] || $request["manual_file"] || $request['left_img'] || $request['right_img'] || $request['avatar'] || $request['rating'] || $request['units'])
             {
@@ -377,7 +382,7 @@ class ProductController extends Controller
             $product->certificates()->sync($certificates);
         }
 
-        return redirect()->back()->with('message', 'Producto actualizado correctamente');
+        return redirect('/backend/products')->with('message', $product->name . ' actualizado correctamente');
     }
 
     public function destroy(Product $product)
@@ -486,7 +491,7 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-    
+        
         $keyword = $request->search;
 
         $categories = Category::all();

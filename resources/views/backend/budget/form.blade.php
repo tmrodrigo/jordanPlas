@@ -160,7 +160,7 @@
               <label for="product">Producto</label>
               <select id="product" class="form-control" name="product_id">
                 @forelse ($products as $product)
-                  <option value="{{ $product->id }}" {{ $s_product == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
+                  <option value="{{ $product->id }}" {{ $s_product == $product->id ? 'selected' : '' }}>{{ strtoupper($product->name) }}</option>
                 @empty
                   
                 @endforelse

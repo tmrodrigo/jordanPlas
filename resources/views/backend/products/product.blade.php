@@ -71,6 +71,7 @@
               <div class="col-sm-4">
                 <label>Sub Categoría*</label>
                 <select class="form-control" name="sub_category_id">
+                  <option value="null">Ninguna</option>
                   @forelse ($sub_categories as $sub_category)
                     <option value={{ $sub_category->id }} {{ isset($product->sub_category) && $product->sub_category->id == $sub_category->id ? 'selected' : '' }}> {{ $sub_category->category->name . ' - ' . $sub_category->name }}</option>
                   @empty
@@ -93,11 +94,11 @@
                 <input type="text" name="height" value="{{ $product->height }} " class="form-control">
               </div>
               <div class="col-sm-3">
-                <label>Ancho</label>
+                <label>Pisada</label>
                 <input type="text" name="width" value="{{ $product->width }} " class="form-control">
               </div>
               <div class="col-sm-3">
-                <label>Profundo</label>
+                <label>Ancho</label>
                 <input type="text" name="depth" value="{{ $product->depth }} " class="form-control">
               </div>
               <div class="col-sm-3">
@@ -118,11 +119,11 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Superficie Reflectiva</label>
-                <input type="text" name="reflex_s" value="{{ old('reflex_s') }} " class="form-control">
+                <input type="text" name="reflex_s" value="{{ $product->reflex_s }} " class="form-control">
               </div>
               <div class="col-sm-6">
                 <label>Resistencia</label>
-                <input type="text" name="resistence" value="{{ old('resistence') }} " class="form-control">
+                <input type="text" name="resistence" value="{{ $product->resistence }} " class="form-control">
               </div>
             </div>
             <div class="separador"></div>
@@ -161,7 +162,7 @@
             <div class="separador"></div>
             <div class="row">
               <div class="col-sm-6">
-                <label>Posición en la lista 0 muestra primero <span></span></label>
+                <label>Posición en la lista<span></span></label>
                 @if ($product->rating < 0)
                   <p><strong>Solo hay un producto en la lista</strong></p>
                   @else

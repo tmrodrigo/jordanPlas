@@ -129,7 +129,7 @@
 
       h3, h4 {
         font-size: 12px;
-        line-height: 0.5;
+        line-height: 1.5;
       }
 
       h2, h3, h4 {
@@ -322,10 +322,10 @@
       </td>
       <td style="padding: 6px" class="total">
         <h4>
-          {{ $budget->has_tax == true ? 'I.V.A (21%): $' . format_number($budget->tax, 2) : 'I.V.A incluido' }}
+          {!! $budget->has_tax == true ? 'I.V.A (21%): <br> $' . format_number($budget->tax, 2) : 'I.V.A incluido' !!}
         </h4>
         <h3>
-          {{ $budget->has_tax == true ? 'Sub-total: $' . format_number($budget->total - $budget->tax, 2) : '' }}
+          {!! $budget->has_tax == true ? 'Sub-total: <br>$' . format_number($budget->total - $budget->tax, 2) : '' !!}
         </h3>
       </td>
     </tr>

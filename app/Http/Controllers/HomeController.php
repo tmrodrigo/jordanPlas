@@ -20,7 +20,8 @@ class HomeController extends Controller
      */
     public function home()
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::orderBy('id')->get();
+        // dd($categories);
         $images = Post::select('name as category_id', 'image as url' )->get();
         $company_data = Company::orderBy('created_at', 'DESC')->first();
 
@@ -29,6 +30,10 @@ class HomeController extends Controller
             'images' => $images,
             'company_data' => $company_data
         ]);
+
+        // return view('welcome-old', []);
+
+
     }
 
     public function index()

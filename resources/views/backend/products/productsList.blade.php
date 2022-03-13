@@ -42,6 +42,7 @@
               </div>
             @endif
             <div class="clearfix"></div>
+            <div class="row">
             @foreach ($products as $product)
               <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
                 <div class="well profile_view">
@@ -49,15 +50,14 @@
                     <h4 class="brief"><i>{{ $product->category->name }}</i></h4>
                     <div class="left col-xs-7">
                       <h2>{{$product->name}}</h2>
-                      <p><strong>Descripción: </strong> {{ cut_str($product->description) }}</p>
-                      <h4>Datos</h4>
+                      <p>Posición: {{ $product->rating +1 }}/{{ $products->where('category_id', $product->category->id)->count() }}</p>
                       <ul class="list-unstyled">
-                        <li>Alto: {{ $product->height }} mm</li>
-                        <li>Ancho: {{ $product->width }} mm</li>
-                        <li>Profundo: {{ $product->depth }} mm</li>
-                        <li>Peso: {{ $product->weight }} gr</li>
-                        <li>Superficie reflectiva: {{ $product->reflex_s }} cm2 </li>
-                        <li>Resistencia: {{ $product->resistence }} </li>
+                        <li>Alto: {{ format_number($product->height, 2) }} cm</li>
+                        <li>Ancho: {{ format_number($product->width, 2) }} cm</li>
+                        <li>Profundo: {{ format_number($product->depth,2) }} cm</li>
+                        <li>Peso: {{ format_number($product->weight,3) }} kg</li>
+                        <li>Superficie reflectiva: {{ format_number($product->reflex_s, 2) }} cm2 </li>
+                        <li>Resistencia: {{ format_number($product->resistence, 2) }} tn </li>
                       </ul>
                     </div>
                     <div class="right col-xs-5 text-center">
@@ -65,18 +65,7 @@
                     </div>
                   </div>
                   <div class="col-xs-12 bottom text-center">
-                    <div class="col-xs-12 col-sm-6 emphasis">
-                      @if ($product->rating > 0)
-                        <p>{{ $product->rating +1 }}</p>
-                        <p class="ratings">
-                          @for ($i=0; $i < $product->rating +1; $i++)
-                          <a href="#"><span class="fa fa-star"></span></a>
-                          @endfor
-                        </p>
-                      @endif
-                    </div>
-                    <div class="col-xs-12 col-sm-6 emphasis">
-                      <div class="row">
+                    <div class="row">
                         <div class="col-sm-6">
                           <div class="btn btn-default">
                             <a href="{{route('products.show', $product->id)}}">ver producto</a>
@@ -90,11 +79,11 @@
                           </form>
                         </div>
                       </div>
-                    </div>
                   </div>
                 </div>
               </div>
             @endforeach
+            </div>
           </div>
         </div>
       </div>
