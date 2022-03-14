@@ -8,6 +8,7 @@ use App\Budget;
 use App\Category;
 use App\Client;
 use App\Product;
+use App\Color;
 use App\ProductAtribute;
 use PDF;
 
@@ -77,9 +78,9 @@ class BudgetController extends Controller
       $s_product = $session['s_product'];
     }
 
-    $colors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $products[0]->id)->select('value')->get();
+    $colors = Color::all();
     $colors = add_bi_color($colors);
-    if (isset($session['colors'])) {
+    if (isset($session['colors']) && !empty($session['colors'])) {
       $colors = $session['colors'];
     }
 
@@ -197,7 +198,7 @@ class BudgetController extends Controller
     
     }
 
-    $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $product->id)->select('value')->get();
+    $bColors = $product->colors->where('pivot.body', true);
     $bColors = add_bi_color($bColors);
 
     $data = [
@@ -249,8 +250,15 @@ class BudgetController extends Controller
 
       $unit_price = (float)str_replace(',','.',$request->unit_price);
 
-      $p_colors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $product->id)->select('value')->get();
+      $p_colors = $product->colors->where('pivot.body', true);
       $p_colors = add_bi_color($p_colors);
+
+      $hexa = 'bi-color';
+      $check_hexa = $p_colors->where('value', $request->color)->first();
+
+      if ($check_hexa != null && !is_array($check_hexa)) {
+        $hexa = $check_hexa->hexa;
+      }
 
       $sp = [
         'id' => $product->id,
@@ -259,6 +267,7 @@ class BudgetController extends Controller
         'category_name' => $product->category->name,
         'sub_category_name' => $sub_category_name,
         'color' => $request->color,
+        'color_hexa' => $hexa,
         'colors' => $p_colors,
         'avatar' => $product->avatar,
         'description' => $product->description,
@@ -321,6 +330,15 @@ class BudgetController extends Controller
     $p[$id]['amount'] = $request->amount;
     $p[$id]['sub_total'] = $request->amount * $unit_price;
     $p[$id]['color'] = $request->color;
+
+    $hexa = 'bi-color';
+    $check_hexa = $p[$id]['colors']->where('value', $request->color)->first();
+
+    if ($check_hexa != null && !is_array($check_hexa)) {
+      $hexa = $check_hexa->hexa;
+    }
+
+    $p[$id]['color_hexa'] = $hexa;
 
     $m = 'Metro lineal';
     if ($request->amount > 1) {
@@ -414,7 +432,16 @@ class BudgetController extends Controller
     ]);
 
     foreach ($products as $product) {
-      $budget->products()->attach($product['id'], ['amount' => $product['amount'], 'unit_price' => $product['unit_price'], 'color' => $product['color'], 'unit' => $product['measure'], 'support' => $product['support']]);
+
+      $budget->products()->attach( $product['id'], [
+        'amount' => $product['amount'], 
+        'unit_price' => $product['unit_price'], 
+        'color' => $product['color'], 
+        'color_hexa' => $product['color_hexa'], 
+        'unit' => $product['measure'], 
+        'support' => $product['support']
+      ]);
+    
     }
 
     $products = $budget->products->chunk(5);
@@ -445,7 +472,7 @@ class BudgetController extends Controller
 
     $budget_data = $request->session()->put('client_data', $budget_data );
     $products = $request->session()->put('selected_products', $products);
-
+    
     return back()->with('budget', 'http://jordanplas.test/' . $url);
   }
 

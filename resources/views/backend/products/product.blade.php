@@ -131,31 +131,25 @@
               <div class="col-sm-6">
                 <label>Color cuerpo</label>
                 <div class="row">
-                  @foreach ($bColors as $color)
-                    @if ((strlen($color->name) < 7) && ($color->name != 'red'))
-                      <div class="col-sm-3 checkbox">
-                        <label>
-                          <input type="checkbox" class="flat" name="body_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
-                        </label>
-                      </div>
-                    @endif
+                  @foreach ($colors as $color)
+                    <div class="col-sm-3 checkbox">
+                      <label>
+                        <input type="checkbox" class="flat" name="body_color_id[]" value="{{ $color->id }}" {{ $product->colors->where('pivot.body', true)->whereIn('name', [$color->name])->count() > 0 ? 'checked' : '' }}><br> {{ $color->value }}
+                      </label>
+                    </div>
                   @endforeach
                 </div>
               </div>
               <div class="col-sm-6">
                 <label>Color reflectivo</label>
                 <div class="row">
-                  <div class="row">
-                    @foreach ($rColors as $color)
-                      @if (($color->name != "orange") && ($color->name != "black"))
-                        <div class="col-sm-3 checkbox">
-                          <label>
-                            <input type="checkbox" class="flat" name="light_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
-                          </label>
-                        </div>
-                      @endif
-                    @endforeach
-                  </div>
+                  @foreach ($colors as $color)
+                    <div class="col-sm-3 checkbox">
+                        <label>
+                          <input type="checkbox" class="flat" name="light_color_id[]" value="{{ $color->id }}" {{ $product->colors->where('pivot.reflective', true)->whereIn('name', [$color->name])->count() > 0 ? 'checked' : '' }}><br> {{ $color->value }}
+                        </label>
+                      </div>
+                  @endforeach
                 </div>
               </div>
             </div>
@@ -182,16 +176,8 @@
                 <label>Disponibilidad<small> activar si no está en stock</small></label>
                 <div class="checkbox">
                   <label>
-                    @if ($product->available == null)
-                      <input type="radio" class="flat" name="available" value="" checked> Disponible
-                      @else
-                        <input type="radio" class="flat" name="available" value=""> Disponible
-                    @endif
-                    @if ($product->available == true)
-                      <input type="radio" class="flat" name="available" value="1" checked>No disponible
-                      @else
-                        <input type="radio" class="flat" name="available" value="1">No disponible
-                    @endif
+                    <input type="radio" class="flat" name="available" value="1" {{ $product->available == 1 ? 'Checked' : '' }}> Disponible
+                    <input type="radio" class="flat" name="available" value="0" {{ $product->available != 1 ? 'Checked' : '' }}> No disponible
                   </label>
                 </div>
               </div>
@@ -213,9 +199,25 @@
                         <input type="radio" class="flat" name="units" value="un"> Unidad
                     @endif
                   </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="row">
+                <div class="col-sm-6">
+                  <label for="">Fijaciones</label>
+                <select name="fixation_id">
+                  @foreach ($fixations as $f)
+                    <option value="{{ $f->id }}"  {{ $product->fixation->first()->id == $f->id ? 'selected' : '' }} >{{ $f->tirafondo }}</option>
+                  @endforeach
+                </select>
+                </div>
+                <div class="col-sm-6">
+                  <label for="">Cantidad</label>
+                  <input type="text" name="fixation_amount" value="{{ $product->fixation->first()->pivot->amount }}">
+                </div>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
         <div class="col-sm-6">

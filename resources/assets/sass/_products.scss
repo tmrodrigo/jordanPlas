@@ -1,8 +1,35 @@
 .product-card {
-  min-height: 400px;
+  min-height: 280px;
+  border: 2px solid $primary-border;
+
+  .image-container {
+    position: relative;
+    height: 280px;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 260px;
+    }
+
+    .card-img-logo {
+      z-index: 1;
+      opacity: 0.2;
+      padding: 1rem;
+    }
+  }
+
+  .card-body {
+    padding-top: 0;
+  }
+
+  .card-title {
+    margin: 0;
+  }
 
   @media screen and (min-width: $md) {
-    min-height: 448px;
+    min-height: 400px;
     .card-body {
       .btn {
         display: none;
@@ -25,19 +52,32 @@
 }
 
 .side-menu {
+
   li {
-    margin: 0.5rem 0;
+    margin: 1rem 0;
 
     a {
       color: $neutral-text;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+      text-transform: capitalize;
     }
   }
 
   .submenu {
     padding-left: 1.5rem;
 
+    .dot {
+      font-size: 2.5rem;
+      line-height: 0;
+      padding-top: 0.6rem;
+      padding-right: 0.3rem;
+    }
+
     li {
-      margin-top: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: row;
     }
   }
 }

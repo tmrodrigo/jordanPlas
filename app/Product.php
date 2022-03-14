@@ -10,6 +10,7 @@ use App\ProductAtribute;
 use App\Certificate;
 use App\SubCategory;
 use App\Category;
+use App\Fixation;
 
 class Product extends Model
 {
@@ -32,7 +33,7 @@ class Product extends Model
 
   public function colors()
   {
-    return $this->belongsToMany(Color::class)->withTimestamps();
+    return $this->belongsToMany(Color::class)->withPivot('body', 'reflective');
   }
 
   public function atributes()
@@ -48,6 +49,11 @@ class Product extends Model
   public function budgets()
   {
     return $this->belongsToMany(Budget::class);
+  }
+
+  public function fixation()
+  {
+    return $this->belongsToMany(Fixation::class)->withPivot('amount');
   }
 
 }

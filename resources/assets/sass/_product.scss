@@ -7,72 +7,132 @@
       width: auto;
     }
   }
-  ul {
-    margin: 0.5rem 0;
+
+  .color-list {
+
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+
+    .color-dot {
+      width: 2rem;
+      height: 2rem;
+      margin-left: 0.5rem;
+      margin-bottom: 0.5rem;
+      // background-color: $neutral-background-strong;
+      border-radius: 50%;
+    }
+
+    // Colores reflectivo y cuerpo
+    .yellow {
+      background-color: #FBD347;
+    }
+
+    .red {
+      background-color: #F23939;
+    }
+
+    .orange {
+      background-color: #FB8847;
+    }
+
+    .black {
+      background-color: #1E1E1E;
+    }
+
+    .white {
+      background-color: white;
+    }
+
+    .bi-color {
+      background: linear-gradient( -90deg, #FBD347, #FBD347 49%, #1E1E1E 49%, #1E1E1E 51%, #1E1E1E 51% ); 
+      border-radius: 50%;
+    }
+
+    .redWhite {
+      background: linear-gradient( -90deg, #F23939, #F23939 49%, white 49%, white 51%, white 51% ); 
+      border-radius: 50%;
+    }
+
+    .redYellow {
+      background: linear-gradient( -90deg, #F23939, #F23939 49%, #FBD347 49%, #FBD347 51%, #FBD347 51% ); 
+      border-radius: 50%;
+    }
+
+    .yellowWhite {
+      background: linear-gradient( -90deg, #FBD347, #FBD347 49%, white 49%, white 51%, white 51% ); 
+      border-radius: 50%;
+    }
+
   }
 
-  .color-dot {
-    width: 2rem;
-    height: 2rem;
-    margin-left: 0.5rem;
-    margin-bottom: 0.5rem;
-    background-color: $neutral-background-strong;
-    border-radius: 50%;
-  }
-
-  // Colores reflectivo y cuerpo
-  .yellow {
-    background-color: #FBD347;
-  }
-
-  .red {
-    background-color: #F23939;
-  }
-
-  .orange {
-    background-color: #FB8847;
-  }
-
-  .black {
-    background-color: #1E1E1E;
-  }
-
-  .white {
-    background-color: white;
-  }
-
-  .bi-color {
-    background: linear-gradient( -90deg, #FBD347, #FBD347 49%, #1E1E1E 49%, #1E1E1E 51%, #1E1E1E 51% ); 
-    border-radius: 50%;
-  }
-
-  .redWhite {
-    background: linear-gradient( -90deg, #F23939, #F23939 49%, white 49%, white 51%, white 51% ); 
-    border-radius: 50%;
-  }
-
-  .redYellow {
-    background: linear-gradient( -90deg, #F23939, #F23939 49%, #FBD347 49%, #FBD347 51%, #FBD347 51% ); 
-    border-radius: 50%;
-  }
-
-  .yellowWhite {
-    background: linear-gradient( -90deg, #FBD347, #FBD347 49%, white 49%, white 51%, white 51% ); 
-    border-radius: 50%;
-  }
 
   .certificate {
     text-align: center;
 
     img{
-      width: 6rem;
-      height: 6rem;
+      width: 2rem;
+      height: 2rem;
       border-radius: 50%;
+      margin: 0;
       margin-bottom: 0.2rem;
+
+      @media screen and (min-width: $md) {
+        width: 3rem;
+        height: 3rem;
+      }
     }
+
 
     p {
       font-size: 0.8rem;
+    }
+
+  }
+
+  .product-card {
+    .d-flex {
+      ul {
+        display: none !important;
+      }
+    }
+
+    @media screen and (min-width: $md) {
+      .d-flex {
+        ul {
+          display: initial !important;
+          // flex-direction: column;
+        }
+      }
+    }
+
+    .image-container {
+      height: 120px;
+
+      @media screen and (min-width: $md) {
+        height: 260px;
+      }
+
+      img {
+        height: 120px;
+      
+        @media screen and (min-width: $md) {
+          height: 260px;
+        }
+      }
+    }
+  }
+
+  .product-measures {
+
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+
+    img {
+      width: 2rem;
+      height: 2rem;
+      margin-right: 1rem;
     }
 
   }

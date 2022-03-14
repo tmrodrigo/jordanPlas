@@ -10,8 +10,10 @@ use App\Color;
 use App\Company;
 use App\ClientLogo;
 use App\Certificate;
-use App\ProductAtribute;
+use App\Fixation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductController extends Controller
 {
@@ -33,7 +35,6 @@ class ProductController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -42,13 +43,11 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $rColors = Color::all();
-        $bColors = Color::all();
+        $colors = Color::all();
         $certificates = Certificate::all();
         return view('backend.products.productsCreate', [
           'categories' => $categories,
-          'rColors' => $rColors,
-          'bColors' => $bColors,
+          'colors' => $colors,
           'certificates' => $certificates,
         ]);
     }
@@ -78,9 +77,6 @@ class ProductController extends Controller
             'certificate_description' => 'nullable',
             'info_file' => 'required|mimes:pdf|max:3000',
             'manual_file' => 'nullable|mimes:pdf|max:5000',
-            'avatar' => 'required|mimes:png|max:600',
-            'left_img' => 'required|mimes:png|max:600',
-            'right_img' => 'required|mimes:png|max:600',
             'units' => 'required'
         ],
         [
@@ -96,15 +92,6 @@ class ProductController extends Controller
             'info_file.required' => 'Falta pdf de ficha de producto',
             'info_file.mimes' => 'La ficha de producto debe ser formato PDF',
             'info_file.size' => 'La ficha de producto debe pesar menos de 3mb',
-            'avatar.required' => 'Falta imagen de producto',
-            'avatar.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'avatar.max' => 'La imagen de producto no debe pesar más de 600 kb',
-            'left_img.required' => 'Falta imagen de ficha de producto izquierda',
-            'left_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'left_img.max' => 'La imagen de producto no debe pesar más de 600kb',
-            'right_img.required' => 'Falta imagen de ficha de producto derecha',
-            'right_img.mimes' => 'La imagen de producto debe estar en formato png con fondo transparente',
-            'right_img.max' => 'La imagen de producto no debe pesar más de 600kb',
             'units.required' => 'Indique la unidad del producto'
         ]);
 
@@ -137,55 +124,34 @@ class ProductController extends Controller
                 $product->manual_file = $manualPath;
             }
 
-            $leftImg = $request->file("left_img");
-            $leftName = $product->name . "-left" . "." . $leftImg->extension();
-            $leftFolder = "products";
-            $leftPath = $leftImg->storePubliclyAs($leftFolder, $leftName);
-            $product->left_img = $leftPath;
-
-            $rightImg = $request->file("right_img");
-            $rightName = $product->name . "-right" . "." . $rightImg->extension();
-            $rightFolder = "products";
-            $rightPath = $rightImg->storePubliclyAs($rightFolder, $rightName);
-            $product->right_img = $rightPath;
-
             $avatar = $request->file("avatar");
             $name = $product->name . "." . $avatar->extension();
-            $folder = "products";
-            $path = $avatar->storePubliclyAs($folder, $name);
+            $path = $avatar->storePubliclyAs("products", $name);
             $product->avatar = $path;
 
-            $product->rating = $request['rating'];
+            if ($request->file("left_img") != null) {
+                $leftImg = $request->file("left_img");
+                $leftName = $product->name . "-left" . "." . $leftImg->extension();
+                $leftPath = $leftImg->storePubliclyAs("products", $leftName);
+                $product->left_img = $leftPath;
+            }
+
+            if ($request->file("right_img") != null) {
+                $rightImg = $request->file("right_img");
+                $rightName = $product->name . "-right" . "." . $rightImg->extension();
+                $rightPath = $rightImg->storePubliclyAs("products", $rightName);
+                $product->right_img = $rightPath;
+            }
 
             $product->available = $request['available'];
             $product->units = $request['units'];
 
         $product->save();
 
-        $bodyColor = $request['body_color_id'];
-
-        $reflexColor = $request['light_color_id'];
+        $product->colors()->syncWithPivotValues( $request['body_color_id'], ['body' => true]);
+        $product->colors()->syncWithPivotValues( $request['light_color_id'], ['reflective' => true]);
 
         $certificates = $request['certificate_id'];
-
-        if (isset($bodyColor) || isset($reflexColor)) {
-          if (is_array($bodyColor)){
-            foreach ($bodyColor as $key => $value) {
-                $atribute = new ProductAtribute();
-                $atribute->atribute = "body_color";
-                $atribute->value = $value;
-                $product->atributes()->save($atribute);
-            }
-          }
-          if (is_array($reflexColor)) {
-            foreach ($reflexColor as $key => $value) {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "reflex_color";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-            }
-          }
-        }
 
         if ((is_array($certificates)) && $certificates != null) {
           foreach ($certificates as $key => $value) {
@@ -207,9 +173,9 @@ class ProductController extends Controller
         $categories = Category::all();
         $sub_categories = SubCategory::all();
         $certificates = Certificate::all();
-        $bColors = Color::all();
-        $rColors = Color::all();
+        $colors = Color::all();
         $products = Product::where('category_id', '=', $product->category->id)->get();
+        $fixations = Fixation::all();
 
         return view('backend.products.product', [
             'product' => $product,
@@ -217,8 +183,8 @@ class ProductController extends Controller
             'sub_categories' => $sub_categories,
             'certificates' => $certificates,
             'products' => $products,
-            'bColors' => $bColors,
-            'rColors' => $rColors
+            'colors' => $colors,
+            'fixations' => $fixations,
         ]);
     }
 
@@ -342,36 +308,11 @@ class ProductController extends Controller
             }
 
             $product->available = $request['available'];
+            $product->save();
 
+            $product->colors()->syncWithPivotValues($request['light_color_id'], ['reflective' => true]);
+            $product->colors()->syncWithPivotValues($request['body_color_id'], ['body' => true]);
 
-        $product->save();
-
-        $reflexColor = $request['light_color_id'];
-
-        if (isset($request['body_color_id'])) {
-            foreach ($request['body_color_id'] as $key => $value) {
-                $atribute = new ProductAtribute();
-                $atribute->atribute = "body_color";
-                $atribute->value = $value;
-                $product->atributes()->save($atribute);
-            }
-        }
-
-        if (isset($reflexColor)) {
-          if (is_array($reflexColor)) {
-              foreach ($reflexColor as $key => $value) {
-                  $atribute = new ProductAtribute();
-                  $atribute->atribute = "reflex_color";
-                  $atribute->value = $value;
-                  $product->atributes()->save($atribute);
-            }
-          } else {
-              $atribute = new ProductAtribute();
-              $atribute->atribute = "reflex_color";
-              $atribute->value = $value;
-              $product->atributes()->save($atribute);
-          }
-        }
 
         $certificates = $request['certificate_id'];
 
@@ -381,6 +322,12 @@ class ProductController extends Controller
         if ($certificates != null) {
             $product->certificates()->sync($certificates);
         }
+
+        DB::table('fixation_product')->where('product_id', $product->id)
+        ->update([
+            'amount' => $request['fixation_amount'],
+            'fixation_id' => $request['fixation_id']
+        ]);
 
         return redirect('/backend/products')->with('message', $product->name . ' actualizado correctamente');
     }
@@ -400,23 +347,40 @@ class ProductController extends Controller
         $products = Product::where('category_id', '=', $product->category->id)
                             ->with('category')
                             ->orderBy('rating', 'asc')
-                            ->orderBy('updated_at', 'desc')
                             ->get();
+
+        $puntera = Product::where('name', $product->name . '-P')->first();
+        $modulo = null;
+
+        $check = str_contains($product->name, '-P');
+        if ($check == true) {
+            $modulo = str_replace('-P', '', $product->name);
+            $modulo = Product::where('name', $modulo)->first();         
+        }
+                
         $certificates = Certificate::take(3)->orderBy('id', 'desc')->get();
-        $bColors = ProductAtribute::where('atribute', '=', 'body_color')->where('product_id', '=', $product->id)->select('value')->get();
-        $rColors = ProductAtribute::where('atribute', '=', 'reflex_color')->where('product_id', '=', $id)->get();
+
         $images = Image::where('category_id', '=', $product->category->id)->where('product_id', '=', $id)->get();
         $company_data = Company::orderBy('created_at', 'DESC')->first();
+
+        $lineal_mt = null;
+        if ($product->units == 'mt') {
+            $lineal_mt = 100 / $product->depth;
+        }
+
+        $fixations = $product->fixation->first();
 
         return view('product', [
             'product' => $product,
             'categories' => $categories,
             'products' => $products,
             'certificates' => $certificates,
-            'bColors' => $bColors,
-            'rColors' => $rColors,
             'images' => $images,
-            'company_data' => $company_data
+            'company_data' => $company_data,
+            'lineal_mt' => $lineal_mt,
+            'puntera' => $puntera,
+            'modulo' => $modulo,
+            'fixations' => $fixations
         ]);
     }
 
@@ -507,6 +471,161 @@ class ProductController extends Controller
             'categories' => $categories,
             'company_data' => $company_data
         ]);
+    }
+
+    public function add_remove_colors(){
+        
+        DB::table('colors')->delete();
+        DB::table('color_product')->delete();
+        DB::table('product_atributes')->delete();
+        DB::table('fixations')->delete();
+        DB::table('fixation_product')->delete();
+
+        $colors = [
+            [
+                'name' => 'yellow',
+                'value' => 'Amarillo',
+                'hexa' => '#FBD347'
+            ],
+            [
+                'name' => 'black',
+                'value' => 'Negro',
+                'hexa' => '#1E1E1E'
+            ],
+            [
+                'name' => 'white',
+                'value' => 'Blanco',
+                'hexa' => '#ffffff'
+            ],
+            [
+                'name' => 'gray',
+                'value' => 'Gris',
+                'hexa' => '#B6B6B6'
+            ],
+            [
+                'name' => 'orange',
+                'value' => 'Naranja',
+                'hexa' => '#FB8847'
+            ],
+            [
+                'name' => 'green',
+                'value' => 'Verde',
+                'hexa' => '#22BA5B'
+            ],
+            [
+                'name' => 'blue',
+                'value' => 'Azul',
+                'hexa' => '#0629A6'
+            ],
+        ];
+
+        foreach ($colors as $color) {
+            DB::table('colors')->insert([
+                'name' => $color['name'],
+                'value' => $color['value'],
+                'hexa' => $color['hexa']
+            ]);
+        }
+
+        $fixations = [
+            [
+                'tirafondo' => '3/8 X 4"',
+                'arandela' => '25 mm',
+                'tarugo' => '14 mm',
+                'img_url' => 'logos/fixations/bigFixations.png'
+            ],
+            [
+                'tirafondo' => '1/4 x 3"',
+                'arandela' => '10 mm',
+                'tarugo' => '18 mm',
+                'img_url' => 'logos/fixations/smallFixations.png'
+            ],
+        ];
+
+        foreach ($fixations as $f) {
+            DB::table('fixations')->insert([
+                'tarugo' => $f['tarugo'],
+                'arandela' => $f['arandela'],
+                'tirafondo' => $f['tirafondo'],
+                'img_url' => $f['img_url'],
+            ]);
+        }
+
+        $bigFixation = Fixation::where('arandela', '25 mm')->first();
+        $smallFixation = Fixation::where('arandela', '10 mm')->first();
+
+        $products = Product::all();
+
+        $yellow = DB::table('colors')->where('name', 'yellow')->first();
+        $black = DB::table('colors')->where('name', 'black')->first();
+        $white = DB::table('colors')->where('name', 'white')->first();
+
+        foreach ($products->where('category_id', 4) as $product) {
+            // Yellow
+            DB::table('color_product')->insert([
+                'color_id' => $yellow->id,
+                'product_id' => $product->id,
+                'body' => true,
+                'reflective' => true,
+            ]);
+
+            // Black
+            DB::table('color_product')->insert([
+                'color_id' => $black->id,
+                'product_id' => $product->id,
+                'body' => true,
+                'reflective' => null,
+            ]);
+
+            // White
+            DB::table('color_product')->insert([
+                'color_id' => $white->id,
+                'product_id' => $product->id,
+                'body' => null,
+                'reflective' => true,
+            ]);
+
+            DB::table('fixation_product')->insert([
+                'product_id' => $product->id,
+                'fixation_id' => $smallFixation->id,
+                'amount' => 2
+            ]);
+
+            $product->update([
+                'available' => true
+            ]);
+        }
+
+        foreach ($products->where('category_id', '!=',4) as $product) {
+            // Yellow
+            DB::table('color_product')->insert([
+                'color_id' => $yellow->id,
+                'product_id' => $product->id,
+                'body' => true,
+                'reflective' => true,
+            ]);
+
+            // White
+            DB::table('color_product')->insert([
+                'color_id' => $white->id,
+                'product_id' => $product->id,
+                'body' => null,
+                'reflective' => true,
+            ]);
+
+            DB::table('fixation_product')->insert([
+                'product_id' => $product->id,
+                'fixation_id' => $bigFixation->id,
+                'amount' => 4
+            ]);
+
+            $product->update([
+                'available' => true
+            ]);
+        }
+
+        return "colores creados";
+
     }
 
 }

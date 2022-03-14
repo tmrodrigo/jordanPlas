@@ -97,11 +97,11 @@
     $neg = false;
 
     foreach ($colors as $color) {
-      if ($color['value'] == 'yellow') {
+      if ($color['name'] == 'yellow') {
         $ama = true;
       }
 
-      if ($color['value'] == 'black') {
+      if ($color['name'] == 'black') {
         $neg = true;
       }
     }
@@ -112,7 +112,7 @@
         'value' => 'bi-color'
       ]);
 
-      return $colors->toArray();
+      return $colors;
 
     }
 

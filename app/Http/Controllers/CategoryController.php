@@ -20,6 +20,8 @@ class CategoryController extends Controller
     $category = Category::find($id);
     $sub_id = '';
     $products = Product::where('category_id', '=', $id)
+                        ->where('available', true)
+                        ->with('category')
                         ->orderBy('rating')
                         ->get();
 

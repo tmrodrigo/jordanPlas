@@ -23,17 +23,17 @@
       </div>
       <div class="my-5"></div>
       <div class="row flex-column-reverse flex-md-row">
-        <div class="col-md-3 col-lg-2">
+        <div class="col-md-3 col-lg-3">
           <div class="my-5 my-md-0"></div>
           <h3 class="upper mb-2">Productos</h3>
           <ul class="side-menu">
             @forelse ($categories as $category)
               <li>
-                <a class="cap {{ $id == $category->id ? 'bold' : '' }}" href="{{ route('category', ['id' => $category->id, 'category' => $category->name]) }}">{{ $category->name }}</a>
+                <a class="upper {{ $id == $category->id ? 'bold' : '' }}" href="{{ route('category', ['id' => $category->id, 'category' => $category->name]) }}">{{ $category->name }}</a>
                 @if ($category->sub_categories->count() > 0)
                   @forelse ($category->sub_categories as $sub_category)
                     <ul class="submenu">
-                      <li><a class="{{ $sub_id == $sub_category->id ? 'bold' : '' }}" href="{{ route('subcategory', ['subcategory' => $sub_category]) }}">{{ $sub_category->name }}</a></li>
+                      <li><div class="dot">•</div><a class="{{ $sub_id == $sub_category->id ? 'bold' : '' }}" href="{{ route('subcategory', ['subcategory' => $sub_category]) }}">{{ $sub_category->name }}</a></li>
                     </ul>
                   @empty
                   
@@ -46,7 +46,7 @@
             @endforelse
           </ul>
         </div>
-        <div class="col-md-9 col-lg-10">
+        <div class="col-md-9 col-lg-9">
           <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             @forelse ($products as $product)
               <div class="col-sm-4">

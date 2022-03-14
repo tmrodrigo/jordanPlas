@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPdfUrlToBudgets extends Migration
+class ChangeColorsProductsTableName extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPdfUrlToBudgets extends Migration
      */
     public function up()
     {
-        Schema::table('budgets', function (Blueprint $table) {
-            // $table->string('pdf_url')->nullable();
+        Schema::table('colors_products', function (Blueprint $table) {
+           Schema::rename('colors_products', 'color_product');
         });
     }
 
@@ -25,7 +25,7 @@ class AddPdfUrlToBudgets extends Migration
      */
     public function down()
     {
-        Schema::table('budgets', function (Blueprint $table) {
+        Schema::table('colors_products', function (Blueprint $table) {
             //
         });
     }

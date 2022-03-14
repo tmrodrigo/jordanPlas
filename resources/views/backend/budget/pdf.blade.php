@@ -201,23 +201,6 @@
             transform: rotate(45deg);
       }
 
-      .yellow {
-        background: gold;
-      }
-
-      .black {
-        background: black;
-      }
-
-      .orange {
-        background: orange;
-      }
-
-      .white {
-        background: white;
-        border-color: 1px solid black;
-      }
-
       .page-break {
         page-break-after: always;
       }
@@ -293,7 +276,7 @@
           <td class="product-info">
             <h6><b>{{ $product->category->name }} {!! $product->sub_category != null ? '<br><small>'. $product->sub_category->name . '</small>' : '' !!}</b></h6>
             <h5><b>{{ $product->name }}</b></h5>
-            <p>Color: <span class="circle {{ $product->pivot->color }}"></span></p>
+            <p>Color: <span class="circle {{ $product->pivot->color }}" style="background-color: {{ $product->pivot->color_hexa }} " ></span></p>
             <p>Soporte: <b>{{ $product->pivot->support }}</b></p>
           </td>
           <td class="product-description"><p>{{ cut_str($product->description, 500) }}</p></td>

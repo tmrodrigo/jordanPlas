@@ -33,6 +33,8 @@ Route::get('/migrate', function() {
     return "Migrated";
 });
 
+Route::get('/change-colors', 'ProductController@add_remove_colors');
+
 Route::get('/', 'HomeController@home');
 
 Route::get('/rubro/{category}/{id}', 'CategoryController@show')->name('category');
@@ -102,4 +104,3 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/{budget}', 'BudgetController@show_pdf');
 
 });
-

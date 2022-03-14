@@ -100,14 +100,12 @@
                     <div class="col-sm-6">
                       <label>Color cuerpo</label>
                       <div class="row">
-                        @foreach ($bColors as $color)
-                          @if ((strlen($color->name) < 7) && ($color->name != "red"))
-                            <div class="col-sm-3 checkbox">
-                              <label>
-                                <input type="checkbox" class="flat" name="body_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
-                              </label>
-                            </div>
-                          @endif
+                        @foreach ($colors as $color)
+                          <div class="col-sm-3 checkbox">
+                            <label>
+                              <input type="checkbox" class="flat" name="body_color_id[]" value="{{ $color->id }}"><br> {{ $color->value }}
+                            </label>
+                          </div>
                         @endforeach
                       </div>
                     </div>
@@ -115,14 +113,12 @@
                       <label>Color reflectivo</label>
                       <div class="row">
                         <div class="row">
-                          @foreach ($rColors as $color)
-                            @if (($color->name != 'black') && $color->name != 'orange')
-                              <div class="col-sm-3 checkbox">
-                                <label>
-                                  <input type="checkbox" class="flat" name="light_color_id[]" value="{{ $color->name }}"><br> {{ $color->value }}
-                                </label>
-                              </div>
-                            @endif
+                          @foreach ($colors as $color)
+                            <div class="col-sm-3 checkbox">
+                              <label>
+                                <input type="checkbox" class="flat" name="light_color_id[]" value="{{ $color->id }}"><br> {{ $color->value }}
+                              </label>
+                            </div>
                           @endforeach
                         </div>
                       </div>
@@ -157,7 +153,7 @@
                       <label>Unidad disponible</label>
                       <div class="ratiobutton">
                         <label>
-                          <input type="radio" class="flat" name="units" value="mt"> Metros
+                          <input type="radio" class="flat" name="units" value="mt" checked> Metros
                           <input type="radio" class="flat" name="units" value="un"> Unidad
                         </label>
                     </div>

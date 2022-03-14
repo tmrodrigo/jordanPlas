@@ -22,6 +22,6 @@ class Budget extends Model
 
 	public function products()
 	{
-		return $this->belongsToMany(Product::class)->withPivot('amount', 'unit_price', 'unit', 'color', 'support');
+		return $this->belongsToMany(Product::class)->withPivot('amount', 'unit_price', 'unit', 'color', 'support', 'color_hexa');
 	}
 }

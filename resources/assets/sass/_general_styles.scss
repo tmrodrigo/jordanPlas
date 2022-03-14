@@ -1,6 +1,7 @@
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: $neutral-background;
+  background: linear-gradient(180deg, rgba(246,246,246,1) 9%, rgba(225,225,225,1) 80%);
   font-size: 16px;
   min-height: 100vh;
   color: $neutral-text;
@@ -15,7 +16,7 @@ img {
 }
 
 .number {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Roboto', sans-serif;
 }
 
 .bold{
@@ -23,11 +24,11 @@ img {
 }
 
 .upper {
-  text-transform: uppercase;
+  text-transform: uppercase !important;
 }
 
 .cap {
-  text-transform: capitalize;
+  text-transform: capitalize !important;
 }
 
 .primary {

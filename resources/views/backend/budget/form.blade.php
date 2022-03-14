@@ -318,7 +318,7 @@
               <h6>{{ $s_product['category_name'] }} {!! $s_product['sub_category_name'] != null ? '<br><small>'.$s_product['sub_category_name'] . '</small>' : '' !!} </h6>
               <h5><b>{{ $s_product['name'] }}</b></h5>
               <p>Cantidad: <b>{{ $s_product['amount'] }} {{ $s_product['measure'] }}</b></p>
-              <p>Color: <span class="circle {{ $s_product['color'] }}"></span></p>
+              <p>Color: <span class="circle {{ $s_product['color_hexa'] }}" style="background-color: {{ $s_product['color_hexa'] }}"></span></p>
               <p>Soporte: <b>{{ $s_product['support'] }}</b></p>
               <button type="button" class="btn btn-secondary"  data-bs-toggle="modal" data-bs-target="#edit{{ $k }}">Editar</button>
               <a class="btn btn-danger" href="{{ route('remove_item', ['key' => $k]) }}">Eliminar</a>
