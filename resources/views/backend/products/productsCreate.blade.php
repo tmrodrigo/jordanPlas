@@ -58,21 +58,28 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                       <label>Alto</label>
                       <input type="text" name="height" value="{{ old('height') }} " class="form-control">
                     </div>
-                    <div class="col-sm-3">
-                      <label>Ancho</label>
+                    <div class="col-sm-4">
+                      <label>Pisada</label>
                       <input type="text" name="width" value="{{ old('width') }} " class="form-control">
                     </div>
-                    <div class="col-sm-3">
-                      <label>Profundo</label>
+                    <div class="col-sm-4">
+                      <label>Ancho</label>
                       <input type="text" name="depth" value="{{ old('depth') }} " class="form-control">
                     </div>
-                    <div class="col-sm-3">
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-sm-6">
                       <label>Peso</label>
                       <input type="text" name="weight" value="{{ old('weight') }} " class="form-control">
+                    </div>
+                    <div class="col-sm-6">
+                      <label>Grosor pared</label>
+                      <input type="text" name="thickness" value="{{ old('thickness') }} " class="form-control">
                     </div>
                   </div>
                 </div>

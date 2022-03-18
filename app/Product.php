@@ -11,6 +11,7 @@ use App\Certificate;
 use App\SubCategory;
 use App\Category;
 use App\Fixation;
+use App\Meassure;
 
 class Product extends Model
 {
@@ -54,6 +55,11 @@ class Product extends Model
   public function fixation()
   {
     return $this->belongsToMany(Fixation::class)->withPivot('amount');
+  }
+
+  public function meassures()
+  {
+    return $this->hasMany(Meassure::class);
   }
 
 }

@@ -3,12 +3,21 @@ body {
   background-color: $neutral-background;
   background: linear-gradient(180deg, rgba(246,246,246,1) 9%, rgba(225,225,225,1) 80%);
   font-size: 16px;
-  min-height: 100vh;
   color: $neutral-text;
 }
 
 main {
-  min-height: 100vh;
+  min-height: calc(100vh - 88px) !important;
+  margin-top: 88px !important;
+}
+
+.navbar {
+
+  @media screen and (min-width: $md) {
+    img {
+      height: 70px;;
+    }
+  }
 }
 
 img {
@@ -42,8 +51,13 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: 2.5rem;
-  line-height: 2.75rem;
+  font-size: 2rem;
+  line-height: 2.2rem;
+
+  @media screen and (min-width: $md) {
+    font-size: 2.5rem;
+    line-height: 2.75rem;
+  }
 }
 
 h2 {
@@ -52,20 +66,26 @@ h2 {
 }
 
 h3 {
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  
+  @media screen and (min-width: $md) {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
 }
 
 button, .btn {
   margin: 0;
   border: 0;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 0;
 }
 
 .btn-primary {
   background-color: $primary-background;
   color: $neutral-text-inverted;
+  border: 3px solid $primary-border;
 
   &:hover{
     background-color: $primary-background-strong;
@@ -103,6 +123,10 @@ button, .btn {
   &:hover{
     text-decoration: underline;
     color: $neutral-text-strong;
+  }
+
+  span {
+    margin-left: 0.3rem;
   }
 }
 

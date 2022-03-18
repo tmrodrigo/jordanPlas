@@ -21,7 +21,6 @@ class HomeController extends Controller
     public function home()
     {
         $categories = Category::orderBy('id')->get();
-        // dd($categories);
         $images = Post::select('name as category_id', 'image as url' )->get();
         $company_data = Company::orderBy('created_at', 'DESC')->first();
 

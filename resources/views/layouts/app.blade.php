@@ -21,7 +21,7 @@
 
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top|fixed-bottom|sticky-top">
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light fixed-top|fixed-bottom|sticky-top">
         <div class="container">
           <a class="navbar-brand" href="/">
             <img src="{{ asset('logos/logo-vert.svg') }}" alt="Logo Jordan Plas">

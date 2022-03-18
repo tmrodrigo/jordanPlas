@@ -160,7 +160,12 @@
               <label for="product">Producto</label>
               <select id="product" class="form-control" name="product_id">
                 @forelse ($products as $product)
-                  <option value="{{ $product->id }}" {{ $s_product == $product->id ? 'selected' : '' }}>{{ strtoupper($product->name) }}</option>
+                  <option value="{{ $product->id }}-0" {{ $s_product == $product->id ? 'selected' : '' }}>{{ strtoupper($product->name) }} {{ $product->meassures->count() > 0 ? ' - ' . $product->height . ' cms' : '' }}</option>
+                  @forelse ($product->meassures as $m)
+                    <option value="{{ $product->id }}-{{ $m->height }}" {{ $s_product . '-' . $product_meassure == $product->id . '-' . $m->height  ? 'selected' : '' }}>{{ strtoupper($product->name) }} - {{ $m->height . ' cms' }}</option>
+                  @empty
+                    
+                  @endforelse
                 @empty
                   
                 @endforelse
@@ -201,12 +206,12 @@
             <div class="form-group col-12 col-sm-4 mb-2">
               <legend>Medida</legend>
               <div class="form-check form-check-inline">
-                <input id="measure_true" class="form-check-input" type="radio" value="1" name="measure" checked> 
-                <label for="measure_true" class="form-check-label">Metro lineal</label>
+                <input id="meassure_true" class="form-check-input" type="radio" value="1" name="meassure" checked> 
+                <label for="meassure_true" class="form-check-label">Metro lineal</label>
               </div>
               <div class="form-check form-check-inline">
-                <input id="measure_false" class="form-check-input" type="radio" value="0" name="measure"> 
-                <label for="measure_false" class="form-check-label">Unidad</label>
+                <input id="meassure_false" class="form-check-input" type="radio" value="0" name="meassure"> 
+                <label for="meassure_false" class="form-check-label">Unidad</label>
               </div>
             </div>
 
@@ -276,14 +281,14 @@
                         </select>
                       </div>
                       <div class="form-group mb-2">
-                        <legend>Medida {{ $s_product['measure'] }}</legend>
+                        <legend>Medida {{ $s_product['meassure'] }}</legend>
                         <div class="form-check form-check-inline">
-                          <input id="edit_measure_true_{{ $k }}" class="form-check-input" type="radio" value="1" name="measure" {{ $s_product['measure'] !== 'Unidades' ? 'checked' : '' }}> 
-                          <label for="edit_measure_true_{{ $k }}" class="form-check-label">Metro lineal</label>
+                          <input id="edit_meassure_true_{{ $k }}" class="form-check-input" type="radio" value="1" name="meassure" {{ $s_product['meassure'] !== 'Unidades' ? 'checked' : '' }}> 
+                          <label for="edit_meassure_true_{{ $k }}" class="form-check-label">Metro lineal</label>
                         </div>
                         <div class="form-check form-check-inline">
-                          <input id="edit_measure_false_{{ $k }}" class="form-check-input" type="radio" value="0" name="measure" {{ $s_product['measure'] === 'Unidades' ? 'checked' : '' }}> 
-                          <label for="edit_measure_false_{{ $k }}" class="form-check-label">Unidad</label>
+                          <input id="edit_meassure_false_{{ $k }}" class="form-check-input" type="radio" value="0" name="meassure" {{ $s_product['meassure'] === 'Unidades' ? 'checked' : '' }}> 
+                          <label for="edit_meassure_false_{{ $k }}" class="form-check-label">Unidad</label>
                         </div>
                       </div>
                       <div class="form-group mb-2">
@@ -316,8 +321,8 @@
             </div>
             <div class="col-sm-2">
               <h6>{{ $s_product['category_name'] }} {!! $s_product['sub_category_name'] != null ? '<br><small>'.$s_product['sub_category_name'] . '</small>' : '' !!} </h6>
-              <h5><b>{{ $s_product['name'] }}</b></h5>
-              <p>Cantidad: <b>{{ $s_product['amount'] }} {{ $s_product['measure'] }}</b></p>
+              <h5><b>{{ $s_product['name'] }} {{ $s_product['product_meassure'] > 0 ? ' - ' . $s_product['product_meassure'] . ' cm' : ''}}</b></h5>
+              <p>Cantidad: <b>{{ $s_product['amount'] }} {{ $s_product['meassure'] }}</b></p>
               <p>Color: <span class="circle {{ $s_product['color_hexa'] }}" style="background-color: {{ $s_product['color_hexa'] }}"></span></p>
               <p>Soporte: <b>{{ $s_product['support'] }}</b></p>
               <button type="button" class="btn btn-secondary"  data-bs-toggle="modal" data-bs-target="#edit{{ $k }}">Editar</button>

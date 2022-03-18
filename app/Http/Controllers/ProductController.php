@@ -11,6 +11,7 @@ use App\Company;
 use App\ClientLogo;
 use App\Certificate;
 use App\Fixation;
+use App\Meassure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -106,6 +107,7 @@ class ProductController extends Controller
             $product->width = $request['width'];
             $product->depth = $request['depth'];
             $product->weight = $request['weight'];
+            $product->thickness = $request['thickness'];
 
             $product->reflex_s = $request['reflex_s'];
             $product->resistence = $request['resistence'];
@@ -249,6 +251,7 @@ class ProductController extends Controller
             $product->width = $request['width'];
             $product->depth = $request['depth'];
             $product->weight = $request['weight'];
+            $product->thickness = $request['thickness'];
 
             $product->reflex_s = $request['reflex_s'];
             $product->resistence = $request['resistence'];
@@ -328,6 +331,18 @@ class ProductController extends Controller
             'amount' => $request['fixation_amount'],
             'fixation_id' => $request['fixation_id']
         ]);
+
+        if (!empty($request['width-new']) || !empty($request['height-new'])) {
+            Meassure::create([
+                'height' => $request['height-new'],
+                'width' => $request['width-new'],
+                'depth' => $request['depth-new'],
+                'weight' => $request['weight-new'],
+                'thickness' => $request['thickness-new'],
+                'reflex_s' => $request['reflex_s-new'],
+                'product_id' => $product->id,
+            ]);
+        }
 
         return redirect('/backend/products')->with('message', $product->name . ' actualizado correctamente');
     }
@@ -626,6 +641,15 @@ class ProductController extends Controller
 
         return "colores creados";
 
+    }
+
+    public function meassureDelete(Request $request){
+       
+        $meassure = Meassure::find($request['id']);
+
+        $meassure->delete();
+
+        return back()->with('message', 'Medida eliminada');
     }
 
 }

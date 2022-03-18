@@ -144,7 +144,6 @@ class CategoryController extends Controller
 
   public function destroy(Request $request, Category $category)
   {
-    // dd($request);
     $category = Category::find($request['id']);
     $category->delete();
     return redirect()->back()->with('message', 'Categoría eliminada');

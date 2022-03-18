@@ -81,6 +81,7 @@ Route::middleware(['auth'])->group(function () {
   Route::post('project/create', 'ProjectController@create')->name('project.create');
   Route::delete('project/destroy', 'ProjectController@destroy')->name('project.destroy');
   Route::delete('image/delete', 'ProductController@imageDelete')->name('image.delete');
+  Route::post('meassure/delete', 'ProductController@meassureDelete')->name('meassure.delete');
 
   Route::prefix('sub_category')->group(function(){
     Route::post('/', 'SubCategoryController@create')->name('sub_category_create');    

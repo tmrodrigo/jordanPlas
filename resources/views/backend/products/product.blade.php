@@ -89,21 +89,27 @@
               <div class="clearfix"></div>
             </div>
             <div class="row">
-              <div class="col-sm-3">
+              <div class="col-sm-4">
                 <label>Alto</label>
                 <input type="text" name="height" value="{{ $product->height }} " class="form-control">
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-4">
                 <label>Pisada</label>
                 <input type="text" name="width" value="{{ $product->width }} " class="form-control">
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-4">
                 <label>Ancho</label>
                 <input type="text" name="depth" value="{{ $product->depth }} " class="form-control">
               </div>
-              <div class="col-sm-3">
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
                 <label>Peso</label>
                 <input type="text" name="weight" value="{{ $product->weight }} " class="form-control">
+              </div>
+              <div class="col-sm-6">
+                <label>Grosor pared</label>
+                <input type="text" name="thickness" value="{{ $product->thickness }} " class="form-control">
               </div>
             </div>
           </div>
@@ -188,16 +194,8 @@
                 <label>Unidad disponible</label>
                 <div class="ratiobutton">
                   <label>
-                    @if ($product->units == "mt")
-                      <input type="radio" class="flat" name="units" value="mt" checked> Metros
-                      @else
-                        <input type="radio" class="flat" name="units" value="mt"> Metros
-                    @endif
-                    @if ($product->units == "un")
-                      <input type="radio" class="flat" name="units" value="un" checked> Unidad
-                      @else
-                        <input type="radio" class="flat" name="units" value="un"> Unidad
-                    @endif
+                    <input type="radio" class="flat" name="units" value="mt" {{ $product->units == 'mt' ? 'checked' : '' }}> Metros
+                    <input type="radio" class="flat" name="units" value="un" {{ $product->units == 'un' ? 'checked' : '' }}> Unidad
                   </label>
                 </div>
               </div>
@@ -223,45 +221,73 @@
         <div class="col-sm-6">
           <div class="x_panel">
             <div class="x_title">
-              <h3>Certificados del producto</h3>
+              <h3>Medidas adicionales</h3>
               <div class="clearfix"></div>
+            </div>
+            @forelse ($product->meassures as $meassure)
+              <div class="row">
+              <div class="col-sm-4">
+                <label>Alto</label>
+                <input type="text" name="height-{{ $meassure->id }}" value="{{ $meassure->height }}" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Pisada</label>
+                <input type="text" name="width-{{ $meassure->id }}" value="{{ $meassure->width }}" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Ancho</label>
+                <input type="text" name="depth-{{ $meassure->id }}" value="{{ $meassure->depth }}" class="form-control">
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-sm-4">
+                <label>Peso</label>
+                <input type="text" name="weight-{{ $meassure->id }}" value="{{ $meassure->weight }}" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Grosor pared</label>
+                <input type="text" name="thickness-{{ $meassure->id }}" value="{{ $meassure->thickness }}" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Superficie reflectiva</label>
+                <input type="text" name="reflex_s-{{ $meassure->id }}" value="{{ $meassure->reflex_s }}" class="form-control">
+              </div>
+            </div>
+            <br>
+            <button id="eliminar-{{ $meassure->id }}" type="button" class="btn btn-danger">Eliminar</button>
+            @empty
+              
+            @endforelse
+            <br>
+            <br>
+            <div class="row">
+              <div class="col-sm-4">
+                <label>Alto</label>
+                <input type="text" name="height-new" value="" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Pisada</label>
+                <input type="text" name="width-new" value="" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Ancho</label>
+                <input type="text" name="depth-new" value="" class="form-control">
+              </div>
             </div>
             <div class="row">
-              @foreach ($product->certificates as $certificate)
-                <div class="col-sm-3">
-                  <img src="{{ Storage::url($certificate->image) }}" alt="{{ $certificate->name }}">
-                </div>
-                <div class="col-sm-9">
-                  <label>Nombre</label>
-                  <label>
-                    <input type="checkbox" class="flat" name="certificate_id[]" value="{{ $certificate->id }}" checked> {{ $certificate->name }}
-                  </label>
-                </div>
-              <div class="clearfix"></div>
-              <div class="ln_solid"></div>
-              @endforeach
-            </div>
-            <div class="x_title">
-              <h3>Otros certificados disponibles</h3>
-              <div class="clearfix"></div>
-            </div>
-            <div class="row">
-              @php
-                $p = $certificates->diff($product->certificates)
-              @endphp
-              @foreach ($p as $certificate)
-                <div class="col-sm-3">
-                  <img src="{{ Storage::url($certificate->image) }}" alt="{{ $certificate->name }}">
-                </div>
-                <div class="col-sm-9">
-                  <label>Nombre</label>
-                  <label>
-                    <input type="checkbox" class="flat" name="certificate_id[]" value="{{ $certificate->id }}"> {{ $certificate->name }}
-                  </label>
-                </div>
-              <div class="clearfix"></div>
-              <div class="ln_solid"></div>
-              @endforeach
+              <div class="col-sm-4">
+                <label>Peso</label>
+                <input type="text" name="weight-new" value="" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Grosor pared</label>
+                <input type="text" name="thickness-new" value="" class="form-control">
+              </div>
+              <div class="col-sm-4">
+                <label>Superficie reflectiva</label>
+                <input type="text" name="reflex_s-new" value="" class="form-control">
+              </div>
             </div>
           </div>
         </div>
@@ -324,4 +350,21 @@
     </form>
   </div>
 </div>
+@forelse ($product->meassures as $m)
+  <script>
+    $(document).ready(function(){
+      $('#eliminar-{{ $m->id }}').on('click', function(){
+        $('#form-{{ $m->id }}').submit()
+      })
+    })
+  </script>
+  <form id="form-{{ $m->id }}" action="{{ route('meassure.delete') }}" method="POST">
+    @csrf
+    <input type="hidden" name="id" value="{{ $m->id }}">
+  </form>
+
+@empty
+  
+@endforelse
+
 @endsection

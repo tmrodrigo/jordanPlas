@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\App;
 use App\Budget;
 use App\Category;
 use App\Client;
 use App\Product;
 use App\Color;
-use App\ProductAtribute;
 use PDF;
 
 class BudgetController extends Controller
@@ -63,7 +63,8 @@ class BudgetController extends Controller
     
     $categories = Category::orderBy('name')->get();
     $products = $categories->first()->product;
-    
+    $product = $products[0];
+
     $session = $request->session()->get('data');
 
     $selected_products = $request->session()->get('selected_products');
@@ -73,9 +74,18 @@ class BudgetController extends Controller
       $selected_category = $session['category'];
     }
 
-    $s_product = $products[0]->id;
+    $s_product = $product->id;
     if (isset($session['s_product'])) {
       $s_product = $session['s_product'];
+    }
+
+    $product_meassure = 0;
+    if ($product->meassures->count() > 0) {
+      $product_meassure = $product->height;
+    } 
+
+    if (isset($session['product_meassure'])) {
+      $product_meassure = $session['product_meassure'];
     }
 
     $colors = Color::all();
@@ -112,9 +122,9 @@ class BudgetController extends Controller
       $unit_price = $session['unit_price'];
     }
 
-    $measure = '';
-    if (isset($session['measure'])) {
-      $measure = $session['measure'];
+    $meassure = '';
+    if (isset($session['meassure'])) {
+      $meassure = $session['meassure'];
     }
 
     $support = '';
@@ -160,7 +170,7 @@ class BudgetController extends Controller
       's_color' => $s_color,
       'colors' => $colors,
       'amount' => $amount,
-      'measure' => $measure,
+      'meassure' => $meassure,
       'support' => $support,
       'unit_price' => $unit_price,
       'selected_category' => $selected_category,
@@ -172,6 +182,7 @@ class BudgetController extends Controller
       'delivery_date' => $delivery_date,
       'payment' => $payment,
       'sub_category_name' => $sub_category_name,
+      'product_meassure' => $product_meassure,
     ]);
 
   }
@@ -181,11 +192,14 @@ class BudgetController extends Controller
     // Cambia la categoría
     $products = Product::where('category_id', $request->category_id)->orderBy('name')->get();
     $product = $products[0];
-
+    $product_data = explode('-', $request->product_id);
+    $product_id = $product_data[0];
+    $product_meassure = $product_data[1];
+    
     $session = $request->session()->get('data');
 
     if (!empty($session)) {
-    
+
       //Cambia el producto
       if (($request->category_id == $session['category']) && ($session['s_product'] != $request->product_id)) {
         
@@ -193,7 +207,6 @@ class BudgetController extends Controller
                           ->with('category')
                           ->select('id', 'units', 'name')
                           ->first();
-
       }
     
     }
@@ -206,9 +219,10 @@ class BudgetController extends Controller
       'products' => $products,
       'colors' => $bColors,
       's_color' => $request->color,
-      's_product' => $request->product_id,
+      's_product' => $product_id,
+      'product_meassure' => $product_meassure,
       'amount' => $request->amount,
-      'measure' => $request->measure,
+      'meassure' => $request->meassure,
       'support' => $request->support,
       'unit_price' => $request->unit_price,
     ];
@@ -217,17 +231,21 @@ class BudgetController extends Controller
 
     if (isset($request->product_id) && isset($request->amount) && isset($request->unit_price) ) {
 
-      $product = Product::where('id', $request->product_id)
+      $product = Product::where('id', $product_id)
                         ->with('category', 'sub_category')
-                        ->select('id', 'name', 'category_id', 'avatar', 'description', 'sub_category_id')
+                        ->select('id', 'name', 'category_id', 'avatar', 'description', 'sub_category_id', 'height')
                         ->first();
+
+      if ($product->meassures->count() > 0 && $product_meassure == 0) {
+        $product_meassure = $product->height;
+      }
 
       $m = 'Metro lineal';
       if ($request->amount > 1) {
         $m = 'Metros lineales';
       }
 
-      if ($request->measure == false) {
+      if ($request->meassure == false) {
         $m = 'Unidad';
         if ($request->amount > 1) {
           $m = 'Unidades';
@@ -266,13 +284,14 @@ class BudgetController extends Controller
         'category_id'  => $product->category_id,
         'category_name' => $product->category->name,
         'sub_category_name' => $sub_category_name,
+        'product_meassure' => $product_meassure,
         'color' => $request->color,
         'color_hexa' => $hexa,
         'colors' => $p_colors,
         'avatar' => $product->avatar,
         'description' => $product->description,
         'unit_price' => $unit_price,
-        'measure' => $m,
+        'meassure' => $m,
         'support' => $s,
         'amount' => $request->amount,
         'sub_total' => $request->amount * $unit_price
@@ -345,7 +364,7 @@ class BudgetController extends Controller
       $m = 'Metros lineales';
     }
 
-    if ($request->measure == false) {
+    if ($request->meassure == false) {
       $m = 'Unidad';
       if ($request->amount > 1) {
         $m = 'Unidades';
@@ -361,7 +380,7 @@ class BudgetController extends Controller
       $s = 'No incluida';
     }
 
-    $p[$id]['measure'] = $m;
+    $p[$id]['meassure'] = $m;
     $p[$id]['support'] = $s;
     
     $request->session()->put('selected_products', $p);
@@ -438,13 +457,14 @@ class BudgetController extends Controller
         'unit_price' => $product['unit_price'], 
         'color' => $product['color'], 
         'color_hexa' => $product['color_hexa'], 
-        'unit' => $product['measure'], 
-        'support' => $product['support']
+        'unit' => $product['meassure'], 
+        'support' => $product['support'],
+        'height' => $product['product_meassure']
       ]);
     
     }
 
-    $products = $budget->products->chunk(5);
+    $products = $budget->products->chunk(6);
 
     $data = [
       'client' => $client, 
@@ -472,8 +492,15 @@ class BudgetController extends Controller
 
     $budget_data = $request->session()->put('client_data', $budget_data );
     $products = $request->session()->put('selected_products', $products);
+
+    $route = 'https://jordan-plas.com/';
+    $environment = App::environment();
+
+    if ($environment == 'local') {
+      $route = 'http://jordanplas.test/';
+    }
     
-    return back()->with('budget', 'http://jordanplas.test/' . $url);
+    return back()->with('budget', $route . $url);
   }
 
   public function show_pdf(Budget $budget){
