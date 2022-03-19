@@ -16,7 +16,7 @@ class CategoryController extends Controller
 {
   public function show($category, $id)
   {
-    $categories = Category::orderBy('name')->get();
+    $categories = Category::orderBy('id')->get();
     $category = Category::find($id);
     $sub_id = '';
     $products = Product::where('category_id', '=', $id)

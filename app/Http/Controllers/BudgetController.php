@@ -61,7 +61,7 @@ class BudgetController extends Controller
 
   public function show_form(Request $request){
     
-    $categories = Category::orderBy('name')->get();
+    $categories = Category::orderBy('id')->get();
     $products = $categories->first()->product;
     $product = $products[0];
 

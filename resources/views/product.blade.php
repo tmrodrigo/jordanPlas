@@ -96,7 +96,7 @@
                   <img src="{{ asset('logos/medidas/medidas.svg') }}" alt="">
                   <ul>
                     <li>Alto: <b class="number">{{ format_number($product->height, 2) }}</b> <b>cm</b></li>
-                    <li>{{ $product->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b class="number">{{ format_number($product->width, 2) }}</b> <b>cm</b></li>
+                    <li>{{ $product->depth >= 0 ? 'Pisada:' : 'Diámetro:'  }} <b class="number">{{ format_number($product->width, 2) }}</b> <b>cm</b></li>
                     @if ($product->depth > 0)
                       <li>Ancho: <b class="number">{{ format_number($product->depth, 2) }}</b> <b>cm</b></li>                                    
                     @endif
@@ -119,7 +119,7 @@
                   <ul>
                     <li>Peso: <b class="number">{{ format_number($product->weight, 2) }}</b> <b>kg</b></li>
                     @if ($lineal_mt != null)
-                      <li>Peso mt lineal: <b class="number">{{ format_number($product->weight * $lineal_mt, 2) }}</b> <b>kg</b></li>
+                      <li>Peso mt lineal: <br><b class="number">{{ format_number($product->weight * $lineal_mt, 2) }}</b> <b>kg</b></li>
                     @endif
                   </ul>
                 </div>
@@ -138,7 +138,7 @@
                     <img src="{{ asset('logos/medidas/medidas.svg') }}" alt="">
                     <ul>
                       <li>Alto: <b class="number">{{ format_number($meassure->height, 2) }}</b> <b>cm</b></li>
-                      <li>{{ $meassure->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b class="number">{{ format_number($meassure->width, 2) }}</b> <b>cm</b></li>
+                      <li>{{ $meassure->depth >= 0 ? 'Pisada:' : 'Diámetro:'  }} <b class="number">{{ format_number($meassure->width, 2) }}</b> <b>cm</b></li>
                       @if ($meassure->depth > 0)
                         <li>Ancho: <b class="number">{{ format_number($meassure->depth, 2) }}</b> <b>cm</b></li>                                    
                       @endif
@@ -161,7 +161,7 @@
                     <ul>
                       <li>Peso: <b class="number">{{ format_number($meassure->weight, 2) }}</b> <b>kg</b></li>
                       @if ($lineal_mt != null)
-                        <li>Peso mt lineal: <b class="number">{{ format_number($meassure->weight * $lineal_mt, 2) }}</b> <b>kg</b></li>
+                        <li>Peso mt lineal: <br><b class="number">{{ format_number($meassure->weight * $lineal_mt, 2) }}</b> <b>kg</b></li>
                       @endif
                     </ul>
                   </div>
