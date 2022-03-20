@@ -1,355 +1,214 @@
-@extends('backend.backend')
+@extends('backend.budget.base')
+
+@section('title', 'Inicio')
 
 @section('content')
-  <div class="row">
-    <div class="col-md-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Productos <small> productos más vendidos </small></h2>
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          @if ($errors->any())
-            @foreach ($errors->all() as $error)
-              <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                <strong>{{ $error }}</strong>
-              </div>
-            @endforeach
-          @endif
-          @if (session('message'))
-            <div class="alert alert-success alert-dismissible fade in" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-              </button>
-              <strong>{{ session('message') }}</strong>
-            </div>
-          @endif
-        </div>
-        <div class="x_content">
-          <div class="row">
-            <div class="col-sm-12">
-              <p>Listado de productos ordenados por número de ventas</p>
-            </div>
-            @foreach ($products as $product)
-              <div class="col-md-2">
-                <div style="min-height: 260px;">
-                  <div class="image">
-                    <img style="width: 100%; display: block;" src="{{ Storage::url( $product->avatar ) }}" alt="{{ strtolower( str_replace(' ', '-', $product->name)) . '-' . strtolower( str_replace(' ', '-', $product->category->name))}}" />
-                  </div>
-                  <div class="caption">
-                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-default">Ver {{ cut_str($product->name, 10) }}</a>
-                  </div>
-                </div>
-              </div>
-            @endforeach
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="clearfix"></div>
-  @if (isset($clients))
+  <div class="container">
     <div class="row">
-      <div class="col-md-6 col-sm-12 col-xs-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2>Ingresar / Editar nueva categoría</h2><br><br>
-            <p>Al cambiar el nombre de una categoría cambiará la categoría de todos los productos asociados a esta</p>
-            <p>Solo podrá eliminar categorías que aún no tengan ningún producto asociado</p>
-            <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-            </ul>
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            <div class="row">
-              <form class="form-horizontal form-label-left" action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <div class="form-group">
-                  <label class="control-label col-md-2">Categoria Nueva</label>
-                  <div class="col-md-10">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title">
+              <h3>Rubros</h3>
+            </div>
+            <h4>Nuevo rubro</h4>
+            <form action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">
+              {{ csrf_field() }}
+              <div class="row row-cols-1 row-cols-2 g-4">
+                <div class="col-sm-6">
+                    <label for="">Nombre</label>
                     <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
                   </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-md-2">Descripción</label>
-                  <div class="col-md-10">
-                    <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Descripción">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-md-2">Avatar</label>
-                  <div class="col-md-10">
-                    <input type="file" name="avatar" value="" class="form-control" id="" placeholder="">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-sm-offset-10 col-sm-2">
-                    <button type="submit" class="btn btn-success pull-right">Guardar</button>
-                  </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="ln_solid"></div>
-              </form>
-            </div>
-              @foreach ($categories as $category)
-                <div class="row">
-                  <h3>{{ $category->name }}</h3>
-                  <div class="col-sm-12">
-                    <form action="{{ route('category.update', $category ) }}" method="post" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        {{ method_field('PUT')}}
-                        <div class="form-group">
-                          <label class="control-label col-md-2">Reemplazar el nombre acá:</label>
-                          <div class="col-md-10">
-                            <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
-                            <input type="text" class="form-control" value="{{ $category->name }}" name="name">
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="form-group">
-                          <label class="control-label col-md-2">Reemplazar la descripción acá:</label>
-                          <div class="col-md-10">
-                            <input type="text" class="form-control" value="{{ $category->description }}" name="description">
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="">
-                            <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name }}" style="width:150px;">
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="form-group">
-                          <label class="control-label col-md-2">Reemplazar avatar acá</label>
-                          <div class="col-md-10">
-                            <input type="file" name="avatar" value="" class="form-control">
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="form-group">
-                          <div class="col-sm-offset-10">
-                            <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
-                          </div>
-                        </div>
-                    </form>
-                  </div>
-                  <div class="col-sm-offset-9 col-sm-2">
-                    
-                    @foreach ($products as $product)
-                      @if (count($category->product) == 0)
-                        <form class="" action="{{ route('category.destroy', $category) }}" method="post" style="margin-top:-27px">
-                          {{ method_field('DELETE')}}
-                          {{ csrf_field() }}
-                          <input type="text" name="id" value="{{ $category->id }}" style="display:none;">
-                          <input type="submit" name="" value="Eliminar" class="btn btn-danger">
-                        </form>
-                        @break($product->category->id != $category->id)
-                      @endif
-                    @endforeach
-                  </div>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="separador"></div>
-              @endforeach
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-sm-12 col-xs-12">
-        <div class="x_panel">
-        <div class="x_title">
-          <h2>Ingresar / Editar nueva subcategoría</h2><br><br>
-          <p>Al cambiar el nombre de una categoría cambiará la categoría de todos los productos asociados a esta</p>
-          <p>Solo podrá eliminar categorías que aún no tengan ningún producto asociado</p>
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          <div class="row">
-            <form class="form-horizontal form-label-left" action="{{ route('sub_category_create') }}" method="post" enctype="multipart/form-data">
-              @csrf
-              <div class="form-group">
-                <label class="control-label col-md-2">Nombre</label>
-                <div class="col-md-10">
-                  <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Descripción</label>
-                <div class="col-md-10">
+                <div class="col-sm-6">
+                  <label>Descripción</label>
                   <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Descripción">
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="category_id" class="control-label col-md-2">Categoría</label>
-                <select class="form-control col-md-10" name="category_id" id="category_id">
-                  @forelse ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    
-                  @empty
-                    
-                  @endforelse
-                </select>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-10 col-sm-2">
+                <div class="col-sm-6">
+                  <label>Avatar</label>
+                  <input type="file" name="avatar" value="" class="form-control" id="" placeholder="">
+                </div>
+                <div class="col-sm-6">
                   <button type="submit" class="btn btn-success pull-right">Guardar</button>
                 </div>
               </div>
-              <div class="clearfix"></div>
-              <div class="ln_solid"></div>
             </form>
-          </div>
-            @foreach ($sub_categories as $sub_category)
-              <div class="row">
-                <h3>{{ $sub_category->name }}</h3>
-                <div class="col-sm-12">
-                  <form action="{{ route('sub_category_update', ['sub_category' => $sub_category]) }}" method="post" enctype="multipart/form-data">
-                      @csrf
-                      <div class="form-group">
-                        <label class="control-label col-md-2">Reemplazar el nombre acá:</label>
-                        <div class="col-md-10">
-                          <input type="text" class="form-control" value="{{ $sub_category->name }}" name="name">
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="form-group">
-                        <label class="control-label col-md-2">Reemplazar la descripción acá:</label>
-                        <div class="col-md-10">
-                          <input type="text" class="form-control" value="{{ $sub_category->description }}" name="description">
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="">
-                          <img src="{{ Storage::url($sub_category->avatar) }}" alt="{{ $sub_category->name }}" style="width:150px;">
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="form-group">
-                        <label for="category_id" class="control-label col-md-2">Categoría</label>
-                        <select class="form-control col-md-10" name="category_id" id="category_id">
-                          @forelse ($categories as $category)
-                            <option value="{{ $category->id }}" {{ $sub_category->category->id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                            
-                          @empty
-                            
-                          @endforelse
-                        </select>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="form-group">
-                        <div class="col-sm-offset-10">
-                          <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
-                        </div>
-                      </div>
-                  </form>
+            <hr>
+            <h4>Rubros</h4>
+            @forelse ($categories as $category)
+              <div class="row mb-2">
+                <div class="col-sm-8">
+                  <p>{{ $category->name }}</p>
                 </div>
-                <div class="col-sm-offset-9 col-sm-2">
-                  <form class="" action="{{  route('sub_category_delete', ['sub_category' => $sub_category->id]) }}" method="post">
-                    @csrf
-                    <input type="submit" name="" value="Eliminar" class="btn btn-danger">
-                  </form>
-                </div>
-                <div class="clearfix"></div>
-              </div>
-              <div class="separador"></div>
-            @endforeach
-        </div>
-        </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-  @endif
-  <div class="row">
-    <div class="col-md-6 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Ingresar / Editar nuevo certificado</h2><br><br>
-          <p>Al ingresar un certificado estará disponible en el panel de carga de producto</p>
-          <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-          </ul>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          <br />
-          <div class="row">
-            <form class="form-horizontal form-label-left" action="{{ route('certificate.store') }}" method="post" enctype="multipart/form-data">
-              {{ csrf_field() }}
-              <div class="form-group">
-                <label class="control-label col-md-2">Nuevo certificado</label>
-                <div class="col-md-10">
-                  <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+                <div class="col-sm-4">
+                  <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#edit-category-{{ $category->id }}">Editar</button>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="control-label col-md-2">Descripción</label>
-                <div class="col-md-10">
-                  <input type="file" class="form-control" name="image" value="{{ old('description') }}" placeholder="Logo certificado">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-10 col-sm-2">
-                  <button type="submit" class="btn btn-success pull-right">Guardar</button>
-                </div>
-              </div>
-              <div class="clearfix"></div>
-              <div class="ln_solid"></div>
-            </form>
-          </div>
-            @foreach ($certificates as $certificate)
-              <div class="row">
-                <div class="col-sm-12">
-                  <form class="" action="{{ route('certificate.update', $certificate ) }}" method="post" enctype="multipart/form-data">
-                      {{ csrf_field() }}
-                      {{ method_field('PUT')}}
-                      <div class="form-group">
-                        <label class="control-label col-md-2">Reemplazar el nombre acá:</label>
-                        <div class="col-md-10">
-                          <input type="text" name="id" value="{{ $certificate->id }}" style="display:none;">
-                          <input type="text" class="form-control" value="{{ $certificate->name }}" name="name">
+              <div class="modal fade" id="edit-category-{{ $category->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Editar {{ $category->name }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('category.update', $category ) }}" method="post" enctype="multipart/form-data">
+                      <div class="modal-body">
+                        <div class="row">
+                          @csrf
+                          {{ method_field('PUT')}}
+                          <input type="hidden" name="id" value="{{ $category->id }}">
+                          <div class="col-auto form-group">
+                            <label >Nuevo nombre</label>
+                            <input type="text" class="form-control" value="{{ $category->name }}" name="name">
+                          </div>
+                          <div class="col-auto form-group">
+                            <label >Nueva descripción:</label>
+                            <input type="text" class="form-control" value="{{ $category->description }}" name="description">
+                          </div>
+                          <div class="my-3"></div>
+                          <div class="col-auto">
+                            <img src="{{ Storage::url($category->avatar) }}" alt="{{ $category->name }}" style="width:150px;">
+                            <div class="my-2"></div>
+                            <div class="form-group">
+                              <label >Nuevo avatar</label>
+                              <input type="file" name="avatar" value="" class="form-control">
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div class="clearfix"></div>
-                      <div class="">
-                        <img src="{{ Storage::url($certificate->image) }}" alt="">
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-2">Reemplazar el logo acá:</label>
-                        <div class="col-md-10">
-                          <input type="file" class="form-control" value="" name="image">
-                        </div>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="form-group">
-                        <div class="col-sm-offset-10">
-                          <input type="submit" name="" value="Editar" class="btn btn-success pull-right">
-                        </div>
-                      </div>
-                  </form>
-                </div>
-                <div class="clearfix"></div>
-                <div class="form-group">
-                  <div class="col-sm-offset-10 col-sm-2">
-                    <form class="" action="{{ route('certificate.destroy', $certificate) }}" method="post">
-                      {{ method_field('DELETE')}}
-                      {{ csrf_field() }}
-                      <input type="text" name="id" value="{{ $certificate->id }}" style="display:none;">
-                      <input type="submit" name="" value="Eliminar" class="btn btn-danger pull-right separador">
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                      </div>                    
                     </form>
                   </div>
                 </div>
               </div>
-              <div class="separador"></div>
-            @endforeach
+            @empty
+              
+            @endforelse
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title">
+              <h3>Sub rubros</h3>
+            </div>
+            <h4>Nuevo rubro</h4>
+            <form action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">
+              {{ csrf_field() }}
+              <div class="row row-cols-1 row-cols-2 g-4">
+                <div class="col-sm-6">
+                    <label for="">Nombre</label>
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+                  </div>
+                <div class="col-sm-6">
+                  <label>Descripción</label>
+                  <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Descripción">
+                </div>
+                <div class="col-sm-6">
+                  <label>Avatar</label>
+                  <input type="file" name="avatar" value="" class="form-control" id="" placeholder="">
+                </div>
+                <div class="col-sm-6">
+                  <button type="submit" class="btn btn-success pull-right">Guardar</button>
+                </div>
+              </div>
+            </form>
+            <hr>
+            <h4>Sub rubros</h4>
+            @forelse ($sub_categories as $sub_category)
+              <div class="row mb-2">
+                <div class="col-sm-4">
+                  <p>{{ $sub_category->name }}</p>
+                </div>
+                <div class="col-sm-4">
+                  <p>{{ $sub_category->category->name }}</p>
+                </div>
+                <div class="col-sm-4">
+                  <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#edit-sub-category-{{ $sub_category->id }}">Editar</button>
+                </div>
+              </div>
+              <div class="modal fade" id="edit-sub-category-{{ $sub_category->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Editar {{ $sub_category->name }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('sub_category_update', ['sub_category' => $sub_category]) }}" method="post" enctype="multipart/form-data">
+                      <div class="modal-body">
+                        <div class="row">
+                          @csrf
+                          <input type="hidden" name="id" value="{{ $sub_category->id }}">
+                          <div class="col-auto form-group">
+                            <label >Nuevo nombre</label>
+                            <input type="text" class="form-control" value="{{ $sub_category->name }}" name="name">
+                          </div>
+                          <div class="col-auto form-group">
+                            <label >Nuevo rubro:</label>
+                            <div class="form-group">
+                              <select class="form-control col-md-10" name="category_id" id="category_id">
+                                @forelse ($categories as $category)
+                                  <option value="{{ $category->id }}" {{ $sub_category->category->id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @empty
+                            
+                                @endforelse
+                              </select>
+                            </div>
+                          </div>
+                          <div class="my-3"></div>
+                          <div class="col-auto">
+                            <img src="{{ Storage::url($sub_category->avatar) }}" alt="{{ $sub_category->name }}" style="width:150px;">
+                            <div class="my-2"></div>
+                            <div class="form-group">
+                              <label >Nuevo avatar</label>
+                              <input type="file" name="avatar" value="" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                      </div>                    
+                    </form>
+                  </div>
+                </div>
+              </div>
+            @empty
+              
+            @endforelse
+          </div>
         </div>
       </div>
     </div>
+    <div class="my-4"></div>
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h3>
+            Productos
+          </h3>
+        </div>
+        <div class="row">
+          @forelse ($products as $product)
+            <div class="col-sm-2 mb-2 d-flex justify-content-between " style="min-height: 250px; flex-flow:column">
+              <img style="width: 100%; display: block;" src="{{ Storage::url( $product->avatar ) }}" alt="" />
+              <p>
+                <small>{{ $product->category->name }}</small><br>
+                {{ $product->name }}
+              </p>
+              <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-dark">Ver producto</a>
+            </div>
+          @empty
+          
+          @endforelse
+        </div>
+      </div>
+    </div>
+
+
   </div>
-  
 @endsection

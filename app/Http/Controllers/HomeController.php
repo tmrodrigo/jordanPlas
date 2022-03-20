@@ -37,9 +37,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->orderBy('category_id')->orderBy('rating')->get();
         $categories = Category::get()->sortBy('name');
-        $sub_categories = SubCategory::get()->sortBy('name');
+        $sub_categories = SubCategory::get()->sortBy('category_id');
         $clients = Client::orderBy('created_at', 'desc')->limit('5')->get();
         $certificates = Certificate::all();
         $company_data = Company::orderBy('created_at', 'DESC')->first();

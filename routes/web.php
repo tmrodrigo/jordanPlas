@@ -83,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('image/delete', 'ProductController@imageDelete')->name('image.delete');
   Route::post('meassure/delete', 'ProductController@meassureDelete')->name('meassure.delete');
 
+  Route::post('update-body-color/{product}', 'ProductController@update_body_color')->name('update_body_color');
+  Route::post('update-reflex-color/{product}', 'ProductController@update_reflex_color')->name('update_reflex_color');
+
   Route::prefix('sub_category')->group(function(){
     Route::post('/', 'SubCategoryController@create')->name('sub_category_create');    
     Route::post('/update/{sub_category}', 'SubCategoryController@update')->name('sub_category_update');  

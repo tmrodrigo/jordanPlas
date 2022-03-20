@@ -37,6 +37,10 @@
         font-size: 1.5rem
       }
 
+      img {
+        max-width: 100%;
+      }
+
       .card {
         border-radius: 8px;
         border: none;
@@ -60,6 +64,16 @@
             <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">
               <li class="nav-item">
+                <a class="nav-link" href="{{ url('/backend/backendHome') }}"> Inicio </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url('/backend/products') }}">Productos </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url('/backend/images') }}">Imágenes </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('budget') }}">Crear un presupuesto</a>                
               </li>
               <li class="nav-item">
@@ -67,9 +81,9 @@
               </li>
             </ul>
             <form action="{{ route('search-budget') }}" method="GET" class="d-flex my-2 my-lg-0">
-              <div class="search-form">
-                <input name="search" value="" type="text" placeholder="Buscar presupuesto">
-                <button class="btn btn-tertiary" type="submit">Buscar</button>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" aria-label="Example text with button addon" aria-describedby="button-addon1" name="search" value="" type="text" placeholder="Buscar presupuesto">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon1">Buscar</button>
               </div>
             </form>
           </div>
@@ -78,6 +92,27 @@
       </nav>
     </header>
     <main>
+      <div class="container">
+        <div class="row mt-4">
+          <div class="col-sm-12">
+            @if ($errors->any())
+              @foreach ($errors->all() as $error)
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>{{ $error }}</strong>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endforeach
+            @endif
+
+            @if (session('message'))
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{ session('message') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            @endif
+          </div>
+        </div>
+      </div>
       @yield('content')
     </main>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

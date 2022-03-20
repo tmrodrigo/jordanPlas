@@ -41,17 +41,6 @@
         <h2>Nuevo presupuesto</h2>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        @if ($errors->any())
-          @foreach ($errors->all() as $error)
-            <div class="alert alert-danger" role="alert">
-              <strong>{{ $error }}</strong>
-            </div>
-          @endforeach
-        @endif
-      </div>
-    </div>
     <div class="card">
       <div class="card-body">
         <div class="card-title">

@@ -28,8 +28,12 @@ class ProductController extends Controller
     {
         $products = Product::
                         orderBy('category_id')
+                        ->orderBy('rating')
                         ->get();
+
         $categories = Category::all();
+
+
         return view('backend.products.productsList', [
           'products' => $products,
           'categories' => $categories
@@ -45,11 +49,13 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $colors = Color::all();
-        $certificates = Certificate::all();
+        $fixations = Fixation::all();
+
         return view('backend.products.productsCreate', [
           'categories' => $categories,
           'colors' => $colors,
-          'certificates' => $certificates,
+          'fixations' => $fixations
+
         ]);
     }
 
@@ -312,9 +318,6 @@ class ProductController extends Controller
 
             $product->available = $request['available'];
             $product->save();
-
-            $product->colors()->syncWithPivotValues($request['light_color_id'], ['reflective' => true]);
-            $product->colors()->syncWithPivotValues($request['body_color_id'], ['body' => true]);
 
 
         $certificates = $request['certificate_id'];
@@ -650,6 +653,22 @@ class ProductController extends Controller
         $meassure->delete();
 
         return back()->with('message', 'Medida eliminada');
+    }
+
+    public function update_body_color(Product $product, Request $request){
+        
+        $product->colors()->syncWithPivotValues($request['body_color_id'], ['body' => true]);
+
+        return back()->with('message', 'Color del cuerpo actualizado');
+
+    }
+
+    public function update_reflex_color(Product $product, Request $request){
+        
+        $product->colors()->syncWithPivotValues($request['light_color_id'], ['reflective' => true]);
+
+        return back()->with('message', 'Color del reflectivo actualizado');
+
     }
 
 }
