@@ -1,0 +1,48 @@
+.product-box {
+  border: 2px solid $primary-border;
+  min-height: 150px;
+
+  .image-container {
+    position: relative;
+    height: 150px;
+
+    img {
+      position: absolute;
+      height: 150px;
+      width: auto;
+    }
+
+    .card-img-logo {
+      z-index: 1;
+      opacity: 0.15;
+      padding: 0.5rem;
+      top: 0;
+      left: 0;
+      height: 50px;
+    }
+
+    .card-img-top {
+      min-width: 100%;
+      height: auto;
+    }
+  }
+
+  .card-body {
+    padding-top: 0;
+  }
+
+  .card-title {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  .btn, .btn-secondary {
+    padding: 0;
+    border: none;
+    text-align: left;
+  }
+
+}

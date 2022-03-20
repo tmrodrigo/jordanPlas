@@ -1,0 +1,44 @@
+.product-card {
+  min-height: 380px;
+  border: 2px solid $primary-border;
+
+  .image-container {
+    position: relative;
+    height: 380px;
+
+  @media screen and (min-width: $md) {
+
+    height: 240px;
+    overflow: hidden;
+  }
+
+    img {
+      position: absolute;
+      height: 200px;
+      width: auto;
+    }
+
+    .card-img-logo {
+      z-index: 1;
+      opacity: 0.15;
+      padding: 1rem 6rem 6rem 1rem;
+      top: 0;
+      left: 0;
+      height: 180px;
+    }
+
+    .card-img-top {
+      min-width: 100%;
+      height: auto;
+    }
+  }
+
+  .card-body {
+    padding-top: 0;
+  }
+
+  .card-title {
+    margin: 0;
+  }
+
+}

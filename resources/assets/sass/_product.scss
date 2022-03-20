@@ -75,39 +75,6 @@
     }
   }
 
-  .product-card {
-    .d-flex {
-      ul {
-        display: none !important;
-      }
-    }
-
-    @media screen and (min-width: $md) {
-      .d-flex {
-        ul {
-          display: initial !important;
-          // flex-direction: column;
-        }
-      }
-    }
-
-    .image-container {
-      height: 120px;
-
-      @media screen and (min-width: $md) {
-        height: 260px;
-      }
-
-      img {
-        height: 120px;
-      
-        @media screen and (min-width: $md) {
-          height: 260px;
-        }
-      }
-    }
-  }
-
   .meassures-box {
     display: flex;
     flex-direction: row;
