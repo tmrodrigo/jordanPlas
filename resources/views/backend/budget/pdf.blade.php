@@ -156,7 +156,7 @@
       }
 
       .product-description p {
-        font-size: 11px;
+        font-size: 10px;
         line-height: 12px;
         text-align: justify;
       }
@@ -179,7 +179,7 @@
       }
 
       .product-info p {
-        margin: 6px 0;
+        margin: 3px 0;
       }
 
       .circle {
@@ -193,12 +193,12 @@
       }
 
       .bi-color {
-            height: 0px;
-            width: 0px;
-            border: 8px solid;
-            border-radius: 50%;
-            border-color: gold gold black black; 
-            transform: rotate(45deg);
+        height: 0px;
+        width: 0px;
+        border: 8px solid;
+        border-radius: 50%;
+        border-color: gold gold black black; 
+        transform: rotate(45deg);
       }
 
       .page-break {
@@ -277,20 +277,17 @@
             <h6><b>{{ $product->category->name }} {!! $product->sub_category != null ? '<br><small>'. $product->sub_category->name . '</small>' : '' !!}</b></h6>
             <h5><b>{{ $product->name }} {{ $product->pivot->height > 0 ? ' - ' .$product->pivot->height . ' cm' : '' }}</b></h5>
             <p>Color: <span class="circle {{ $product->pivot->color }}" style="background-color: {{ $product->pivot->color_hexa }} " ></span></p>
+            <p>Soporte: <b>{{ $product->pivot->support }}</b></p>
           </td>
           <td class="product-description">
-            <p>Medidas: <br>
+            <p>{{ cut_str($product->description, 180) }}</p>
+            <br>
+            <p><b>Medidas:</b><br>
               @if ($product->pivot->height == 0)
                 Alto: <b>{{ format_number($product->height, 2) }} cm</b> <br>
                 {{ $product->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b>{{ format_number($product->width, 2) }} cm</b>
-                @if ($product->depth > 0)
-                  <br>Ancho: <b>{{ format_number($product->depth, 2) }} cm</b>                                    
-                @endif
                 @if ($product->resistence > 0)
                   <br>Resistencia Certificado INTI: <b>{{ format_number($product->resistence, 2) }} tn</b>                                    
-                @endif
-                @if ($product->reflex_s > 0)
-                  <br>Superficie reflectiva: <b>{{ format_number($product->reflex_s, 2) }} cm2</b>                                    
                 @endif
                 @else
                 @php
@@ -301,17 +298,10 @@
                 @endphp
                 Alto: <b>{{ format_number($m->height, 2) }} cm</b> <br>
                 {{ $m->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b>{{ format_number($m->width, 2) }} cm</b>
-                @if ($m->depth > 0)
-                  <br>Ancho: <b>{{ format_number($m->depth, 2) }} cm</b>                                    
-                @endif
                 @if ($m->resistence > 0)
                   <br>Resistencia Certificado INTI: <b>{{ format_number($m->resistence, 2) }} tn</b>                                    
                 @endif
-                @if ($m->reflex_s > 0)
-                  <br>Superficie reflectiva: <b>{{ format_number($m->reflex_s, 2) }} cm2</b>                                    
-                @endif
               @endif
-              <br>Soporte: <b>{{ $product->pivot->support }}</b>
             </p>
           </td>
           <td class="product-amount"><b>{{ format_number($product->pivot->amount) }} {{ $product->pivot->unit }}</b></p></td>

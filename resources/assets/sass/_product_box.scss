@@ -1,10 +1,16 @@
 .product-box {
   border: 2px solid $primary-border;
   min-height: 150px;
+  background-color: $neutral-background-lowest;
 
   .image-container {
     position: relative;
     height: 150px;
+    overflow: hidden;
+
+    @media screen and (min-width: $md) {
+        height: 240px;
+    }
 
     img {
       position: absolute;
@@ -43,6 +49,12 @@
     padding: 0;
     border: none;
     text-align: left;
+
+    &:hover {
+      background-color: $neutral-background-lowest;
+      color: $primary-text;
+      text-decoration: underline;
+    }
   }
 
 }

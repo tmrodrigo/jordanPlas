@@ -55,6 +55,36 @@
               <span class="visually-hidden">Next</span>
             </button>
           </div>
+          <div class="my-sm-4"></div>
+          {{-- Colores --}}
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-6">
+                  <p>Color cuerpo</p>
+                    <ul class="color-list">
+                      @forelse ($product->colors->where('pivot.body', true) as $bColor)
+                        <li class="col-auto color-dot" style="background-color: {{ $bColor->hexa }}"></li>
+                        @empty
+                        <li class="col-auto color-dot" style="background-color: #FBD347"></li>
+                        <li class="col-auto color-dot" style="background-color: #1E1E1E"></li>
+                      @endforelse
+                    </ul>
+                </div>
+                <div class="col-6">
+                  <p>Color reflectivo</p>
+                    <ul class="color-list">
+                      @forelse ($product->colors->where('pivot.reflective', true) as $rColor)
+                        <li class="col-auto color-dot" style="background-color: {{ $rColor->hexa }}"></li>
+                        @empty
+                        <li class="col-auto color-dot" style="background-color: #FBD347"></li>
+                        <li class="col-auto color-dot" style="background-color: #ffffff"></li>                        
+                      @endforelse
+                    </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-sm-6 my-3 my-sm-0">
           {{-- Boton descargar ficha --}}
@@ -127,12 +157,15 @@
                   <div class="product-measures">
                     <img src="{{ asset('logos/medidas/superficie_reflectiva.svg') }}" alt="">
                     <ul>
-                      <li>Superficie reflectiva<br> <b class="number">{{ format_number($product->reflex_s, 2) }}</b> <b>cm2</b></li>
+                      <li>Superficie <br> reflectiva<br> <b class="number">{{ format_number($product->reflex_s, 2) }}</b> <b>cm2</b></li>
                     </ul>
                   </div>            
                 @endif
               </div>
-              @forelse ($product->meassures as $meassure)
+              @if ($product->meassures->count() > 0)
+              <div class="border"></div>
+              @endif
+              @forelse ($product->meassures->sortBy('height') as $meassure)
                 <div class="meassures-box {{ $meassure->resistence > 0 || $meassure->reflex_s > 0 ? '' : 'justify-content-start' }}">
                   <div class="product-measures">
                     <img src="{{ asset('logos/medidas/medidas.svg') }}" alt="">
@@ -169,11 +202,14 @@
                     <div class="product-measures">
                       <img src="{{ asset('logos/medidas/superficie_reflectiva.svg') }}" alt="">
                       <ul>
-                        <li>Superficie reflectiva<br> <b class="number">{{ format_number($meassure->reflex_s, 2) }}</b> <b>cm2</b></li>
+                        <li>Superficie <br> reflectiva<br> <b class="number">{{ format_number($meassure->reflex_s, 2) }}</b> <b>cm2</b></li>
                       </ul>
                     </div>            
                   @endif
                 </div>
+                @if ($product->meassures->count() > 1)
+                  <div class="border"></div>
+                @endif
               @empty
                 
               @endforelse
@@ -191,31 +227,6 @@
               </div>
             </div>                           
           </div>
-          {{-- Colores --}}
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="row">
-                <div class="col-6">
-                  <p>Color cuerpo</p>
-                    <ul class="color-list">
-                      @foreach ($product->colors->where('pivot.body', true) as $bColor)
-                        <li class="col-auto color-dot" style="background-color: {{ $bColor->hexa }}"></li>
-                      @endforeach
-                    </ul>
-                </div>
-                <div class="col-6">
-                  <p>Color reflectivo</p>
-                    <ul class="color-list">
-                      @foreach ($product->colors->where('pivot.reflective', true) as $rColor)
-                        <li class="col-auto color-dot" style="background-color: {{ $rColor->hexa }}"></li>
-                      @endforeach
-                    </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="my-sm-4"></div>
-          
         </div>
       </div>
       {{-- Botón mobile --}}
@@ -239,6 +250,7 @@
           <p class="text-justify">{{ $product->description }}</p>
         </div>
       </div>
+      @if ($fixations != null )
       <div class="my-2"></div>
       <div class="row">
         <div class="col-sm-12">
@@ -252,19 +264,20 @@
               <h2>Fijaciones</h2>
               <ul>
                 <li>
-                  {{ $fixations->pivot->amount }} Tirafondos de {{ $fixations->tirafondo }}.
+                  {{ $fixations->pivot->amount != null ? $fixations->pivot->amount : '4' }} Tirafondos de {{ $fixations->tirafondo != null ? $fixations->tirafondo : '3/8 x 4"' }}.
                 </li>
                 <li>
-                  {{ $fixations->pivot->amount }} Arandelas de {{ $fixations->arandela }}.
+                  {{ $fixations->pivot->amount != null ? $fixations->pivot->amount : '4' }} Arandelas de {{ $fixations->arandela != null ? $fixations->arandela : '25 mm' }}.
                 </li>
                 <li>
-                  {{ $fixations->pivot->amount }} Tarugos de {{ $fixations->tarugo }}.
+                  {{ $fixations->pivot->amount != null ? $fixations->pivot->amount : '4' }} Tarugos de {{ $fixations->tarugo != null ? $fixations->tarugo : '14 mm' }}.
                 </li>                                
               </ul>
             </div>
           </div>
         </div>
       </div>
+      @endif
       <div class="my-5"></div>
       @if ($products->count() > 0)
         <div class="row">

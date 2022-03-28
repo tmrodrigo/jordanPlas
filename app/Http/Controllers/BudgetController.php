@@ -393,6 +393,13 @@ class BudgetController extends Controller
 
     $client_info = $request->session()->get('client_data');
 
+    $route = 'https://jordan-plas.com/';
+    $environment = App::environment();
+
+    if ($environment == 'local') {
+      $route = 'http://jordanplas.test/';
+    }
+
     if (!isset($client_info) || isset($client_info['budget_info'])) {
       return redirect()->back()->withErrors('Falta el nombre del cliente');
     }
@@ -464,7 +471,7 @@ class BudgetController extends Controller
     
     }
 
-    $products = $budget->products->chunk(6);
+    $products = $budget->products->chunk(5);
 
     $data = [
       'client' => $client, 
@@ -492,13 +499,6 @@ class BudgetController extends Controller
 
     $budget_data = $request->session()->put('client_data', $budget_data );
     $products = $request->session()->put('selected_products', $products);
-
-    $route = 'https://jordan-plas.com/';
-    $environment = App::environment();
-
-    if ($environment == 'local') {
-      $route = 'http://jordanplas.test/';
-    }
     
     return back()->with('budget', $route . $url);
   }

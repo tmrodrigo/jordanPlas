@@ -1,4 +1,4 @@
-<div class="card product-box">
+<div class="product-box">
   <div class="image-container">
     <img src="{{ asset('logos/logo-vert.svg') }}" class="card-img-logo" alt="">
     <img src="{{ Storage::url($product->avatar) }}" class="card-img-top" alt="{{ $product->name }}">

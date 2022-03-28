@@ -71,103 +71,81 @@ class ProductController extends Controller
             'name' => 'required|max:255',
             'description' => 'required',
             'category_id' => 'required',
-            'height' => 'nullable|numeric',
-            'width' => 'nullable|numeric',
-            'depth' => 'nullable|numeric',
-            'weight' => 'nullable|numeric',
-            'reflex_s' => 'nullable|numeric',
-            'resistence' => 'nullable|numeric',
-            'body_color_id' => 'nullable',
-            'light_color_id' => 'nullable',
-            'rating' => 'nullable',
-            'certificate_id' => 'nullable',
-            'certificate_description' => 'nullable',
             'info_file' => 'required|mimes:pdf|max:3000',
-            'manual_file' => 'nullable|mimes:pdf|max:5000',
-            'units' => 'required'
         ],
         [
             'name.required' => 'Nombre requerido',
             'description.required' => 'Descripcion requerida',
             'category_id.required' => 'El producto debe tener una categoría',
-            'width.numeric' => 'El ancho debe ser un número',
-            'height.numeric' => 'El alto debe ser un número',
-            'depth.numeric' => 'La profundidad debe ser un número',
-            'weight.numeric' => 'El peso debe ser un número',
-            'reflex_s.numeric' => 'La superficie reflexiva debe ser un número',
-            'resistence.numeric' => 'La resistencia debe ser un número',
             'info_file.required' => 'Falta pdf de ficha de producto',
             'info_file.mimes' => 'La ficha de producto debe ser formato PDF',
             'info_file.size' => 'La ficha de producto debe pesar menos de 3mb',
-            'units.required' => 'Indique la unidad del producto'
         ]);
 
-        $product = new Product();
+        $infoFile = $request->file("info_file");
+        $infoName = $request->name . "." . $infoFile->extension();
+        $infoPath = $infoFile->storePubliclyAs("info_files", $infoName);
 
-            $product->name = $request['name'];
-            $product->description = $request['description'];
-            $product->category_id = $request['category_id'];
-            $product->sub_category_id = $request['sub_category_id'];
+        $avatar = $request->file("avatar");
+        $name = $request->name . "." . $avatar->extension();
+        $path = $avatar->storePubliclyAs("products", $name);
 
-            $product->height = $request['height'];
-            $product->width = $request['width'];
-            $product->depth = $request['depth'];
-            $product->weight = $request['weight'];
-            $product->thickness = $request['thickness'];
+        $leftPath = null;
+        if ($request->file("left_img") != null) {
+            $leftImg = $request->file("left_img");
+            $leftName = $request->name . "-left" . "." . $leftImg->extension();
+            $leftPath = $leftImg->storePubliclyAs("products", $leftName);
+        }
 
-            $product->reflex_s = $request['reflex_s'];
-            $product->resistence = $request['resistence'];
+        $rightPath = null;
+        if ($request->file("right_img") != null) {
+            $rightImg = $request->file("right_img");
+            $rightName = $request->name . "-right" . "." . $rightImg->extension();
+            $rightPath = $rightImg->storePubliclyAs("products", $rightName);
+        }
 
-            $infoFile = $request->file("info_file");
-            $infoName = $product->name . "." . $infoFile->extension();
-            $infoFolder = "info_files";
-            $infoPath = $infoFile->storePubliclyAs($infoFolder, $infoName);
-            $product->info_file = $infoPath;
 
-            if ($request["manual_file"]) {
-                $manualFile = $request->file("manual_file");
-                $manualName = $product->name . "." . $manualFile->extension();
-                $manualFolder = "manual_files";
-                $manualPath = $manualFile->storePubliclyAs($manualFolder, $manualName);
-                $product->manual_file = $manualPath;
-            }
+        $product = Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'sub_category_id' => $request->sub_category_id,
+            'height' => $request->height,
+            'width' => $request->width,
+            'depth' => $request->depth,
+            'weight' => $request->weight,
+            'thickness' => $request->thickness,
+            'reflex_s' => $request->reflex_s,
+            'resistence' => $request->resistence,
+            'info_file' => $infoPath,
+            'avatar' => $path,
+            'left_img' => $leftPath,
+            'right_img' => $rightPath,
+            'available' => $request->available,
+            'units' => $request->units,
+        ]);
 
-            $avatar = $request->file("avatar");
-            $name = $product->name . "." . $avatar->extension();
-            $path = $avatar->storePubliclyAs("products", $name);
-            $product->avatar = $path;
-
-            if ($request->file("left_img") != null) {
-                $leftImg = $request->file("left_img");
-                $leftName = $product->name . "-left" . "." . $leftImg->extension();
-                $leftPath = $leftImg->storePubliclyAs("products", $leftName);
-                $product->left_img = $leftPath;
-            }
-
-            if ($request->file("right_img") != null) {
-                $rightImg = $request->file("right_img");
-                $rightName = $product->name . "-right" . "." . $rightImg->extension();
-                $rightPath = $rightImg->storePubliclyAs("products", $rightName);
-                $product->right_img = $rightPath;
-            }
-
-            $product->available = $request['available'];
-            $product->units = $request['units'];
-
-        $product->save();
+        $p_id = $product->id;
 
         $product->colors()->syncWithPivotValues( $request['body_color_id'], ['body' => true]);
         $product->colors()->syncWithPivotValues( $request['light_color_id'], ['reflective' => true]);
 
-        $certificates = $request['certificate_id'];
 
-        if ((is_array($certificates)) && $certificates != null) {
-          foreach ($certificates as $key => $value) {
-            $product->certificates()->attach($value);
-          }
+        $fixation = Fixation::first();
+
+        if ($fixation != null) {
+
+            DB::table('fixation_product')
+            ->insert([
+                'product_id' => $p_id,
+                'amount' => 4,
+                'fixation_id' => $fixation->id,
+            ]);
+        
         }
 
-        return redirect('backend/products')->with('message', 'Producto cargado correctamente');
+
+        return redirect('backend/products')->with('message', $product->name . ' cargado correctamente');
     }
 
     /**
@@ -343,6 +321,7 @@ class ProductController extends Controller
                 'weight' => $request['weight-new'],
                 'thickness' => $request['thickness-new'],
                 'reflex_s' => $request['reflex_s-new'],
+                'resistence' => $request['resistence-new'],
                 'product_id' => $product->id,
             ]);
         }
@@ -352,9 +331,10 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        $name = $product->name;
         $product->delete();
 
-        return redirect('/backend/products')->with('message', 'Producto eliminado correctamente');
+        return redirect('/backend/products')->with('message', $name . ' eliminado correctamente');
 
     }
 

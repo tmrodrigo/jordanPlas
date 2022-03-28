@@ -272,16 +272,17 @@
                 <div class="col-sm-3">
                   <label for="">Fijaciones</label>
                   <select name="fixation_id" class="form-control">
-                    @foreach ($fixations as $f)
-                      <option value="{{ $f->id }}"  {{ $product->fixation->first()->id == $f->id ? 'selected' : '' }} >{{ $f->tirafondo }}</option>
-                    @endforeach
+                    @forelse ($fixations as $f)
+                      <option value="{{ $f->id }}"  {{ $product->fixation->first() != null && $product->fixation->first()->id == $f->id ? 'selected' : '' }} >{{ $f->tirafondo }}</option>
+                      @empty
+                    @endforelse
                   </select>
                 </div>
 
                 <div class="col-sm-3">
                   <div class="form-group">
                     <label for="">Cantidad</label>
-                    <input type="text" name="fixation_amount" value="{{ $product->fixation->first()->pivot->amount }}" class="form-control">
+                    <input type="text" name="fixation_amount" value="{{ $product->fixation->first() != null ? $product->fixation->first()->pivot->amount : '' }}" class="form-control">
                   </div>
                 </div>
               </div>            
