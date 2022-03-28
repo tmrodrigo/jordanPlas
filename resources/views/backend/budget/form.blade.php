@@ -231,13 +231,16 @@
           <div class="col-sm-2">
             Datos
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-2">
             Descripción
           </div>
-          <div class="col-sm-1">
+          <div class="col-sm-2">
+            Cantidad
+          </div>
+          <div class="col-sm-2">
             Precio unitario
           </div>
-          <div class="col-sm-1">
+          <div class="col-sm-2">
             Sub Total
           </div>
         </div>
@@ -311,22 +314,26 @@
             <div class="col-sm-2">
               <h6>{{ $s_product['category_name'] }} {!! $s_product['sub_category_name'] != null ? '<br><small>'.$s_product['sub_category_name'] . '</small>' : '' !!} </h6>
               <h5><b>{{ $s_product['name'] }} {{ $s_product['product_meassure'] > 0 ? ' - ' . $s_product['product_meassure'] . ' cm' : ''}}</b></h5>
-              <p>Cantidad: <b>{{ $s_product['amount'] }} {{ $s_product['meassure'] }}</b></p>
               <p>Color: <span class="circle {{ $s_product['color_hexa'] }}" style="background-color: {{ $s_product['color_hexa'] }}"></span></p>
               <p>Soporte: <b>{{ $s_product['support'] }}</b></p>
               <button type="button" class="btn btn-secondary"  data-bs-toggle="modal" data-bs-target="#edit{{ $k }}">Editar</button>
               <a class="btn btn-danger" href="{{ route('remove_item', ['key' => $k]) }}">Eliminar</a>
             </div>             
-            <div class="col-sm-6 d-none d-sm-block">
-              <p>{{ cut_str($s_product['description'], 500) }}</p>
+            <div class="col-sm-2 d-none d-sm-block">
+              <p>{{ cut_str($s_product['description'], 140) }}</p>
             </div>
-            <div class="col-6 col-sm-1">
+            <div class="my-2 my-sm-0"></div>
+            <div class="col-6 col-sm-2">
+              <p class="d-sm-none">Cantidad</p>
+              <h4> <b> {{ format_number($s_product['amount']) }} {{ $s_product['meassure'] }}</b></h4>
+            </div>
+            <div class="col-6 col-sm-2">
               <p class="d-sm-none">Precio unitario</p>
-              <h4>{{ format_number($s_product['unit_price'],2) }}</h4>
+              <h4><b>{{ format_number($s_product['unit_price'],2) }}</b></h4>
             </div>
-            <div class="col-6 col-sm-1">
+            <div class="col-12 col-sm-2">
               <p class="d-sm-none">Total</p>
-              <h4>${{ format_number($s_product['sub_total'],2) }}</h4>
+              <h4><b>${{ format_number($s_product['sub_total'],2) }}</b></h4>
             </div>
           </div>
           <hr>
