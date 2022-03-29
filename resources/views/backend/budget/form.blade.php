@@ -322,8 +322,7 @@
             <div class="col-sm-2 d-none d-sm-block">
               <p>{{ cut_str($s_product['description'], 140) }}</p>
             </div>
-            <div class="my-2 my-sm-0"></div>
-            <div class="col-6 col-sm-2">
+            <div class="col-6 col-sm-2 my-2 my-sm-0">
               <p class="d-sm-none">Cantidad</p>
               <h4> <b> {{ format_number($s_product['amount']) }} {{ $s_product['meassure'] }}</b></h4>
             </div>

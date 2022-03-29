@@ -280,12 +280,15 @@
             <p>Soporte: <b>{{ $product->pivot->support }}</b></p>
           </td>
           <td class="product-description">
-            <p>{{ cut_str($product->description, 180) }}</p>
+            <p>{{ cut_str(str_replace('º', ' grados', $product->description), 140) }}</p>
             <br>
             <p><b>Medidas:</b><br>
               @if ($product->pivot->height == 0)
                 Alto: <b>{{ format_number($product->height, 2) }} cm</b> <br>
                 {{ $product->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b>{{ format_number($product->width, 2) }} cm</b>
+                @if ($product->units == 'un')
+                  <br> Ancho: <b>{{ format_number($product->depth, 2) }} cm</b>
+                @endif
                 @if ($product->resistence > 0)
                   <br>Resistencia Certificado INTI: <b>{{ format_number($product->resistence, 2) }} tn</b>                                    
                 @endif
