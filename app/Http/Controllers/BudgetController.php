@@ -471,7 +471,7 @@ class BudgetController extends Controller
     
     }
 
-    $products = $budget->products->chunk(5);
+    $products = $budget->products->chunk(4);
 
     $data = [
       'client' => $client, 
