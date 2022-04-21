@@ -95,23 +95,28 @@
             <div class="card-title">
               <h3>Sub rubros</h3>
             </div>
-            <h4>Nuevo rubro</h4>
-            <form action="{{ route('category.store') }}" method="post" enctype="multipart/form-data">
+            <h4>Nuevo sub-rubro</h4>
+            <form action="{{ route('sub_category_create') }}" method="post" enctype="multipart/form-data">
               {{ csrf_field() }}
               <div class="row row-cols-1 row-cols-2 g-4">
                 <div class="col-sm-6">
-                    <label for="">Nombre</label>
-                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+                  <label for="">Nombre</label>
+                  <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nombre">
+                </div>
+                <div class="col-auto form-group">
+                  <label >Rubro:</label>
+                  <div class="form-group">
+                    <select class="form-control col-md-10" name="category_id" id="category_id">
+                      @forelse ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                      @empty
+                  
+                      @endforelse
+                    </select>
                   </div>
-                <div class="col-sm-6">
-                  <label>Descripción</label>
-                  <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="Descripción">
                 </div>
-                <div class="col-sm-6">
-                  <label>Avatar</label>
-                  <input type="file" name="avatar" value="" class="form-control" id="" placeholder="">
-                </div>
-                <div class="col-sm-6">
+
+                <div class="col-auto">
                   <button type="submit" class="btn btn-success pull-right">Guardar</button>
                 </div>
               </div>
@@ -120,13 +125,19 @@
             <h4>Sub rubros</h4>
             @forelse ($sub_categories as $sub_category)
               <div class="row mb-2">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <p>{{ $sub_category->name }}</p>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <p>{{ $sub_category->category->name }}</p>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
+                  <form action="{{ route('sub_category_delete', ['sub_category' => $sub_category->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                  </form>
+                </div>
+                <div class="col-sm-3">
                   <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#edit-sub-category-{{ $sub_category->id }}">Editar</button>
                 </div>
               </div>
@@ -170,8 +181,8 @@
                         </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                       </div>                    
                     </form>
                   </div>
