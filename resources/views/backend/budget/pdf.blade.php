@@ -49,7 +49,7 @@
       .client-info {
         position: fixed;
         margin: 0;
-        margin-top: 90px;
+        margin-top: 70px;
       }
 
       .client-info td {
@@ -108,7 +108,7 @@
       }
 
       .products {
-        margin-top: 180px;
+        margin-top: 160px;
         left: 0;
         right: 0;
         border: 1px solid black;
@@ -116,7 +116,7 @@
 
       .total-price {
         /* position: fixed; */
-        bottom: 200px;
+        bottom: 210px;
         left: 0;
         right: 0;
         border: 1px solid black;
@@ -129,7 +129,7 @@
 
       h3, h4 {
         font-size: 12px;
-        line-height: 1.5;
+        line-height: 1;
       }
 
       h2, h3, h4 {
@@ -168,8 +168,8 @@
       }
 
       .total h2 {
-        margin-top: 3px;
-        padding-top: 3px;
+        /* margin-top: 3px; */
+        /* padding-top: 3px; */
         vertical-align: middle;
         line-height: 1.2
       }

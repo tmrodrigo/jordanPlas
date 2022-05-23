@@ -5,21 +5,26 @@
 @section('content')
   <div class="container">
     <section id="product">
-      <div class="row">
-        @if ($product->certificates->count() > 0)
-          <div class="col-sm-5 mt-3">
-            <div class="row justify-content-between">
-              <div class="certificate">
-                <img src="{{ asset('logos/certificados/logo-INTI.png') }}" alt="">
-                <img src="{{ asset('logos/certificados/logo-ASTM.png') }}" alt="">
-                <img src="{{ asset('logos/certificados/logo-IRAM.png') }}" alt="">
-                <img src="{{ asset('logos/certificados/logo-ISO-9001.png') }}" alt="">
-                <img src="{{ asset('logos/certificados/logo-OHSAS.png') }}" alt="">
-                <img src="{{ asset('logos/certificados/logo-ISO.png') }}" alt="">
-              </div>
+      <div class="row position-relative">
+        <div class="col-sm-5 mt-3">
+          <div class="row justify-content-between">
+            <div class="certificate">
+              <img src="{{ asset('logos/certificados/logo-INTI.png') }}" alt="">
+              <img src="{{ asset('logos/certificados/logo-ASTM.png') }}" alt="">
+              <img src="{{ asset('logos/certificados/logo-IRAM.png') }}" alt="">
+              <img src="{{ asset('logos/certificados/logo-ISO-9001.png') }}" alt="">
+              <img src="{{ asset('logos/certificados/logo-OHSAS.png') }}" alt="">
+              <img src="{{ asset('logos/certificados/logo-ISO.png') }}" alt="">
             </div>
           </div>
-        @endif
+        </div>
+        <div class="d-none d-sm-flex float-button absolute">
+          <img src="{{ asset('QR-catalogo.png') }}" alt="QR-Catálogo">
+          <p>
+            <b>Escaneá este QR para descargar el</b>
+            Catálogo Digital de Productos
+          </p>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
@@ -231,6 +236,14 @@
       </div>
       {{-- Botón mobile --}}
       <div class="row my-0 my-md-5 d-md-none">
+        <div class="mb-3 float-button">
+          <img src="{{ asset('QR-catalogo.png') }}" alt="QR-Catálogo">
+          <p>
+            <b>Escaneá este QR para descargar el</b>
+            Catálogo Digital de Productos
+          </p>
+        </div>
+
         {{-- Boton puntera --}}
         <div class="col-sm-12">
           @if ($puntera != null)

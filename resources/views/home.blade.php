@@ -30,6 +30,17 @@
     </div>
   @endif --}}
   <div class="my-5"></div>
+  <div class="d-sm-none">
+    <div class="my-3"></div>
+    <div class="d-flex float-button">
+      <img src="{{ asset('QR-catalogo.png') }}" alt="QR-Catálogo">
+      <p>
+        <b>Escaneá este QR para descargar el</b>
+        Catálogo Digital de Productos
+      </p>
+    </div>
+    <div class="my-3"></div>
+  </div>
   <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4">
       @forelse ($categories as $category)
@@ -48,4 +59,13 @@
     </div>
   </div>
   <div class="my-5"></div>
+  <div class="d-none d-sm-flex">
+    <div class="d-flex float-button fixed">
+      <img src="{{ asset('QR-catalogo.png') }}" alt="QR-Catálogo">
+      <p>
+        <b>Escaneá este QR para descargar el</b>
+        Catálogo Digital de Productos
+      </p>
+    </div>
+  </div>
 @endsection

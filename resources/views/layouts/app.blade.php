@@ -60,6 +60,13 @@
     <main>
       @yield('content')
     </main>
+    {{-- <div class="float-button">
+      <img src="{{ asset('QR-catalogo.png') }}" alt="QR-Catálogo">
+      <p>
+        <b>Escaneá este QR para descargar el</b>
+        Catálogo Digital de Productos
+      </p>
+    </div> --}}
     <footer class="pt-4 pb-2">
       <div class="container">
         <div class="row">

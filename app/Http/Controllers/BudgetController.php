@@ -494,11 +494,13 @@ class BudgetController extends Controller
     $url = str_replace('storage/',  'storage/pdf/' , $budget->pdf_url); 
     // return Storage::download('pdf/'. $name);
 
-    $budget_data = [];
-    $products = [];
+    if ($environment != 'local') {
+      $budget_data = [];
+      $products = [];
 
-    $budget_data = $request->session()->put('client_data', $budget_data );
-    $products = $request->session()->put('selected_products', $products);
+      $budget_data = $request->session()->put('client_data', $budget_data );
+      $products = $request->session()->put('selected_products', $products);
+    }
     
     return back()->with('budget', $route . $url);
   }

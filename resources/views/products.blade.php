@@ -18,10 +18,27 @@
                 <p>{{ cut_str($category->description, 500) }}</p>
               </div>
             </div>
+            <div class="d-none d-sm-flex float-button absolute">
+              <img src="{{ asset('QR-catalogo.png') }}" alt="QR-Catálogo">
+              <p>
+                <b>Escaneá este QR para descargar el</b>
+                Catálogo Digital de Productos
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="my-5"></div>
+      <div class="my-1"></div>
+      <div class="d-sm-none">
+        <div class="d-flex float-button">
+          <img src="{{ asset('QR-catalogo.png') }}" alt="QR-Catálogo">
+          <p>
+            <b>Escaneá este QR para descargar el</b>
+            Catálogo Digital de Productos
+          </p>
+        </div>
+        <div class="my-5"></div>
+      </div>
       <div class="row flex-column-reverse flex-md-row">
         <div class="col-md-3 col-lg-3">
           <div class="my-5 my-md-0"></div>

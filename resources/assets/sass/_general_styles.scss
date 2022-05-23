@@ -4,6 +4,7 @@ body {
   background: linear-gradient(180deg, rgba(246,246,246,1) 9%, rgba(225,225,225,1) 80%);
   font-size: 16px;
   color: $neutral-text;
+  position: relative;
 }
 
 main {
@@ -175,9 +176,47 @@ ul {
 
 }
 
-  .border {
-    width: 100%;
-    height: 1px;
-    border: 0.5px solid $neutral-text !important;
-    margin-bottom: 1.5rem;
+.border {
+  width: 100%;
+  height: 1px;
+  border: 0.5px solid $neutral-text !important;
+  margin-bottom: 1.5rem;
+}
+
+.float-button {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  background-color: #BF0C2A;
+  padding: 0.5rem;
+  width: 240px;
+
+  img {
+    width: 64px;
+    height: 64px;
   }
+
+  p {
+    margin: 0;
+    margin-left: 8px;
+    color: $neutral-text-inverted;
+    font-size: 0.75rem;
+    text-align: left !important;
+  }
+  
+  &.absolute {
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+    z-index: 1000;
+  }
+
+  &.fixed {
+    position: fixed;
+    bottom: 6rem;
+    right: 2rem;
+    z-index: 1000;
+  }
+}
+
