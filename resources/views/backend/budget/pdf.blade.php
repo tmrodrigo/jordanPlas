@@ -143,11 +143,11 @@
 
       h5 {
         font-size: 18px !important;
-        margin-bottom: 6px;
+        margin-bottom: 3px;
       }
 
       h6 {
-        margin-bottom: 6px;
+        margin-bottom: 3px;
       }
 
       p, b {
@@ -280,8 +280,7 @@
             <p>Soporte: <b>{{ $product->pivot->support }}</b></p>
           </td>
           <td class="product-description">
-            <p>{{ cut_str(str_replace('º', ' grados', $product->description), 140) }}</p>
-            <br>
+            <p>{{ cut_str(str_replace('º', ' grados', $product->description), 90) }}</p>
             <p><b>Medidas:</b><br>
               @if ($product->pivot->height == 0)
                 Alto: <b>{{ format_number($product->height, 2) }} cm</b> <br>
@@ -307,7 +306,7 @@
               @endif
             </p>
           </td>
-          <td class="product-amount"><b>{{ format_number($product->pivot->amount) }} {{ $product->pivot->unit }}</b></p></td>
+          <td class="product-amount"><b>{{ format_number($product->pivot->amount,1) }} {{ $product->pivot->unit }}</b></p></td>
           <td class="product-unit-price"><p>${{ format_number($product->pivot->unit_price, 2) }}</p></td>
           <td class="product-sub-total"><p><b>${{ format_number($product->pivot->amount * $product->pivot->unit_price, 2) }}</p></b></td>
         </tr>

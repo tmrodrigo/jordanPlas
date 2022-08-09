@@ -324,7 +324,7 @@
             </div>
             <div class="col-6 col-sm-2 my-2 my-sm-0">
               <p class="d-sm-none">Cantidad</p>
-              <h4> <b> {{ format_number($s_product['amount']) }} {{ $s_product['meassure'] }}</b></h4>
+              <h4> <b> {{ format_number($s_product['amount'],1) }} {{ $s_product['meassure'] }}</b></h4>
             </div>
             <div class="col-6 col-sm-2">
               <p class="d-sm-none">Precio unitario</p>
