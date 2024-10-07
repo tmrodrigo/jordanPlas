@@ -59,143 +59,200 @@ class BudgetController extends Controller
     ]);
   }
 
-  public function show_form(Request $request){
-    
+public function show_form(Request $request)
+{    
     $categories = Category::orderBy('id')->get();
-    $products = $categories->first()->product;
-    $product = $products[0];
+    $category = $categories->first();
+
+    if (isset($request->session()->get('data')['category'])) {
+      $category_id = $request->session()->get('data')['category'];
+      $category = Category::find($category_id);
+    }
 
     $session = $request->session()->get('data');
-
     $selected_products = $request->session()->get('selected_products');
 
+    // Si la categoría está seleccionada en la sesión, la utilizamos
     $selected_category = $categories[0]->id;
     if (isset($session['category'])) {
-      $selected_category = $session['category'];
+        $selected_category = $session['category'];
     }
 
-    $s_product = $product->id;
+    // Producto seleccionado
+    $s_product = null;
     if (isset($session['s_product'])) {
-      $s_product = $session['s_product'];
+        $s_product = $session['s_product'];
     }
 
+    // Medida seleccionada
     $product_meassure = 0;
-    if ($product->meassures->count() > 0) {
-      $product_meassure = $product->height;
-    } 
-
     if (isset($session['product_meassure'])) {
-      $product_meassure = $session['product_meassure'];
+        $product_meassure = $session['product_meassure'];
     }
 
+    // Colores
     $colors = Color::all();
+
     $colors = add_bi_color($colors);
-    if (isset($session['colors']) && !empty($session['colors'])) {
-      $colors = $session['colors'];
+
+    if (isset($session['colors']) && empty($session['colors'])) {
+        $colors = $session['colors'];
     }
 
     $s_color = $colors[0]['value'];
     if (isset($session['s_color'])) {
-      $s_color = $session['s_color'];
+        $s_color = $session['s_color'];
     }
 
+    // Productos y medidas desde la sesión
     if (isset($session['products'])) {
-      $products = $session['products'];
+        $products = $session['products'];
     }
 
-    $client_data = $request->session()->get('client_data');
-    if (!isset($client_data)) {
-      $client_data = [];
-    }
+    // Datos del cliente
+    $client_data = $request->session()->get('client_data', []);
 
     if (!isset($selected_products)) {
-      $selected_products = [];
+        $selected_products = [];
     }
 
-    $amount = '';
-    if (isset($session['amount'])) {
-      $amount = $session['amount'];
-    }
+    // Otras variables de sesión
+    $amount = $session['amount'] ?? '';
+    $unit_price = $session['unit_price'] ?? '';
+    $meassure = $session['meassure'] ?? '';
+    $support = $session['support'] ?? '';
+    $observations = $session['observations'] ?? '';
+    $delivery_date = $session['delivery_date'] ?? '';
+    $payment = $session['payment'] ?? '';
+    $sub_category_name = $session['sub_category_name'] ?? '';
 
-    $unit_price = '';
-    if (isset($session['unit_price'])) {
-      $unit_price = $session['unit_price'];
-    }
-
-    $meassure = '';
-    if (isset($session['meassure'])) {
-      $meassure = $session['meassure'];
-    }
-
-    $support = '';
-    if (isset($session['support'])) {
-      $support = $session['support'];
-    }
-
-    $observations = '';
-    if (isset($session['observations'])) {
-      $observations = $session['observations'];
-    }
-
-    $delivery_date = '';
-    if (isset($session['delivery_date'])) {
-      $delivery_date = $session['delivery_date'];
-    }
-
-    $payment = '';
-    if (isset($session['payment'])) {
-      $payment = $session['payment'];
-    }
-
-    $sub_category_name = '';
-    if (isset($session['sub_category_name'])) {
-      $sub_category_name = $session['sub_category_name'];
-    }    
-
-    $total = '';
-    if (isset($selected_products)) {
-      $total = arrSum($selected_products, 'sub_total');
-    }
-
+    // Cálculo del total y del IVA
+    $total = arrSum($selected_products, 'sub_total') ?? '';
     $iva = '';
-    if (isset($client_data['tax']) && $client_data['tax'] == true) {
-      $iva = $total * 0.21;
-      $total = $total + $iva;
+    if (isset($client_data['tax']) && $client_data['tax']) {
+        $iva = $total * 0.21;
+        $total += $iva;
     }
+
+    // Procesar todos los productos y generar las descripciones y valores
+    $productsWithMeasurements = $this->get_products($category);
+
 
     return view('backend.budget.form', [
-      'categories' => $categories,
-      'products' => $products,
-      's_product' => $s_product,
-      's_color' => $s_color,
-      'colors' => $colors,
-      'amount' => $amount,
-      'meassure' => $meassure,
-      'support' => $support,
-      'unit_price' => $unit_price,
-      'selected_category' => $selected_category,
-      'selected_products' => $selected_products,
-      'client_data' => $client_data,
-      'total' => $total,
-      'iva' => $iva,
-      'observations' => $observations,
-      'delivery_date' => $delivery_date,
-      'payment' => $payment,
-      'sub_category_name' => $sub_category_name,
-      'product_meassure' => $product_meassure,
+        'categories' => $categories,
+        'productsWithMeasurements' => $productsWithMeasurements,  // Combinaciones de medidas ya procesadas con keys únicos
+        's_product' => $s_product,
+        's_color' => $s_color,
+        'colors' => $colors,
+        'amount' => $amount,
+        'meassure' => $meassure,
+        'support' => $support,
+        'unit_price' => $unit_price,
+        'selected_category' => $selected_category,
+        'selected_products' => $selected_products,
+        'client_data' => $client_data,
+        'total' => $total,
+        'iva' => $iva,
+        'observations' => $observations,
+        'delivery_date' => $delivery_date,
+        'payment' => $payment,
+        'sub_category_name' => $sub_category_name,
+        'product_meassure' => $product_meassure,
     ]);
+}
+
+  private function get_meassures_from_product ($product){
+
+      $product_meassures = [
+
+        'height' => $product->height != null ? 'Alto: ' . $product->height . 'cm' : null,
+        'width' => $product->width != null ? 'Ancho:' . $product->width . 'cm' : null,
+        'depth' => $product->depth != null ? 'Pisada: ' . $product->depth . 'cm' : null,
+        'weight' => $product->weight != null ? 'Peso: ' . $product->weight . 'gr' : null,
+
+      ];
+
+      $product_meassures = array_filter($product_meassures, function($value){
+        return !is_null($value);
+      });
+
+      $final_meassures = implode(' | ', $product_meassures);
+
+      return $final_meassures;
+  }
+
+  private function make_unique_id ($product){
+
+      $product_meassures = [
+
+        'height' => $product->height != null ? $product->height : null,
+        'width' => $product->width != null ?  $product->width : null,
+        'depth' => $product->depth != null ?  $product->depth : null,
+        'weight' => $product->weight != null ?  $product->weight : null,
+
+      ];
+
+      $product_meassures = array_filter($product_meassures, function($value){
+        return !is_null($value);
+      });
+
+      $final_meassures = implode('', $product_meassures);
+
+      $unique_id = $product->id . $final_meassures;
+
+      return $unique_id;
+
+  }
+
+  private function get_products ($category){
+
+    $products = $category->product;  // Obtenemos todos los productos de la primera categoría
+
+    // Procesar todos los productos y generar las descripciones y valores
+    $productsWithMeasurements = [];
+
+    foreach ($products as $product) {
+      
+      $productsWithMeasurements[] = [
+        'product_id' => $product->id,
+        'unique_key' => $this->make_unique_id($product),
+        'product_name' => $product->name,
+        'description' =>  $this->get_meassures_from_product($product),
+      ];
+
+      foreach ($product->meassures as $pm) {
+        $productsWithMeasurements[] = [
+        'product_id' => $product->id,
+        'unique_key' => $this->make_unique_id($pm),
+        'product_name' => $product->name,
+        'description' =>  $this->get_meassures_from_product($pm),
+      ];
+      }
+    }
+
+    return $productsWithMeasurements;
 
   }
 
   public function get_budget_info(Request $request){
-    
+
     // Cambia la categoría
     $products = Product::where('category_id', $request->category_id)->orderBy('name')->get();
     $product = $products[0];
     $product_data = explode('-', $request->product_id);
     $product_id = $product_data[0];
-    $product_meassure = $product_data[1];
-    
+    $product_meassure = '';
+
+    array_shift($product_data);
+    foreach ($product_data as $valor) {
+        // Concatenamos cada valor a la variable string, separados por comas
+        if ($product_meassure === '') {
+            $product_meassure = $valor;
+        } else {
+            $product_meassure .= '<br>' . $valor;
+        }
+    }
+
     $session = $request->session()->get('data');
 
     if (!empty($session)) {
@@ -203,9 +260,9 @@ class BudgetController extends Controller
       //Cambia el producto
       if (($request->category_id == $session['category']) && ($session['s_product'] != $request->product_id)) {
         
-        $product = Product::where('id', $request->product_id)
+        $product = Product::where('id', $product_id)
                           ->with('category')
-                          ->select('id', 'units', 'name')
+                          ->select('id', 'units', 'name', 'category_id')
                           ->first();
       }
     
@@ -219,15 +276,26 @@ class BudgetController extends Controller
       'products' => $products,
       'colors' => $bColors,
       's_color' => $request->color,
-      's_product' => $product_id,
+      's_product' => $product_meassure,
       'product_meassure' => $product_meassure,
       'amount' => $request->amount,
-      'meassure' => $request->meassure,
+      'meassure' => $request->product_id,
       'support' => $request->support,
       'unit_price' => $request->unit_price,
     ];
 
     $request->session()->put('data', $data);
+
+    // Procesar todos los productos y generar las descripciones y valores
+    $productsWithMeasurements = $this->get_products($product->category);
+
+    foreach ($productsWithMeasurements as $key => $value) {
+      
+      if ($value['unique_key'] == $product_meassure) {
+        $product_meassure = $value['description'];
+      }
+
+    }
 
     if (isset($request->product_id) && isset($request->amount) && isset($request->unit_price) ) {
 
@@ -235,10 +303,6 @@ class BudgetController extends Controller
                         ->with('category', 'sub_category')
                         ->select('id', 'name', 'category_id', 'avatar', 'description', 'sub_category_id', 'height')
                         ->first();
-
-      if ($product->meassures->count() > 0 && $product_meassure == 0) {
-        $product_meassure = $product->height;
-      }
 
       $m = 'Metro lineal';
       if ($request->amount > 1) {
@@ -465,8 +529,7 @@ class BudgetController extends Controller
         'color' => $product['color'], 
         'color_hexa' => $product['color_hexa'], 
         'unit' => $product['meassure'], 
-        'support' => $product['support'],
-        'height' => $product['product_meassure']
+        'support' => $product['support']
       ]);
     
     }

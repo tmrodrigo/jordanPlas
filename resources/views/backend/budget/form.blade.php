@@ -148,15 +148,12 @@
             <div class="form-group col-12 col-sm-3 mb-2">
               <label for="product">Producto</label>
               <select id="product" class="form-control" name="product_id">
-                @forelse ($products as $product)
-                  <option value="{{ $product->id }}-0" {{ $s_product == $product->id ? 'selected' : '' }}>{{ strtoupper($product->name) }} {{ $product->meassures->count() > 0 ? ' - ' . $product->height . ' cms' : '' }}</option>
-                  @forelse ($product->meassures as $m)
-                    <option value="{{ $product->id }}-{{ $m->height }}" {{ $s_product . '-' . $product_meassure == $product->id . '-' . $m->height  ? 'selected' : '' }}>{{ strtoupper($product->name) }} - {{ $m->height . ' cms' }}</option>
-                  @empty
-                    
-                  @endforelse
+                @forelse ($productsWithMeasurements as $item)
+                    <option value="{{ $item['product_id'] . '-' . $item['unique_key'] }}" {{ $s_product === $item['unique_key'] ? 'selected' : '' }}>
+                        {{ $item['product_name'] }} - {{ $item['description'] }}
+                    </option>
                 @empty
-                  
+                    <option>No hay productos disponibles</option>
                 @endforelse
               </select>
             </div>
@@ -219,101 +216,33 @@
       </div>
     </div>
     <div class="m-4"></div>
-    <div class="card">
+<div class="card">
       <div class="card-body">
         <div class="card-title">
           <h3>Productos seleccionados</h3>
         </div>
         <div class="row d-none d-sm-flex">
-          <div class="col-sm-2">
-            Imagen
-          </div>
-          <div class="col-sm-2">
-            Datos
-          </div>
-          <div class="col-sm-2">
-            Descripción
-          </div>
-          <div class="col-sm-2">
-            Cantidad
-          </div>
-          <div class="col-sm-2">
-            Precio unitario
-          </div>
-          <div class="col-sm-2">
-            Sub Total
-          </div>
+          <div class="col-sm-2">Imagen</div>
+          <div class="col-sm-2">Datos</div>
+          <div class="col-sm-2">Descripción</div>
+          <div class="col-sm-2">Cantidad</div>
+          <div class="col-sm-2">Precio unitario</div>
+          <div class="col-sm-2">Sub Total</div>
         </div>
+
         @forelse ($selected_products as $k => $s_product)
-            <div class="modal fade" id="edit{{ $k }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Editar {{ $s_product['name'] }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <form action="{{ route('edit_item', ['id' => $k ]) }}">
-                    <div class="modal-body">
-                      <div class="form-group mb-2">
-                        <label for="amount_input_{{ $k }}">Cantidad</label>
-                        <input id="amount_input_{{ $k }}" class="form-control" type="text" value="{{ $s_product['amount'] }}" name="amount">
-                      </div>
-                      <div class="form-group mb-2">
-                        <label for="unit_price_input_{{ $k }}">Precio unitario</label>
-                        <input id="unit_price_input_{{ $k }}" class="form-control" type="text" value="{{ $s_product['unit_price'] }}" name="unit_price">
-                      </div>
-                      <div class="form-group mb-2">
-                        <label for="color_input_{{ $k }}">Color</label>
-                        <select id="color_input_{{ $k }}" class="form-control" name="color">
-                          @forelse ($s_product['colors'] as $color)
-                            <option value="{{ $color['value'] }}" {{ $s_product['color'] == $color['value'] ? 'selected' : '' }}>{{ translate($color['value']) }}</option>
-                          @empty
-                            
-                          @endforelse
-                        </select>
-                      </div>
-                      <div class="form-group mb-2">
-                        <legend>Medida {{ $s_product['meassure'] }}</legend>
-                        <div class="form-check form-check-inline">
-                          <input id="edit_meassure_true_{{ $k }}" class="form-check-input" type="radio" value="1" name="meassure" {{ $s_product['meassure'] !== 'Unidades' ? 'checked' : '' }}> 
-                          <label for="edit_meassure_true_{{ $k }}" class="form-check-label">Metro lineal</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input id="edit_meassure_false_{{ $k }}" class="form-check-input" type="radio" value="0" name="meassure" {{ $s_product['meassure'] === 'Unidades' ? 'checked' : '' }}> 
-                          <label for="edit_meassure_false_{{ $k }}" class="form-check-label">Unidad</label>
-                        </div>
-                      </div>
-                      <div class="form-group mb-2">
-                        <legend>Fijación {{ $s_product['support'] }}</legend>
-                        <div class="form-check form-check-inline">
-                          <input id="support_true_{{ $k }}" class="form-check-input" type="radio" value="m" name="support" {{ $s_product['support'] === 'Fijación mecánica' ? 'checked' : '' }}> 
-                          <label for="support_true" class="form-check-label">Mecánica</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input id="support_false_{{ $k }}" class="form-check-input" type="radio" value="p" name="support" {{ $s_product['support'] === 'Pegamento' ? 'checked' : '' }}> 
-                          <label for="support_false_{{ $k }}" class="form-check-label">Pegamento</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input id="support_na_{{ $k }}" class="form-check-input" type="radio" value="na" name="support" {{ $s_product['support'] === 'No incluida' ? 'checked' : '' }}> 
-                          <label for="support_na_{{ $k }}" class="form-check-label">No incluida</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>  
           <div class="row">
             <div class="col-sm-2 d-none d-sm-block">
               <img style="max-width: 100%" src="{{ asset("storage/". $s_product['avatar']. "")}}" alt="">
             </div>
             <div class="col-sm-2">
               <h6>{{ $s_product['category_name'] }} {!! $s_product['sub_category_name'] != null ? '<br><small>'.$s_product['sub_category_name'] . '</small>' : '' !!} </h6>
-              <h5><b>{{ $s_product['name'] }} {{ $s_product['product_meassure'] > 0 ? ' - ' . $s_product['product_meassure'] . ' cm' : ''}}</b></h5>
+              <p>
+                <b>{{ $s_product['name'] }}</b>
+                <br>
+                {!! str_replace(' | ', '<br>', $s_product['product_meassure'])!!}
+              </p>
+              <br>
               <p>Color: <span class="circle {{ $s_product['color_hexa'] }}" style="background-color: {{ $s_product['color_hexa'] }}"></span></p>
               <p>Soporte: <b>{{ $s_product['support'] }}</b></p>
               <button type="button" class="btn btn-secondary"  data-bs-toggle="modal" data-bs-target="#edit{{ $k }}">Editar</button>
@@ -343,6 +272,8 @@
             </div>
           </div>
         @endforelse
+
+        <!-- Mostrar el total y el IVA -->
         <div class="row justify-content-end">
           <div class="col-sm-3 text-end">
             <h4>{{ $iva > 0 ? 'I.V.A (21%): $' . format_number($iva, 2) : 'I.V.A Incluido' }}</h4>
