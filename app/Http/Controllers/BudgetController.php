@@ -168,7 +168,7 @@ public function show_form(Request $request)
         'height' => $product->height != null ? 'Alto: ' . $product->height . 'cm' : null,
         'width' => $product->width != null ? 'Ancho:' . $product->width . 'cm' : null,
         'depth' => $product->depth != null ? 'Pisada: ' . $product->depth . 'cm' : null,
-        'weight' => $product->weight != null ? 'Peso: ' . $product->weight . 'gr' : null,
+        'weight' => $product->weight != null ? 'Peso: ' . $product->weight . 'kg' : null,
 
       ];
 
