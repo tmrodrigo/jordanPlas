@@ -473,70 +473,76 @@ class ProductController extends Controller
 
     public function add_remove_colors(){
         
-        DB::table('colors')->delete();
-        DB::table('color_product')->delete();
-        DB::table('product_atributes')->delete();
-        DB::table('fixations')->delete();
-        DB::table('fixation_product')->delete();
+        // DB::table('colors')->delete();
+        // DB::table('color_product')->delete();
+        // DB::table('product_atributes')->delete();
+        // DB::table('fixations')->delete();
+        // DB::table('fixation_product')->delete();
 
-        $colors = [
-            [
-                'name' => 'yellow',
-                'value' => 'Amarillo',
-                'hexa' => '#FBD347'
-            ],
-            [
-                'name' => 'black',
-                'value' => 'Negro',
-                'hexa' => '#1E1E1E'
-            ],
-            [
-                'name' => 'white',
-                'value' => 'Blanco',
-                'hexa' => '#ffffff'
-            ],
-            [
-                'name' => 'gray',
-                'value' => 'Gris',
-                'hexa' => '#B6B6B6'
-            ],
-            [
-                'name' => 'orange',
-                'value' => 'Naranja',
-                'hexa' => '#FB8847'
-            ],
-            [
-                'name' => 'green',
-                'value' => 'Verde',
-                'hexa' => '#22BA5B'
-            ],
-            [
-                'name' => 'blue',
-                'value' => 'Azul',
-                'hexa' => '#0629A6'
-            ],
-        ];
+        // $colors = [
+        //     [
+        //         'name' => 'yellow',
+        //         'value' => 'Amarillo',
+        //         'hexa' => '#FBD347'
+        //     ],
+        //     [
+        //         'name' => 'black',
+        //         'value' => 'Negro',
+        //         'hexa' => '#1E1E1E'
+        //     ],
+        //     [
+        //         'name' => 'white',
+        //         'value' => 'Blanco',
+        //         'hexa' => '#ffffff'
+        //     ],
+        //     [
+        //         'name' => 'gray',
+        //         'value' => 'Gris',
+        //         'hexa' => '#B6B6B6'
+        //     ],
+        //     [
+        //         'name' => 'orange',
+        //         'value' => 'Naranja',
+        //         'hexa' => '#FB8847'
+        //     ],
+        //     [
+        //         'name' => 'green',
+        //         'value' => 'Verde',
+        //         'hexa' => '#22BA5B'
+        //     ],
+        //     [
+        //         'name' => 'blue',
+        //         'value' => 'Azul',
+        //         'hexa' => '#0629A6'
+        //     ],
+        // ];
 
-        foreach ($colors as $color) {
-            DB::table('colors')->insert([
-                'name' => $color['name'],
-                'value' => $color['value'],
-                'hexa' => $color['hexa']
-            ]);
-        }
+        // foreach ($colors as $color) {
+        //     DB::table('colors')->insert([
+        //         'name' => $color['name'],
+        //         'value' => $color['value'],
+        //         'hexa' => $color['hexa']
+        //     ]);
+        // }
 
         $fixations = [
+            // [
+            //     'tirafondo' => '3/8 X 4"',
+            //     'arandela' => '25 mm',
+            //     'tarugo' => '14 mm',
+            //     'img_url' => 'logos/fixations/bigFixations.png'
+            // ],
+            // [
+            //     'tirafondo' => '1/4 x 3"',
+            //     'arandela' => '10 mm',
+            //     'tarugo' => '18 mm',
+            //     'img_url' => 'logos/fixations/smallFixations.png'
+            // ],
             [
-                'tirafondo' => '3/8 X 4"',
-                'arandela' => '25 mm',
-                'tarugo' => '14 mm',
-                'img_url' => 'logos/fixations/bigFixations.png'
-            ],
-            [
-                'tirafondo' => '1/4 x 3"',
-                'arandela' => '10 mm',
-                'tarugo' => '18 mm',
-                'img_url' => 'logos/fixations/smallFixations.png'
+                'tirafondo' => '10 x 1 3/4"',
+                'arandela' => '',
+                'tarugo' => '8 mm',
+                'img_url' => 'logos/fixations/regularFixations.png'
             ],
         ];
 
@@ -549,78 +555,78 @@ class ProductController extends Controller
             ]);
         }
 
-        $bigFixation = Fixation::where('arandela', '25 mm')->first();
-        $smallFixation = Fixation::where('arandela', '10 mm')->first();
+        // $bigFixation = Fixation::where('arandela', '25 mm')->first();
+        // $smallFixation = Fixation::where('arandela', '10 mm')->first();
 
-        $products = Product::all();
+        // $products = Product::all();
 
-        $yellow = DB::table('colors')->where('name', 'yellow')->first();
-        $black = DB::table('colors')->where('name', 'black')->first();
-        $white = DB::table('colors')->where('name', 'white')->first();
+        // $yellow = DB::table('colors')->where('name', 'yellow')->first();
+        // $black = DB::table('colors')->where('name', 'black')->first();
+        // $white = DB::table('colors')->where('name', 'white')->first();
 
-        foreach ($products->where('category_id', 4) as $product) {
-            // Yellow
-            DB::table('color_product')->insert([
-                'color_id' => $yellow->id,
-                'product_id' => $product->id,
-                'body' => true,
-                'reflective' => true,
-            ]);
+        // foreach ($products->where('category_id', 4) as $product) {
+        //     // Yellow
+        //     DB::table('color_product')->insert([
+        //         'color_id' => $yellow->id,
+        //         'product_id' => $product->id,
+        //         'body' => true,
+        //         'reflective' => true,
+        //     ]);
 
-            // Black
-            DB::table('color_product')->insert([
-                'color_id' => $black->id,
-                'product_id' => $product->id,
-                'body' => true,
-                'reflective' => null,
-            ]);
+        //     // Black
+        //     DB::table('color_product')->insert([
+        //         'color_id' => $black->id,
+        //         'product_id' => $product->id,
+        //         'body' => true,
+        //         'reflective' => null,
+        //     ]);
 
-            // White
-            DB::table('color_product')->insert([
-                'color_id' => $white->id,
-                'product_id' => $product->id,
-                'body' => null,
-                'reflective' => true,
-            ]);
+        //     // White
+        //     DB::table('color_product')->insert([
+        //         'color_id' => $white->id,
+        //         'product_id' => $product->id,
+        //         'body' => null,
+        //         'reflective' => true,
+        //     ]);
 
-            DB::table('fixation_product')->insert([
-                'product_id' => $product->id,
-                'fixation_id' => $smallFixation->id,
-                'amount' => 2
-            ]);
+        //     DB::table('fixation_product')->insert([
+        //         'product_id' => $product->id,
+        //         'fixation_id' => $smallFixation->id,
+        //         'amount' => 2
+        //     ]);
 
-            $product->update([
-                'available' => true
-            ]);
-        }
+        //     $product->update([
+        //         'available' => true
+        //     ]);
+        // }
 
-        foreach ($products->where('category_id', '!=',4) as $product) {
-            // Yellow
-            DB::table('color_product')->insert([
-                'color_id' => $yellow->id,
-                'product_id' => $product->id,
-                'body' => true,
-                'reflective' => true,
-            ]);
+        // foreach ($products->where('category_id', '!=',4) as $product) {
+        //     // Yellow
+        //     DB::table('color_product')->insert([
+        //         'color_id' => $yellow->id,
+        //         'product_id' => $product->id,
+        //         'body' => true,
+        //         'reflective' => true,
+        //     ]);
 
-            // White
-            DB::table('color_product')->insert([
-                'color_id' => $white->id,
-                'product_id' => $product->id,
-                'body' => null,
-                'reflective' => true,
-            ]);
+        //     // White
+        //     DB::table('color_product')->insert([
+        //         'color_id' => $white->id,
+        //         'product_id' => $product->id,
+        //         'body' => null,
+        //         'reflective' => true,
+        //     ]);
 
-            DB::table('fixation_product')->insert([
-                'product_id' => $product->id,
-                'fixation_id' => $bigFixation->id,
-                'amount' => 4
-            ]);
+        //     DB::table('fixation_product')->insert([
+        //         'product_id' => $product->id,
+        //         'fixation_id' => $bigFixation->id,
+        //         'amount' => 4
+        //     ]);
 
-            $product->update([
-                'available' => true
-            ]);
-        }
+        //     $product->update([
+        //         'available' => true
+        //     ]);
+        // }
 
         return "colores creados";
 

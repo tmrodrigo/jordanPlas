@@ -82,8 +82,8 @@
                       @forelse ($product->colors->where('pivot.reflective', true) as $rColor)
                         <li class="col-auto color-dot" style="background-color: {{ $rColor->hexa }}"></li>
                         @empty
-                        <li class="col-auto color-dot" style="background-color: #FBD347"></li>
-                        <li class="col-auto color-dot" style="background-color: #ffffff"></li>                        
+                        {{-- <li class="col-auto color-dot" style="background-color: #FBD347"></li>
+                        <li class="col-auto color-dot" style="background-color: #ffffff"></li>                         --}}
                       @endforelse
                     </ul>
                 </div>
@@ -279,9 +279,11 @@
                 <li>
                   {{ $fixations->pivot->amount != null ? $fixations->pivot->amount : '4' }} Tirafondos de {{ $fixations->tirafondo != null ? $fixations->tirafondo : '3/8 x 4"' }}.
                 </li>
-                <li>
-                  {{ $fixations->pivot->amount != null ? $fixations->pivot->amount : '4' }} Arandelas de {{ $fixations->arandela != null ? $fixations->arandela : '25 mm' }}.
-                </li>
+                @if ($fixations->arandela != null)
+                  <li>
+                    {{ $fixations->pivot->amount != null ? $fixations->pivot->amount : '4' }} Arandelas de {{ $fixations->arandela != null ? $fixations->arandela : '25 mm' }}.
+                  </li>
+                @endif
                 <li>
                   {{ $fixations->pivot->amount != null ? $fixations->pivot->amount : '4' }} Tarugos de {{ $fixations->tarugo != null ? $fixations->tarugo : '14 mm' }}.
                 </li>                                
