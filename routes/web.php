@@ -29,7 +29,7 @@ Route::get('/clear-cache', function() {
 });
 
 Route::get('/migrate', function() {
-    Artisan::call('migrate');
+    Artisan::call('migrate --force');
     return "Migrated";
 });
 

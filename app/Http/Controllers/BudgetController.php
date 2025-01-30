@@ -529,13 +529,14 @@ public function show_form(Request $request)
         'color' => $product['color'], 
         'color_hexa' => $product['color_hexa'], 
         'unit' => $product['meassure'], 
-        'support' => $product['support']
+        'support' => $product['support'],
+        'measures' => $product['product_meassure']
       ]);
     
     }
 
     $products = $budget->products->chunk(4);
-
+dd($products);
     $data = [
       'client' => $client, 
       'products' => $products,

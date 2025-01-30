@@ -282,28 +282,7 @@
           <td class="product-description">
             <p>{{ cut_str(str_replace('º', ' grados', $product->description), 90) }}</p>
             <p><b>Medidas:</b><br>
-              @if ($product->pivot->height == 0)
-                Alto: <b>{{ format_number($product->height, 2) }} cm</b> <br>
-                {{ $product->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b>{{ format_number($product->width, 2) }} cm</b>
-                @if ($product->units == 'un')
-                  <br> Ancho: <b>{{ format_number($product->depth, 2) }} cm</b>
-                @endif
-                @if ($product->resistence > 0)
-                  <br>Resistencia Certificado INTI: <b>{{ format_number($product->resistence, 2) }} tn</b>                                    
-                @endif
-                @else
-                @php
-                  $m = $product->meassures->where('height', $product->pivot->height)->first();
-                  if ($m == null) {
-                    $m = $product;
-                  }
-                @endphp
-                Alto: <b>{{ format_number($m->height, 2) }} cm</b> <br>
-                {{ $m->depth > 0 ? 'Pisada:' : 'Diámetro:'  }} <b>{{ format_number($m->width, 2) }} cm</b>
-                @if ($m->resistence > 0)
-                  <br>Resistencia Certificado INTI: <b>{{ format_number($m->resistence, 2) }} tn</b>                                    
-                @endif
-              @endif
+              <p>{!! str_replace(' | ', '<br>', $product->pivot->measures)!!}</p>
             </p>
           </td>
           <td class="product-amount"><b>{{ format_number($product->pivot->amount,1) }} {{ $product->pivot->unit }}</b></p></td>
