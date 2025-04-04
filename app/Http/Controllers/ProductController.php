@@ -479,7 +479,7 @@ class ProductController extends Controller
         // DB::table('fixations')->delete();
         // DB::table('fixation_product')->delete();
 
-        // $colors = [
+        $colors = [
         //     [
         //         'name' => 'yellow',
         //         'value' => 'Amarillo',
@@ -510,12 +510,12 @@ class ProductController extends Controller
         //         'value' => 'Verde',
         //         'hexa' => '#22BA5B'
         //     ],
-        //     [
-        //         'name' => 'blue',
-        //         'value' => 'Azul',
-        //         'hexa' => '#0629A6'
-        //     ],
-        // ];
+            [
+                'name' => 'red',
+                'value' => 'Rojo',
+                'hexa' => '#CA1616'
+            ],
+        ];
 
         // foreach ($colors as $color) {
         //     DB::table('colors')->insert([
@@ -525,7 +525,7 @@ class ProductController extends Controller
         //     ]);
         // }
 
-        $fixations = [
+        // $fixations = [
             // [
             //     'tirafondo' => '3/8 X 4"',
             //     'arandela' => '25 mm',
@@ -538,22 +538,22 @@ class ProductController extends Controller
             //     'tarugo' => '18 mm',
             //     'img_url' => 'logos/fixations/smallFixations.png'
             // ],
-            [
-                'tirafondo' => '10 x 1 3/4"',
-                'arandela' => '',
-                'tarugo' => '8 mm',
-                'img_url' => 'logos/fixations/regularFixations.png'
-            ],
-        ];
+        //     [
+        //         'tirafondo' => '10 x 1 3/4"',
+        //         'arandela' => '',
+        //         'tarugo' => '8 mm',
+        //         'img_url' => 'logos/fixations/regularFixations.png'
+        //     ],
+        // ];
 
-        foreach ($fixations as $f) {
-            DB::table('fixations')->insert([
-                'tarugo' => $f['tarugo'],
-                'arandela' => $f['arandela'],
-                'tirafondo' => $f['tirafondo'],
-                'img_url' => $f['img_url'],
-            ]);
-        }
+        // foreach ($fixations as $f) {
+        //     DB::table('fixations')->insert([
+        //         'tarugo' => $f['tarugo'],
+        //         'arandela' => $f['arandela'],
+        //         'tirafondo' => $f['tirafondo'],
+        //         'img_url' => $f['img_url'],
+        //     ]);
+        // }
 
         // $bigFixation = Fixation::where('arandela', '25 mm')->first();
         // $smallFixation = Fixation::where('arandela', '10 mm')->first();

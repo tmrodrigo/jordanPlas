@@ -277,7 +277,7 @@
             <h6><b>{{ $product->category->name }} {!! $product->sub_category != null ? '<br><small>'. $product->sub_category->name . '</small>' : '' !!}</b></h6>
             <h5><b>{{ $product->name }} {{ $product->pivot->height > 0 ? ' - ' .$product->pivot->height . ' cm' : '' }}</b></h5>
             <p>Color: <span class="circle {{ $product->pivot->color }}" style="background-color: {{ $product->pivot->color_hexa }} " ></span></p>
-            <p>Soporte: <b>{{ $product->pivot->support }}</b></p>
+            <p>Soporte incluido:<b>{{ $product->pivot->support }}</b></p>
           </td>
           <td class="product-description">
             <p>{{ cut_str(str_replace('º', ' grados', $product->description), 90) }}</p>
