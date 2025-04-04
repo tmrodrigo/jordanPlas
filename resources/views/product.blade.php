@@ -11,7 +11,7 @@
             <div class="certificate">
               <img src="{{ asset('logos/certificados/logo-INTI.png') }}" alt="">
               <img src="{{ asset('logos/certificados/logo-ASTM.png') }}" alt="">
-              <img src="{{ asset('logos/certificados/logo-IRAM.png') }}" alt="">
+              {{-- <img src="{{ asset('logos/certificados/logo-IRAM.png') }}" alt=""> --}}
               <img src="{{ asset('logos/certificados/logo-ISO-9001.png') }}" alt="">
               <img src="{{ asset('logos/certificados/logo-OHSAS.png') }}" alt="">
               <img src="{{ asset('logos/certificados/logo-ISO.png') }}" alt="">
