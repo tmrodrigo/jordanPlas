@@ -166,8 +166,8 @@ public function show_form(Request $request)
       $product_meassures = [
 
         'height' => $product->height != null ? 'Alto: ' . $product->height . 'cm' : null,
-        'width' => $product->width != null ? 'Ancho:' . $product->width . 'cm' : null,
-        'depth' => $product->depth != null ? 'Pisada: ' . $product->depth . 'cm' : null,
+        'width' => $product->width != null ? 'Pisada: ' . $product->width . 'cm' : null,
+        'depth' => $product->depth != null ? 'Ancho: ' . $product->depth . 'cm' : null,
         'weight' => $product->weight != null ? 'Peso: ' . $product->weight . 'kg' : null,
 
       ];
@@ -536,7 +536,7 @@ public function show_form(Request $request)
     }
 
     $products = $budget->products->chunk(4);
-dd($products);
+
     $data = [
       'client' => $client, 
       'products' => $products,
