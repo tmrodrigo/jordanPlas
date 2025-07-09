@@ -14,7 +14,7 @@ class AddPdfUrlToBudgets extends Migration
     public function up()
     {
         Schema::table('budgets', function (Blueprint $table) {
-            // $table->string('pdf_url')->nullable();
+            $table->string('pdf_url')->nullable();
         });
     }
 

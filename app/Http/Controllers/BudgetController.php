@@ -538,13 +538,18 @@ public function show_form(Request $request)
     $products = $budget->products->chunk(4);
 
     $data = [
-      'client' => $client, 
+      'client' => $client,
       'products' => $products,
       'budget' => $budget
     ];
 
+    // Set DomPDF options before generating PDF
+    PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+
+    // Load the PDF view and apply security restrictions (disable copy)
     $pdf = PDF::loadView('backend.budget.pdf', $data);
-    
+    $pdf->getDomPDF()->getCanvas()->get_cpdf()->setEncryption('', '', ['print']);
+
     $name = 'JordanPlas-Presupuesto_N-' . $budget->id . '.pdf';
 
     Storage::put('pdf/' . $name , $pdf->output(), 'public');
@@ -555,7 +560,7 @@ public function show_form(Request $request)
       'pdf_url' => $pdf_url
     ]);
 
-    $url = str_replace('storage/',  'storage/pdf/' , $budget->pdf_url); 
+    $url = str_replace('storage/',  'storage/pdf/' , $budget->pdf_url);
     // return Storage::download('pdf/'. $name);
 
     if ($environment != 'local') {
@@ -565,7 +570,7 @@ public function show_form(Request $request)
       $budget_data = $request->session()->put('client_data', $budget_data );
       $products = $request->session()->put('selected_products', $products);
     }
-    
+
     return back()->with('budget', $route . $url);
   }
 

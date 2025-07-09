@@ -15,7 +15,12 @@
         "laravel/framework": "^8.0",
         "laravel/helpers": "^1.4",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.0"
+        "laravel/ui": "^3.0",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6",
+        "setasign/fpdi-protection": "^2.1",
+        "spatie/browsershot": "^3.61",
+        "tecnickcom/tcpdf": "^6.10"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
