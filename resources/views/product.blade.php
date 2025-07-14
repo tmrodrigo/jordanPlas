@@ -33,7 +33,7 @@
       </div>
       <div class="row">
         <div class="col-sm-6 position-relative">
-          <img src="{{ asset('logos/logo-vert.svg') }}" class="card-img-logo carousel-logo" alt="">
+          {{-- <img src="{{ asset('logos/logo-vert.svg') }}" class="card-img-logo carousel-logo" alt=""> --}}
           <div id="carouselExampleControlsNoTouching" class="carousel slide carousel-fade" data-bs-touch="true" data-bs-interval="false">
             <div class="carousel-indicators">
               <button type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide-to="0" class="" aria-current="false" aria-label="Slide 0"></button>
