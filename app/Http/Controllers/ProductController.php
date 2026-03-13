@@ -362,7 +362,9 @@ class ProductController extends Controller
         $company_data = Company::orderBy('created_at', 'DESC')->first();
 
         $lineal_mt = null;
-        if ($product->units == 'mt') {
+        if ($product->id === 153) {
+            $lineal_mt = 3;
+        } elseif ($product->units == 'mt') {
             $lineal_mt = 100 / $product->depth;
         }
 
@@ -517,13 +519,13 @@ class ProductController extends Controller
             ],
         ];
 
-        // foreach ($colors as $color) {
-        //     DB::table('colors')->insert([
-        //         'name' => $color['name'],
-        //         'value' => $color['value'],
-        //         'hexa' => $color['hexa']
-        //     ]);
-        // }
+        foreach ($colors as $color) {
+            DB::table('colors')->insert([
+                'name' => $color['name'],
+                'value' => $color['value'],
+                'hexa' => $color['hexa']
+            ]);
+        }
 
         // $fixations = [
             // [
